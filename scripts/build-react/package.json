@@ -1,0 +1,13 @@
+{
+  "private": true,
+  "name": "build-react",
+  "version": "0.0.0",
+  "type": "module",
+  "main": "./build.js",
+  "bin": {
+    "build-react": "./build.js"
+  },
+  "devDependencies": {
+    "npm-run-all": "^4.1.5"
+  }
+}

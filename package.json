@@ -1,0 +1,32 @@
+{
+  "private": true,
+  "name": "media-elements",
+  "version": "0.0.0",
+  "description": "",
+  "author": "@muxinc",
+  "license": "MIT",
+  "type": "module",
+  "homepage": "https://github.com/muxinc/media-elements#readme",
+  "bugs": {
+    "url": "https://github.com/muxinc/media-elements/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/muxinc/media-elements.git"
+  },
+  "workspaces": [
+    "packages/*",
+    "examples/*",
+    "scripts/*"
+  ],
+  "scripts": {
+    "lint": "turbo lint",
+    "test": "turbo test --concurrency=3",
+    "build": "turbo build"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "turbo": "^1.13.3",
+    "typescript": "^5.4.5"
+  }
+}

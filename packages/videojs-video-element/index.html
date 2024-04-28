@@ -1,0 +1,220 @@
+<!doctype html>
+
+<title>&lt;videojs-video&gt;</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css"
+>
+<style>
+  body {
+    text-align: center;
+  }
+  media-controller,
+  videojs-video {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #000;
+  }
+  nav {
+    display: flex;
+    justify-content: space-between;
+  }
+</style>
+
+<!-- not required but can be good to preload to avoid FOUC -->
+<link
+  rel="preload"
+  href="https://cdn.jsdelivr.net/npm/video.js@8/dist/video-js.min.css"
+  as="style"
+  crossorigin
+>
+<link
+  rel="preload"
+  href="https://cdn.jsdelivr.net/npm/@videojs/themes@1.0.1/dist/fantasy/index.css"
+  as="style"
+  crossorigin
+>
+<link
+  rel="preload"
+  href="https://cdn.jsdelivr.net/npm/video.js@8/dist/video.min.js"
+  as="script"
+/>
+
+<script async src="https://cdn.jsdelivr.net/npm/es-module-shims"></script>
+<script type="importmap">
+  {
+    "imports": {
+      "super-media-element": "https://cdn.jsdelivr.net/npm/super-media-element@1.3/+esm",
+      "media-tracks": "https://cdn.jsdelivr.net/npm/media-tracks@0.2/+esm"
+    }
+  }
+</script>
+<script type="module" src="./videojs-video-element.js"></script>
+<script type="module" src="https://cdn.jsdelivr.net/npm/media-chrome/+esm"></script>
+<script type="module" src="https://cdn.jsdelivr.net/npm/media-chrome/dist/experimental/+esm"></script>
+
+
+<h1>&lt;videojs-video&gt;</h1>
+<br />
+
+<videojs-video
+  class="vjs-theme-fantasy"
+  stylesheet="https://cdn.jsdelivr.net/npm/@videojs/themes@1.0.1/dist/fantasy/index.css"
+  poster="https://image.mux.com/O6LdRc0112FEJXH00bGsN9Q31yu5EIVHTgjTKRkKtEq1k/thumbnail.jpg?time=56"
+  controls
+  loop
+  muted
+>
+  <source src="https://stream.mux.com/O6LdRc0112FEJXH00bGsN9Q31yu5EIVHTgjTKRkKtEq1k/high.mp4">
+  <track
+    default
+    label="English"
+    kind="captions"
+    srclang="en"
+    src="./en-cc.vtt"
+  >
+</videojs-video>
+
+<br>
+
+<button id="loadbtn">Load new clip</button>
+
+<script>
+  video = document.querySelector('videojs-video');
+
+  loadbtn.onclick = () => {
+    [...video.children].forEach(c => c.remove());
+
+    video.src = 'https://stream.mux.com/ERDtGClvKFcaBm01psUirD1tGcV4NeTqEtRNf1Zy87800/low.mp4';
+    video.poster = "";
+  }
+
+  video.addEventListener('emptied', (e) => {
+    console.log(e.type);
+  });
+
+  video.addEventListener('loadstart', (e) => {
+    console.log(e.type);
+  });
+
+  video.addEventListener('loadedmetadata', (e) => {
+    console.log(e.type);
+  });
+
+  video.addEventListener('loadeddata', (e) => {
+    console.log(e.type);
+  });
+
+  video.addEventListener('play', (e) => {
+    console.log(e.type);
+  });
+
+  video.addEventListener('waiting', (e) => {
+    console.log(e.type);
+  });
+
+  video.addEventListener('playing', (e) => {
+    console.log(e.type);
+  });
+
+  video.addEventListener('pause', (e) => {
+    console.log(e.type);
+  });
+
+  video.addEventListener('seeking', (e) => {
+    console.log(e.type);
+  });
+
+  video.addEventListener('seeked', (e) => {
+    console.log(e.type);
+  });
+
+  video.addEventListener('ended', (e) => {
+    console.log(e.type);
+  });
+
+  video.addEventListener('durationchange', (e) => {
+    console.log(e.type, video.duration);
+  });
+
+  video.addEventListener('volumechange', (e) => {
+    console.log(e.type, video.volume);
+  });
+
+  video.addEventListener('resize', (e) => {
+    console.log(e.type, video.videoWidth, video.videoHeight);
+  });
+</script>
+
+
+<br>
+
+<h2>With <a href="https://github.com/muxinc/media-chrome" target="_blank">Media Chrome</a></h2>
+
+<media-controller>
+  <videojs-video
+    id="video2"
+    src="https://d2zihajmogu5jn.cloudfront.net/bipbop-advanced/bipbop_16x9_variant.m3u8"
+    slot="media"
+    muted
+  ></videojs-video>
+  <media-loading-indicator slot="centered-chrome" no-auto-hide></media-loading-indicator>
+  <media-control-bar>
+    <media-play-button></media-play-button>
+    <media-seek-backward-button seek-offset="15"></media-seek-backward-button>
+    <media-seek-forward-button seek-offset="15"></media-seek-forward-button>
+    <media-mute-button></media-mute-button>
+    <media-time-range></media-time-range>
+    <media-time-display show-duration></media-time-display>
+    <media-captions-selectmenu default-showing></media-captions-selectmenu>
+    <media-playback-rate-button></media-playback-rate-button>
+    <media-rendition-selectmenu></media-rendition-selectmenu>
+    <media-pip-button></media-pip-button>
+    <media-fullscreen-button></media-fullscreen-button>
+  </media-control-bar>
+</media-controller>
+
+<br>
+
+<nav>
+  <button id="loadbtn2">Load new clip</button>
+  <select id="audioselect"></select>
+</nav>
+
+<script type="module">
+
+  loadbtn2.onclick = () => {
+    [...video.children].forEach(c => c.remove());
+
+    video2.src = 'https://stream.mux.com/O6LdRc0112FEJXH00bGsN9Q31yu5EIVHTgjTKRkKtEq1k.m3u8';
+    video2.poster = "";
+  }
+
+  video2.addEventListener('resize', (e) => {
+    console.log(e.type, video2.videoWidth, video2.videoHeight);
+  });
+
+  video2.audioTracks.addEventListener('removetrack', ({ track }) => {
+    audioselect.querySelector(`[value="${track.id}"]`)?.remove();
+  });
+
+  video2.audioTracks.addEventListener('addtrack', ({ track }) => {
+    audioselect.append(new Option(
+      track.label,
+      track.id,
+      track.enabled,
+      track.enabled
+    ));
+  });
+
+  audioselect.addEventListener('change', () => {
+    for (let track of video2.audioTracks) {
+      track.enabled = audioselect.value == track.id;
+    }
+  });
+</script>
+
+<br>
+<br>

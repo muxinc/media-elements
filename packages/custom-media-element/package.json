@@ -1,0 +1,41 @@
+{
+  "name": "custom-media-element",
+  "version": "1.2.2",
+  "description": "A custom element for extending the native media elements (<audio> or <video>)",
+  "author": "@muxinc",
+  "license": "MIT",
+  "homepage": "https://github.com/muxinc/media-elements#readme",
+  "bugs": {
+    "url": "https://github.com/muxinc/media-elements/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/muxinc/media-elements.git",
+    "directory": "packages/custom-media-element"
+  },
+  "type": "module",
+  "main": "custom-media-element.js",
+  "types": "custom-media-element.d.ts",
+  "files": [
+    "custom-media-element.d.ts"
+  ],
+  "scripts": {
+    "lint": "eslint *.js",
+    "pretest": "esbuild custom-media-element.js --target=es2019 --bundle --outdir=dist --global-name=CustomMediaElement",
+    "test": "wet test test/eager-upgrade.html test/lazy-upgrade.html --coverage",
+    "serve": "wet serve --redirect :examples/ --cors"
+  },
+  "devDependencies": {
+    "esbuild": "^0.20.2",
+    "wet-run": "^1.2.2"
+  },
+  "keywords": [
+    "custom",
+    "element",
+    "video",
+    "audio",
+    "media",
+    "web",
+    "component"
+  ]
+}

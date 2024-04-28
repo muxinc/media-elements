@@ -1,0 +1,45 @@
+{
+  "name": "hls-video-element",
+  "version": "1.1.4",
+  "description": "Custom element (web component) for playing video using the HTTP Live Streaming (HLS) format. Uses HLS.js.",
+  "author": "@muxinc",
+  "license": "MIT",
+  "homepage": "https://github.com/muxinc/media-elements#readme",
+  "bugs": {
+    "url": "https://github.com/muxinc/media-elements/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/muxinc/media-elements.git",
+    "directory": "packages/hls-video-element"
+  },
+  "type": "module",
+  "main": "hls-video-element.js",
+  "types": "hls-video-element.d.ts",
+  "files": [
+    "hls-video-element.d.ts",
+    "react.js",
+    "react.d.ts"
+  ],
+  "scripts": {
+    "lint": "eslint *.js",
+    "test": "wet test --coverage",
+    "serve": "wet serve --cors --livereload",
+    "build:react": "build-react",
+    "build": "run-s build:*"
+  },
+  "dependencies": {
+    "custom-media-element": "^1.2.3",
+    "hls.js": "^1.5.8",
+    "media-tracks": "^0.3.0"
+  },
+  "devDependencies": {
+    "npm-run-all": "^4.1.5",
+    "wet-run": "^1.2.2"
+  },
+  "keywords": [
+    "HLS",
+    "video",
+    "player"
+  ]
+}

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script type="importmap">
+      {
+        "imports": {
+          "zora": "https://cdn.jsdelivr.net/npm/zora/dist/index.js"
+        }
+      }
+    </script>
+    <script src="../dist/custom-media-element.js"></script>
+    <script>
+      // Upgrade before the custom element HTML is parsed.
+      if (!globalThis.customElements.get('custom-video')) {
+        globalThis.customElements.define('custom-video', CustomMediaElement.CustomVideoElement);
+      }
+    </script>
+    <script>ZORA_TIMEOUT = 10000;</script>
+    <script type="module" src="./test.js"></script>
+  </head>
+  <body>
+    <custom-video
+      id="customVideo"
+      muted
+      crossorigin
+      src="http://stream.mux.com/DS00Spx1CV902MCtPj5WknGlR102V5HFkDe/low.mp4"
+    ></custom-video>
+  </body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+
+<title>Custom Media Element - Aspect ratio</title>
+<meta name="viewport" content="width=device-width">
+<script type="module" src="https://cdn.jsdelivr.net/npm/media-chrome@1/+esm"></script>
+<script type="module" src="./example.js"></script>
+
+<style>
+  body {
+    margin: 20px auto;
+    max-width: 800px;
+  }
+
+  .red-container {
+    background-color: red;
+  }
+
+  media-controller {
+    max-width: 600px;
+    aspect-ratio: 16 / 9;
+
+    display: block;
+    /* Test in a non block container. */
+    /* display: inline-block; */
+
+    /* Test with a fixed height to see overflow compared to native video. */
+    /* height: 300px; */
+  }
+</style>
+
+<nav>
+  <ul>
+    <li><a href="./">Default</a></li>
+    <li><a href="./media-chrome.html">Media Chrome</a></li>
+    <li><a href="./aspect-ratio.html">Aspect-ratio</a></li>
+    <li><a href="./empty-source.html">Empty source</a></li>
+    <li><a href="./progressive-enhancement.html">Progressive enhancement</a></li>
+    <li><a href="./audio.html">Audio</a></li>
+  </ul>
+</nav>
+
+<h1>&lt;my-video&gt; + media-chrome w/ aspect-ratio</h1>
+
+<div class="red-container">
+  <media-controller>
+    <my-video
+      slot="media"
+      src="http://stream.mux.com/O6LdRc0112FEJXH00bGsN9Q31yu5EIVHTgjTKRkKtEq1k/medium.mp4"
+      poster="https://image.mux.com/O6LdRc0112FEJXH00bGsN9Q31yu5EIVHTgjTKRkKtEq1k/thumbnail.webp"
+      crossorigin
+      muted
+    >
+      <track default label="English" kind="captions" srclang="en" src="./en-cc.vtt">
+      <track label="thumbnails" id="customTrack" default kind="metadata" src="https://image.mux.com/O6LdRc0112FEJXH00bGsN9Q31yu5EIVHTgjTKRkKtEq1k/storyboard.vtt">
+    </my-video>
+    <media-control-bar>
+      <media-play-button></media-play-button>
+      <media-mute-button></media-mute-button>
+      <media-volume-range></media-volume-range>
+      <media-time-range></media-time-range>
+      <media-pip-button></media-pip-button>
+      <media-fullscreen-button></media-fullscreen-button>
+    </media-control-bar>
+  </media-controller>
+</div>
+
+<br>
+<h1>&lt;video&gt; + media-chrome w/ aspect-ratio</h1>
+
+<div class="red-container">
+  <media-controller>
+    <video
+      slot="media"
+      src="http://stream.mux.com/O6LdRc0112FEJXH00bGsN9Q31yu5EIVHTgjTKRkKtEq1k/medium.mp4"
+      poster="https://image.mux.com/O6LdRc0112FEJXH00bGsN9Q31yu5EIVHTgjTKRkKtEq1k/thumbnail.webp"
+      crossorigin
+      muted
+    >
+      <track default label="English" kind="captions" srclang="en" src="./en-cc.vtt">
+      <track label="thumbnails" id="customTrack" default kind="metadata" src="https://image.mux.com/O6LdRc0112FEJXH00bGsN9Q31yu5EIVHTgjTKRkKtEq1k/storyboard.vtt">
+    </video>
+    <media-control-bar>
+      <media-play-button></media-play-button>
+      <media-mute-button></media-mute-button>
+      <media-volume-range></media-volume-range>
+      <media-time-range></media-time-range>
+      <media-pip-button></media-pip-button>
+      <media-fullscreen-button></media-fullscreen-button>
+    </media-control-bar>
+  </media-controller>
+</div>
+
+<br>
+<br>

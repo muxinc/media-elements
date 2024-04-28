@@ -1,0 +1,136 @@
+<!doctype html>
+
+<title>&lt;dash-video&gt;</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css" />
+<style>
+  body {
+    text-align: center;
+  }
+  media-controller,
+  dash-video {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #000;
+  }
+</style>
+
+<script type="importmap">
+  {
+    "imports": {
+      "super-media-element": "https://cdn.jsdelivr.net/npm/super-media-element@1.2",
+      "dashjs-esm": "https://cdn.jsdelivr.net/npm/dashjs-esm@4.6/+esm"
+    }
+  }
+</script>
+<script type="module" src="./dash-video-element.js"></script>
+<script type="module" src="https://cdn.jsdelivr.net/npm/media-chrome/+esm"></script>
+
+<h1>&lt;dash-video&gt;</h1>
+<br>
+
+<dash-video
+  controls
+  src="https://player.vimeo.com/external/648359100.mpd?s=a4419a2e2113cc24a87aef2f93ef69a8e4c8fb0c&ext=.mpd"
+  crossorigin
+></dash-video>
+
+<br>
+
+<button id="loadbtn">Load new clip</button>
+
+<script>
+  const video = document.querySelector('dash-video');
+
+  loadbtn.onclick = () => {
+    video.src = 'https://amssamples.streaming.mediaservices.windows.net/634cd01c-6822-4630-8444-8dd6279f94c6/CaminandesLlamaDrama4K.ism/manifest(format=mpd-time-csf)?ext=.mpd';
+  }
+
+  video.addEventListener('emptied', (e) => {
+    console.log(e.type);
+  });
+
+  video.addEventListener('loadstart', (e) => {
+    console.log(e.type);
+  });
+
+  video.addEventListener('loadedmetadata', (e) => {
+    console.log(e.type);
+  });
+
+  video.addEventListener('loadeddata', (e) => {
+    console.log(e.type);
+  });
+
+  video.addEventListener('play', (e) => {
+    console.log(e.type);
+  });
+
+  video.addEventListener('waiting', (e) => {
+    console.log(e.type);
+  });
+
+  video.addEventListener('playing', (e) => {
+    console.log(e.type);
+  });
+
+  video.addEventListener('pause', (e) => {
+    console.log(e.type);
+  });
+
+  video.addEventListener('seeking', (e) => {
+    console.log(e.type);
+  });
+
+  video.addEventListener('seeked', (e) => {
+    console.log(e.type);
+  });
+
+  video.addEventListener('ended', (e) => {
+    console.log(e.type);
+  });
+
+  video.addEventListener('durationchange', (e) => {
+    console.log(e.type, video.duration);
+  });
+
+  video.addEventListener('volumechange', (e) => {
+    console.log(e.type, video.volume);
+  });
+
+  video.addEventListener('resize', (e) => {
+    console.log(e.type, video.videoWidth, video.videoHeight);
+  });
+</script>
+
+<br>
+
+<h2>With <a href="https://github.com/muxinc/media-chrome" target="_blank">Media Chrome</a></h2>
+
+<media-controller>
+  <dash-video
+    src="https://player.vimeo.com/external/648359100.mpd?s=a4419a2e2113cc24a87aef2f93ef69a8e4c8fb0c&ext=.mpd"
+    crossorigin
+    slot="media"
+    muted
+  >
+    <track label="thumbnails" default kind="thumbnails" src="https://image.mux.com/r4rOE02cc95tbe3I00302nlrHfT023Q3IedFJW029w018KxZA/storyboard.vtt"></track>
+  </dash-video>
+  <media-loading-indicator slot="centered-chrome" no-auto-hide></media-loading-indicator>
+  <media-control-bar>
+    <media-play-button></media-play-button>
+    <media-seek-backward-button seek-offset="15"></media-seek-backward-button>
+    <media-seek-forward-button seek-offset="15"></media-seek-forward-button>
+    <media-mute-button></media-mute-button>
+    <media-volume-range></media-volume-range>
+    <media-time-range></media-time-range>
+    <media-time-display show-duration remaining></media-time-display>
+    <media-playback-rate-button></media-playback-rate-button>
+    <media-pip-button></media-pip-button>
+    <media-fullscreen-button></media-fullscreen-button>
+  </media-control-bar>
+</media-controller>
+
+<br>
+<br>

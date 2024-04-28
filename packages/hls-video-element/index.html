@@ -1,0 +1,228 @@
+<!doctype html>
+<html>
+<head>
+  <title>&lt;hls-video&gt;</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css" />
+  <style>
+    body {
+      text-align: center;
+    }
+    media-controller {
+      display: block;
+      aspect-ratio: 16 / 9;
+      background: transparent;
+    }
+    hls-video[slot] {
+      /* Fix Safari aspect-ratio overflow glitch */
+      height: fit-content;
+    }
+    hls-video:not([slot]) {
+      aspect-ratio: 16 / 9;
+      width: 100%;
+    }
+    nav {
+      display: flex;
+      justify-content: space-between;
+    }
+  </style>
+
+  <script async src="https://cdn.jsdelivr.net/npm/es-module-shims"></script>
+  <script type="importmap">
+    {
+      "imports": {
+        "custom-media-element": "https://cdn.jsdelivr.net/npm/custom-media-element@1.2/+esm",
+        "media-tracks": "https://cdn.jsdelivr.net/npm/media-tracks@0.3/+esm",
+        "hls.js/": "https://cdn.jsdelivr.net/npm/hls.js@1.5/"
+      }
+    }
+  </script>
+  <script type="module" src="https://cdn.jsdelivr.net/npm/media-chrome/+esm"></script>
+</head>
+<body>
+  <h1>&lt;hls-video&gt;</h1>
+  <br>
+
+  <h2>On-demand</h2>
+  <hls-video
+    id="myVideo"
+    controls
+    src="https://stream.mux.com/Sc89iWAyNkhJ3P1rQ02nrEdCFTnfT01CZ2KmaEcxXfB008.m3u8"
+    poster="https://image.mux.com/Sc89iWAyNkhJ3P1rQ02nrEdCFTnfT01CZ2KmaEcxXfB008/thumbnail.webp"
+    crossorigin
+    playsinline
+  ></hls-video>
+
+  <br>
+
+  <nav>
+    <nav>
+      <button id="loadbtn">Load new clip</button>
+      <button id="removebtn">Remove first rendition</button>
+    </nav>
+    <nav>
+      <select id="audioselect"></select>
+      <select id="qualityselect">
+        <option value="auto">Auto</option>
+      </select>
+      <input id="qualityselected" value="N/A" readonly size="5">
+    </nav>
+  </nav>
+
+  <script type="module">
+    import './hls-video-element.js';
+
+    myVideo.audioTracks.addEventListener('removetrack', ({ track }) => {
+      audioselect.querySelector(`[value="${track.id}"]`).remove();
+    });
+
+    myVideo.audioTracks.addEventListener('addtrack', ({ track }) => {
+      audioselect.append(new Option(
+        track.label,
+        track.id,
+        track.enabled,
+        track.enabled
+      ));
+    });
+
+    audioselect.addEventListener('change', () => {
+      for (let track of myVideo.audioTracks) {
+        track.enabled = audioselect.value == track.id;
+      }
+    });
+
+    myVideo.videoTracks.addEventListener('removetrack', ({ track }) => {
+      let i = qualityselect.options.length;
+      while (--i) qualityselect.options.remove(i);
+    });
+
+    myVideo.videoRenditions.addEventListener('addrendition', ({ rendition }) => {
+      qualityselect.append(new Option(
+        `${Math.min(rendition.width, rendition.height)}p`,
+        rendition.id,
+      ));
+    });
+
+    myVideo.videoRenditions.addEventListener('removerendition', ({ rendition }) => {
+      qualityselect.querySelector(`[value="${rendition.id}"]`).remove();
+    });
+
+    myVideo.addEventListener('resize', () => {
+      qualityselected.value = `${Math.min(myVideo.videoWidth, myVideo.videoHeight)}p`;
+    });
+
+    loadbtn.onclick = () => {
+      myVideo.src = 'https://stream.mux.com/1EFcsL5JET00t00mBv01t00xt00T4QeNQtsXx2cKY6DLd7RM.m3u8';
+    };
+
+    removebtn.onclick = () => {
+      myVideo.api.removeLevel(0);
+    };
+
+    qualityselect.addEventListener('change', () => {
+      myVideo.videoRenditions.selectedIndex = qualityselect.selectedIndex - 1;
+    });
+  </script>
+
+  <h2>Live</h2>
+  <hls-video
+    controls
+    src="https://stream.mux.com/v69RSHhFelSm4701snP22dYz2jICy4E4FUyk02rW4gxRM"
+    crossorigin
+    playsinline
+  ></hls-video>
+
+  <script>
+    const video = document.querySelector('hls-video');
+
+    video.addEventListener('emptied', (e) => {
+      console.log(e.type);
+    });
+
+    video.addEventListener('loadstart', (e) => {
+      console.log(e.type);
+    });
+
+    video.addEventListener('loadedmetadata', (e) => {
+      console.log(e.type);
+    });
+
+    video.addEventListener('loadeddata', (e) => {
+      console.log(e.type);
+    });
+
+    video.addEventListener('play', (e) => {
+      console.log(e.type);
+    });
+
+    video.addEventListener('waiting', (e) => {
+      console.log(e.type);
+    });
+
+    video.addEventListener('playing', (e) => {
+      console.log(e.type);
+    });
+
+    video.addEventListener('pause', (e) => {
+      console.log(e.type);
+    });
+
+    video.addEventListener('seeking', (e) => {
+      console.log(e.type);
+    });
+
+    video.addEventListener('seeked', (e) => {
+      console.log(e.type);
+    });
+
+    video.addEventListener('ended', (e) => {
+      console.log(e.type);
+    });
+
+    video.addEventListener('durationchange', (e) => {
+      console.log(e.type, video.duration);
+    });
+
+    video.addEventListener('volumechange', (e) => {
+      console.log(e.type, video.volume);
+    });
+
+    video.addEventListener('resize', (e) => {
+      console.log(e.type, video.videoWidth, video.videoHeight);
+    });
+  </script>
+
+  <br>
+
+  <h2>With <a href="https://github.com/muxinc/media-chrome" target="_blank">Media Chrome</a></h2>
+
+  <media-controller>
+    <hls-video
+      src="https://stream.mux.com/O6LdRc0112FEJXH00bGsN9Q31yu5EIVHTgjTKRkKtEq1k.m3u8"
+      poster="https://image.mux.com/O6LdRc0112FEJXH00bGsN9Q31yu5EIVHTgjTKRkKtEq1k/thumbnail.jpg?time=56"
+      crossorigin
+      playsinline
+      slot="media"
+      muted
+    >
+      <track default kind="metadata" label="thumbnails" src="https://image.mux.com/O6LdRc0112FEJXH00bGsN9Q31yu5EIVHTgjTKRkKtEq1k/storyboard.vtt">
+    </hls-video>
+    <media-loading-indicator slot="centered-chrome" no-auto-hide></media-loading-indicator>
+    <media-control-bar>
+      <media-play-button></media-play-button>
+      <media-seek-backward-button seek-offset="15"></media-seek-backward-button>
+      <media-seek-forward-button seek-offset="15"></media-seek-forward-button>
+      <media-mute-button></media-mute-button>
+      <media-volume-range></media-volume-range>
+      <media-time-range></media-time-range>
+      <media-time-display show-duration remaining></media-time-display>
+      <media-playback-rate-button></media-playback-rate-button>
+      <media-pip-button></media-pip-button>
+      <media-fullscreen-button></media-fullscreen-button>
+    </media-control-bar>
+  </media-controller>
+
+  <br>
+  <br>
+</body>
+</html>

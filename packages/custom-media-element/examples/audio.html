@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+
+<title>Custom Audio Element</title>
+<meta name="viewport" content="width=device-width">
+<script type="module" src="./example.js"></script>
+
+<style>
+  body {
+    margin: 20px auto;
+    max-width: 800px;
+  }
+
+  .red-container {
+    background-color: red;
+
+    display: block;
+    /* Test in a non block container. */
+    /* display: inline-block; */
+
+    /* Test with a fixed height to see overflow compared to native video. */
+    /* height: 300px; */
+  }
+
+  my-audio,
+  audio {
+    width: 500px;
+    height: 200px;
+  }
+</style>
+
+<nav>
+  <ul>
+    <li><a href="./">Default</a></li>
+    <li><a href="./media-chrome.html">Media Chrome</a></li>
+    <li><a href="./aspect-ratio.html">Aspect-ratio</a></li>
+    <li><a href="./empty-source.html">Empty source</a></li>
+    <li><a href="./progressive-enhancement.html">Progressive enhancement</a></li>
+    <li><a href="./audio.html">Audio</a></li>
+  </ul>
+</nav>
+
+<h1>&lt;my-audio&gt;</h1>
+
+<div class="red-container">
+  <my-audio
+    slot="media"
+    src="http://stream.mux.com/O6LdRc0112FEJXH00bGsN9Q31yu5EIVHTgjTKRkKtEq1k/medium.mp4"
+    controls
+    crossorigin
+  ></my-audio>
+</div>
+
+<br>
+<h1>&lt;audio&gt;</h1>
+
+<div class="red-container">
+  <audio
+    slot="media"
+    src="http://stream.mux.com/O6LdRc0112FEJXH00bGsN9Q31yu5EIVHTgjTKRkKtEq1k/medium.mp4"
+    crossorigin
+    controls
+    muted
+  ></audio>
+</div>
+
+<br>
+<br>
+
+<script>
+  const audio = document.querySelector('my-audio');
+
+  audio.addEventListener('emptied', (e) => {
+    console.log(e.type);
+  });
+
+  audio.addEventListener('loadstart', (e) => {
+    console.log(e.type);
+  });
+
+  audio.addEventListener('loadedmetadata', (e) => {
+    console.log(e.type);
+  });
+
+  audio.addEventListener('loadeddata', (e) => {
+    console.log(e.type);
+  });
+
+  audio.addEventListener('play', (e) => {
+    console.log(e.type);
+  });
+
+  audio.addEventListener('waiting', (e) => {
+    console.log(e.type);
+  });
+
+  audio.addEventListener('playing', (e) => {
+    console.log(e.type);
+  });
+
+  audio.addEventListener('pause', (e) => {
+    console.log(e.type);
+  });
+
+  audio.addEventListener('seeking', (e) => {
+    console.log(e.type);
+  });
+
+  audio.addEventListener('seeked', (e) => {
+    console.log(e.type);
+  });
+
+  audio.addEventListener('ended', (e) => {
+    console.log(e.type);
+  });
+
+  audio.addEventListener('durationchange', (e) => {
+    console.log(e.type, audio.duration);
+  });
+
+  audio.addEventListener('volumechange', (e) => {
+    console.log(e.type, audio.volume);
+  });
+</script>

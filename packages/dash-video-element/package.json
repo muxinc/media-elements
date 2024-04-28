@@ -1,0 +1,44 @@
+{
+  "name": "dash-video-element",
+  "version": "1.0.0",
+  "description": "Custom element for playing video using the DASH format. Uses dash.js.",
+  "author": "@muxinc",
+  "license": "MIT",
+  "homepage": "https://github.com/muxinc/media-elements#readme",
+  "bugs": {
+    "url": "https://github.com/muxinc/media-elements/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/muxinc/media-elements.git",
+    "directory": "packages/dash-video-element"
+  },
+  "type": "module",
+  "main": "dash-video-element.js",
+  "files": [
+    "react.js",
+    "react.d.ts"
+  ],
+  "scripts": {
+    "lint": "eslint *.js",
+    "test": "wet run",
+    "serve": "wet serve",
+    "build:react": "build-react",
+    "build": "run-s build:*"
+  },
+  "dependencies": {
+    "dashjs-esm": "^4.6.0",
+    "super-media-element": "~1.3.0"
+  },
+  "devDependencies": {
+    "npm-run-all": "^4.1.5",
+    "wet-run": "^1.2.2"
+  },
+  "keywords": [
+    "DASH",
+    "video",
+    "player",
+    "web component",
+    "custom element"
+  ]
+}

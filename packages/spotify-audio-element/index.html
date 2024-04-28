@@ -1,0 +1,167 @@
+<!doctype html>
+
+<title>&lt;spotify-audio&gt;</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+<style>
+  body {
+    text-align: center;
+  }
+  media-controller,
+  spotify-audio {
+    display: block;
+    width: 100%;
+  }
+</style>
+
+<script type="module" src="./spotify-audio-element.js"></script>
+<script type="module" src="https://cdn.jsdelivr.net/npm/media-chrome/+esm"></script>
+
+<h1>&lt;spotify-audio&gt;</h1>
+<br>
+
+<spotify-audio
+  src="https://open.spotify.com/episode/7makk4oTQel546B0PZlDM5"
+  slot="media"
+  controls
+  continuous
+  starttime="20"
+  theme="dark"
+></spotify-audio>
+
+<br>
+
+<select size="5" id="loadselect">
+  <option selected value="https://open.spotify.com/artist/246dkjvS1zLTtiykXe5h60">
+    Episode - My Path to Spotify
+  </option>
+  <option value="https://open.spotify.com/artist/246dkjvS1zLTtiykXe5h60">
+    Artist - Post Malone
+  </option>
+  <option value="https://open.spotify.com/playlist/3R5xMhYgM3ZL5exkvWsb2j">
+    Playlist - Wesley Luyten Liked
+  </option>
+  <option value="https://open.spotify.com/track/6HSXNV0b4M4cLJ7ljgVVeh">
+    Track - Knockin' on Heaven's Door
+  </option>
+  <option value="https://open.spotify.com/album/2dyS8KJ2vQl2KpAZXrH1BW">
+    Album - Left Hand Free
+  </option>
+</select>
+
+<script>
+  const audio = document.querySelector('spotify-audio');
+
+  loadselect.onchange = function() {
+    audio.startTime = 0;
+    audio.src = this.value;
+  }
+
+  audio.addEventListener('loadstart', (e) => {
+    console.log(e.type);
+  });
+
+  audio.addEventListener('play', (e) => {
+    console.log(e.type);
+  });
+
+  audio.addEventListener('waiting', (e) => {
+    console.log(e.type);
+  });
+
+  audio.addEventListener('playing', (e) => {
+    console.log(e.type);
+  });
+
+  audio.addEventListener('pause', (e) => {
+    console.log(e.type);
+  });
+
+  audio.addEventListener('seeking', (e) => {
+    console.log(e.type);
+  });
+
+  audio.addEventListener('seeked', (e) => {
+    console.log(e.type);
+  });
+
+  audio.addEventListener('ended', (e) => {
+    console.log(e.type);
+  });
+
+  audio.addEventListener('durationchange', (e) => {
+    console.log(e.type, audio.duration);
+  });
+
+  audio.addEventListener('volumechange', (e) => {
+    console.log(e.type, audio.volume);
+  });
+</script>
+
+<br>
+
+<h2>With <a href="https://github.com/muxinc/media-chrome" target="_blank">Media Chrome</a></h2>
+
+<media-controller audio>
+  <spotify-audio
+    id="audiochrome"
+    src="https://open.spotify.com/episode/7makk4oTQel546B0PZlDM5"
+    slot="media"
+  ></spotify-audio>
+  <media-control-bar style="width: 100%">
+    <media-play-button></media-play-button>
+    <media-seek-backward-button seek-offset="15"></media-seek-backward-button>
+    <media-seek-forward-button seek-offset="15"></media-seek-forward-button>
+    <media-time-range></media-time-range>
+    <media-time-display show-duration remaining></media-time-display>
+  </media-control-bar>
+</media-controller>
+
+<script>
+  audiochrome.addEventListener('loadstart', (e) => {
+    console.log(e.type);
+  });
+
+  audiochrome.addEventListener('play', (e) => {
+    console.log(e.type);
+  });
+
+  audiochrome.addEventListener('waiting', (e) => {
+    console.log(e.type);
+  });
+
+  audiochrome.addEventListener('playing', (e) => {
+    console.log(e.type);
+  });
+
+  audiochrome.addEventListener('pause', (e) => {
+    console.log(e.type);
+  });
+
+  audiochrome.addEventListener('seeking', (e) => {
+    console.log(e.type);
+  });
+
+  audiochrome.addEventListener('seeked', (e) => {
+    console.log(e.type);
+  });
+
+  audiochrome.addEventListener('ended', (e) => {
+    console.log(e.type);
+  });
+
+  audiochrome.addEventListener('timeupdate', (e) => {
+    console.log(e.type, audiochrome.currentTime);
+  });
+
+  audiochrome.addEventListener('durationchange', (e) => {
+    console.log(e.type, audiochrome.duration);
+  });
+
+  audiochrome.addEventListener('volumechange', (e) => {
+    console.log(e.type, audiochrome.volume);
+  });
+</script>
+
+<br>
+<br>
