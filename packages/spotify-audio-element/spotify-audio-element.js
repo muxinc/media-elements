@@ -6,40 +6,67 @@ const API_URL = 'https://open.spotify.com/embed-podcast/iframe-api/v1';
 const API_GLOBAL = 'SpotifyIframeApi';
 const API_GLOBAL_READY = 'onSpotifyIframeApiReady';
 
-const templateShadowDOM = globalThis.document?.createElement('template');
-if (templateShadowDOM) {
-  templateShadowDOM.innerHTML = /*html*/`
-  <style>
-    :host {
-      display: inline-block;
-      min-width: 160px;
-      min-height: 80px;
-      position: relative;
-    }
-    iframe {
-      position: absolute;
-      top: 0;
-      left: 0;
-    }
-    :host(:not([controls])) {
-      display: none !important;
-    }
-  </style>
+function getTemplateHTML(attrs) {
+  const iframeAttrs = {
+    src: serializeIframeUrl(attrs),
+    frameborder: 0,
+    width: '100%',
+    height: '100%',
+    allow: 'accelerometer; fullscreen; autoplay; encrypted-media; gyroscope; picture-in-picture',
+  };
+
+  return /*html*/`
+    <style>
+      :host {
+        display: inline-block;
+        min-width: 160px;
+        min-height: 80px;
+        position: relative;
+      }
+      iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+      :host(:not([controls])) {
+        display: none !important;
+      }
+    </style>
+    <iframe${serializeAttributes(iframeAttrs)}></iframe>
   `;
 }
 
+function serializeIframeUrl(attrs) {
+  if (!attrs.src) return;
+
+  const matches = attrs.src.match(MATCH_SRC);
+  const type = matches && matches[1];
+  const metaId = matches && matches[2];
+
+  const params = {
+    t: attrs.starttime,
+    theme: attrs.theme === 'dark' ? '0' : null,
+  };
+
+  return `${EMBED_BASE}/embed/${type}/${metaId}?${serialize(params)}`;
+}
+
 class SpotifyAudioElement extends (globalThis.HTMLElement ?? class {}) {
+  static getTemplateHTML = getTemplateHTML;
+  static shadowRootOptions = { mode: 'open' };
   static observedAttributes = [
     'controls',
     'loop',
     'src',
     'starttime',
     'continuous',
+    'theme',
   ];
 
+  loadComplete = new PublicPromise();
+  #loadRequested;
   #hasLoaded;
-  #apiInit;
-  #options;
+  #isInit;
   #isWaiting = false;
   #closeToEnded = false;
 
@@ -48,21 +75,16 @@ class SpotifyAudioElement extends (globalThis.HTMLElement ?? class {}) {
   #duration = NaN;
   #seeking = false;
 
-  constructor() {
-    super();
-
-    this.attachShadow({ mode: 'open' });
-    this.shadowRoot.append(templateShadowDOM.content.cloneNode(true));
-
-    this.loadComplete = new PublicPromise();
-  }
-
   async load() {
-    if (this.#hasLoaded) {
-      this.loadComplete = new PublicPromise();
-    }
+    if (this.#loadRequested) return;
 
+    if (this.#hasLoaded) this.loadComplete = new PublicPromise();
     this.#hasLoaded = true;
+
+    // Wait 1 tick to allow other attributes to be set.
+    await (this.#loadRequested = Promise.resolve());
+    this.#loadRequested = null;
+
     this.#isWaiting = false;
     this.#closeToEnded = false;
 
@@ -75,44 +97,35 @@ class SpotifyAudioElement extends (globalThis.HTMLElement ?? class {}) {
     let oldApi = this.api;
     this.api = null;
 
-    // Wait 1 tick to allow other attributes to be set.
-    await Promise.resolve();
-
     if (!this.src) {
       return;
     }
 
     this.dispatchEvent(new Event('loadstart'));
 
-    this.#options = {
-      width: '100%',
-      height: '100%',
+    const options = {
       t: this.startTime,
       theme: this.theme === 'dark' ? '0' : null,
     };
 
-    const matches = this.src.match(MATCH_SRC);
-    const type = matches && matches[1];
-    const metaId = matches && matches[2];
-    const src = `${EMBED_BASE}/embed/${type}/${metaId}?${serialize(this.#options)}`;
-
-    if (this.#apiInit) {
+    if (this.#isInit) {
       this.api = oldApi;
-      this.api.iframeElement.src = src;
+      this.api.iframeElement.src = serializeIframeUrl(namedNodeMapToObject(this.attributes));
 
     } else {
-      this.#apiInit = true;
+      this.#isInit = true;
+
+      if (!this.shadowRoot) {
+        this.attachShadow({ mode: 'open' });
+        this.shadowRoot.innerHTML = getTemplateHTML(namedNodeMapToObject(this.attributes));
+      }
 
       let iframe = this.shadowRoot.querySelector('iframe');
-      if (!iframe) {
-        iframe = createEmbedIframe({ src });
-        this.shadowRoot.append(iframe);
-      }
 
       const Spotify = await loadScript(API_URL, API_GLOBAL, API_GLOBAL_READY);
 
       this.api = await new Promise((resolve) =>
-        Spotify.createController(iframe, this.#options, resolve));
+        Spotify.createController(iframe, options, resolve));
       this.api.iframeElement = iframe;
 
       this.api.addListener('ready', () => {
@@ -192,17 +205,17 @@ class SpotifyAudioElement extends (globalThis.HTMLElement ?? class {}) {
   }
 
   async attributeChangedCallback(attrName, oldValue, newValue) {
+    if (oldValue === newValue) return;
+
     // This is required to come before the await for resolving loadComplete.
     switch (attrName) {
-      case 'src': {
-        if (oldValue !== newValue) {
-          this.load();
-        }
+      case 'src':
+      case 'theme':
+      case 'starttime': {
+        this.load();
         return;
       }
     }
-
-    await this.loadComplete;
   }
 
   async play() {
@@ -307,9 +320,27 @@ class SpotifyAudioElement extends (globalThis.HTMLElement ?? class {}) {
   }
 }
 
+function serializeAttributes(attrs) {
+  let html = '';
+  for (const key in attrs) {
+    const value = attrs[key];
+    if (value === '') html += ` ${key}`;
+    else html += ` ${key}="${value}"`;
+  }
+  return html;
+}
+
 function serialize(props) {
   Object.keys(props).forEach(key => props[key] == null && delete props[key]);
   return String(new URLSearchParams(props));
+}
+
+function namedNodeMapToObject(namedNodeMap) {
+  let obj = {};
+  for (let attr of namedNodeMap) {
+    obj[attr.name] = attr.value;
+  }
+  return obj;
 }
 
 const loadScriptCache = {};
@@ -344,29 +375,6 @@ class PublicPromise extends Promise {
     this.resolve = res;
     this.reject = rej;
   }
-}
-
-function createElement(tag, attrs = {}, ...children) {
-  const el = document.createElement(tag);
-  Object.keys(attrs).forEach(
-    (name) => attrs[name] != null && el.setAttribute(name, attrs[name])
-  );
-  el.append(...children);
-  return el;
-}
-
-const allow =
-  'autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture';
-
-function createEmbedIframe({ src, ...props }) {
-  return createElement('iframe', {
-    src,
-    width: '100%',
-    height: '100%',
-    allow,
-    frameborder: 0,
-    ...props,
-  });
 }
 
 if (globalThis.customElements && !globalThis.customElements.get('spotify-audio')) {
