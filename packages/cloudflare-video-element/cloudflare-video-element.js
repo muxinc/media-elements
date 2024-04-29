@@ -40,27 +40,63 @@ const MATCH_SRC = /(?:cloudflarestream\.com|videodelivery\.net)\/([\w-.]+)/i;
 const API_URL = 'https://embed.videodelivery.net/embed/sdk.latest.js';
 const API_GLOBAL = 'Stream';
 
-const templateShadowDOM = globalThis.document?.createElement('template');
-templateShadowDOM.innerHTML = /*html*/`
-<style>
-  :host {
-    display: inline-block;
-    min-width: 300px;
-    min-height: 150px;
-    position: relative;
-  }
-  iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-  }
-  :host(:not([controls])) {
-    pointer-events: none;
-  }
-</style>
-`;
+function getTemplateHTML(attrs) {
+  const iframeAttrs = {
+    src: serializeIframeUrl(attrs),
+    frameborder: 0,
+    width: '100%',
+    height: '100%',
+    allow: 'accelerometer; fullscreen; autoplay; encrypted-media; gyroscope; picture-in-picture',
+  };
+
+  return /*html*/`
+    <style>
+      :host {
+        display: inline-block;
+        min-width: 300px;
+        min-height: 150px;
+        position: relative;
+      }
+      iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+      :host(:not([controls])) {
+        pointer-events: none;
+      }
+    </style>
+    <iframe ${serializeAttributes(iframeAttrs)}></iframe>
+  `;
+}
+
+function serializeIframeUrl(attrs) {
+  if (!attrs.src) return;
+
+  const matches = attrs.src.match(MATCH_SRC);
+  const srcId = matches && matches[1];
+
+  const params = {
+    // ?controls=true is enabled by default in the iframe
+    controls: attrs.controls === '' ? null : '0',
+    autoplay: attrs.autoplay,
+    loop: attrs.loop,
+    muted: attrs.muted,
+    preload: attrs.preload,
+    poster: attrs.poster,
+    defaultTextTrack: attrs.defaulttexttrack,
+    primaryColor: attrs.primarycolor,
+    letterboxColor: attrs.letterboxcolor,
+    startTime: attrs.starttime,
+    'ad-url': attrs.adurl,
+  };
+
+  return `${EMBED_BASE}/${srcId}?${serialize(removeFalsy(params))}`;
+}
 
 class CloudflareVideoElement extends (globalThis.HTMLElement ?? class {}) {
+  static getTemplateHTML = getTemplateHTML;
+  static shadowRootOptions = { mode: 'open' };
   static observedAttributes = [
     'autoplay',
     'controls',
@@ -75,15 +111,10 @@ class CloudflareVideoElement extends (globalThis.HTMLElement ?? class {}) {
 
   #hasLoaded;
   #noInit;
-  #options;
   #readyState = 0;
 
   constructor() {
     super();
-
-    this.attachShadow({ mode: 'open' });
-    this.shadowRoot.append(templateShadowDOM.content.cloneNode(true));
-
     this.loadComplete = new PublicPromise();
   }
 
@@ -107,21 +138,6 @@ class CloudflareVideoElement extends (globalThis.HTMLElement ?? class {}) {
       return;
     }
 
-    this.#options = {
-      autoplay: this.autoplay,
-      controls: this.controls,
-      loop: this.loop,
-      muted: this.defaultMuted,
-      playsinline: this.playsInline,
-      preload: this.preload,
-      poster: this.poster,
-      defaultTextTrack: this.getAttribute('defaulttexttrack'),
-      primaryColor: this.getAttribute('primarycolor'),
-      letterboxColor: this.getAttribute('letterboxcolor'),
-      startTime: this.getAttribute('starttime'),
-      'ad-url': this.getAttribute('adurl'),
-    };
-
     const matches = this.src.match(MATCH_SRC);
     const srcId = matches && matches[1];
 
@@ -132,17 +148,12 @@ class CloudflareVideoElement extends (globalThis.HTMLElement ?? class {}) {
 
     } else {
 
-      const src = `${EMBED_BASE}/${srcId}?${serialize(removeFalsy({
-        ...this.#options,
-        // ?controls=true is enabled by default in the iframe
-        controls: this.#options.controls ? null : '0'
-      }))}`;
+      if (!this.shadowRoot) {
+        this.attachShadow({ mode: 'open' });
+        this.shadowRoot.innerHTML = getTemplateHTML(namedNodeMapToObject(this.attributes));
+      }
 
       let iframe = this.shadowRoot.querySelector('iframe');
-      if (!iframe) {
-        iframe = createEmbedIframe({ src });
-        this.shadowRoot.append(iframe);
-      }
 
       const Stream = await loadScript(API_URL, API_GLOBAL);
       this.api = Stream(iframe);
@@ -193,14 +204,14 @@ class CloudflareVideoElement extends (globalThis.HTMLElement ?? class {}) {
       case 'autoplay':
       case 'controls':
       case 'loop': {
-        if (this.#options[attrName] !== this.hasAttribute(attrName)) {
+        if (this.api[attrName] !== this.hasAttribute(attrName)) {
           this.api[attrName] = this.hasAttribute(attrName);
         }
         break;
       }
       case 'poster':
       case 'preload': {
-        if (this.#options[attrName] !== this.getAttribute(attrName)) {
+        if (this.api[attrName] !== this.getAttribute(attrName)) {
           this.api[attrName] = this.getAttribute(attrName);
         }
         break;
@@ -378,6 +389,34 @@ class CloudflareVideoElement extends (globalThis.HTMLElement ?? class {}) {
   }
 }
 
+function serializeAttributes(attrs) {
+  let html = '';
+  for (const key in attrs) {
+    const value = attrs[key];
+    if (value === '') html += ` ${key}`;
+    else html += ` ${key}="${value}"`;
+  }
+  return html;
+}
+
+function serialize(props) {
+  return String(new URLSearchParams(props));
+}
+
+function removeFalsy(obj) {
+  return Object.fromEntries(
+    Object.entries(obj).filter(([, v]) => v != null && v !== false)
+  );
+}
+
+function namedNodeMapToObject(namedNodeMap) {
+  let obj = {};
+  for (let attr of namedNodeMap) {
+    obj[attr.name] = attr.value;
+  }
+  return obj;
+}
+
 const loadScriptCache = {};
 async function loadScript(src, globalName) {
   if (loadScriptCache[src]) return loadScriptCache[src];
@@ -411,37 +450,6 @@ class PublicPromise extends Promise {
     this.resolve = res;
     this.reject = rej;
   }
-}
-
-function createElement(tag, attrs = {}, ...children) {
-  const el = document.createElement(tag);
-  Object.keys(attrs).forEach(
-    (name) => attrs[name] != null && el.setAttribute(name, attrs[name])
-  );
-  el.append(...children);
-  return el;
-}
-
-const allow =
-  'accelerometer; fullscreen; autoplay; encrypted-media; gyroscope; picture-in-picture';
-
-function createEmbedIframe({ src, ...props }) {
-  return createElement('iframe', {
-    src,
-    width: '100%',
-    height: '100%',
-    allow,
-    frameborder: 0,
-    ...props,
-  });
-}
-
-function serialize(props) {
-  return String(new URLSearchParams(props));
-}
-
-function removeFalsy(obj) {
-  return Object.fromEntries(Object.entries(obj).filter(([, v]) => v));
 }
 
 if (globalThis.customElements && !globalThis.customElements.get('cloudflare-video')) {
