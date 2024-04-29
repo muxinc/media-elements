@@ -78,7 +78,7 @@ function serializeIframeUrl(attrs) {
 
   const params = {
     // ?controls=true is enabled by default in the iframe
-    controls: attrs.controls === '' ? null : '0',
+    controls: attrs.controls === '' ? null : 0,
     autoplay: attrs.autoplay,
     loop: attrs.loop,
     muted: attrs.muted,
@@ -91,7 +91,7 @@ function serializeIframeUrl(attrs) {
     'ad-url': attrs.adurl,
   };
 
-  return `${EMBED_BASE}/${srcId}?${serialize(removeFalsy(params))}`;
+  return `${EMBED_BASE}/${srcId}?${serialize(params)}`;
 }
 
 class CloudflareVideoElement extends (globalThis.HTMLElement ?? class {}) {
@@ -146,14 +146,23 @@ class CloudflareVideoElement extends (globalThis.HTMLElement ?? class {}) {
     } else {
       this.#isInit = true;
 
+      let serverRendered = this.shadowRoot;
+
       if (!this.shadowRoot) {
         this.attachShadow({ mode: 'open' });
         this.shadowRoot.innerHTML = getTemplateHTML(namedNodeMapToObject(this.attributes));
       }
 
-      let iframe = this.shadowRoot.querySelector('iframe');
-
+      const iframe = this.shadowRoot.querySelector('iframe');
       const Stream = await loadScript(API_URL, API_GLOBAL);
+
+      if (serverRendered) {
+        // The Cloudflare Player API has a bug where it doesn't work with a SSR iframe
+        // because it loads too quickly and the `iframeReady` post message is lost.
+        // To work around this, we need to reload the iframe.
+        iframe.src = `${iframe.src}`;
+      }
+
       this.api = Stream(iframe);
 
       this.api.addEventListener('loadedmetadata', () => {
@@ -394,13 +403,18 @@ function serializeAttributes(attrs) {
 }
 
 function serialize(props) {
-  return String(new URLSearchParams(props));
+  return String(new URLSearchParams(boolToBinary(props)));
 }
 
-function removeFalsy(obj) {
-  return Object.fromEntries(
-    Object.entries(obj).filter(([, v]) => v != null && v !== false)
-  );
+function boolToBinary(props) {
+  let p = {};
+  for (let key in props) {
+    let val = props[key];
+    if (val === true || val === '') p[key] = 1;
+    else if (val === false) p[key] = 0;
+    else if (val != null) p[key] = val;
+  }
+  return p;
 }
 
 function namedNodeMapToObject(namedNodeMap) {

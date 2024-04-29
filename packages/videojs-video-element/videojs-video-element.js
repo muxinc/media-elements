@@ -4,7 +4,7 @@ import { MediaTracksMixin } from 'media-tracks';
 
 const templateShadowDOM = globalThis.document?.createElement('template');
 if (templateShadowDOM) {
-  templateShadowDOM.innerHTML = /*html*/ `
+  templateShadowDOM.innerHTML = /*html*/`
   <style>
     :host {
       display: inline-block;

@@ -44,6 +44,9 @@ class WistiaVideoElement extends SuperVideoElement {
       return;
     }
 
+    // Add a small delay here so React doesn't complain about hydration mismatches.
+    await new Promise((resolve) => setTimeout(resolve, 50));
+
     const MATCH_SRC = /(?:wistia\.com|wi\.st)\/(?:medias|embed)\/(.*)$/i;
     const id = this.src.match(MATCH_SRC)[1];
     const options = {

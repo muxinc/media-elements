@@ -43,7 +43,7 @@ function serializeIframeUrl(attrs) {
 
   const params = {
     // ?controls=true is enabled by default in the iframe
-    controls: attrs.controls === '' ? null : '0',
+    controls: attrs.controls === '' ? null : 0,
     autoplay: attrs.autoplay,
     loop: attrs.loop,
     mute: attrs.muted,
@@ -57,7 +57,7 @@ function serializeIframeUrl(attrs) {
     modestbranding: 1,
   };
 
-  return `${EMBED_BASE}/${srcId}?${serialize(boolToBinary(params))}`;
+  return `${EMBED_BASE}/${srcId}?${serialize(params)}`;
 }
 
 class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
@@ -90,11 +90,6 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
       this.attachShadow({ mode: 'open' });
     }
 
-    let iframe = this.shadowRoot.querySelector('iframe');
-    let attrs = namedNodeMapToObject(this.attributes);
-
-    if (iframe?.src && iframe.src === serializeIframeUrl(attrs)) return;
-
     if (this.#hasLoaded) {
       this.loadComplete = new PublicPromise();
       this.isLoaded = false;
@@ -119,8 +114,13 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
 
     this.dispatchEvent(new Event('loadstart'));
 
-    this.shadowRoot.innerHTML = getTemplateHTML(attrs);
-    iframe = this.shadowRoot.querySelector('iframe');
+    let iframe = this.shadowRoot.querySelector('iframe');
+    let attrs = namedNodeMapToObject(this.attributes);
+
+    if (!iframe?.src || iframe.src !== serializeIframeUrl(attrs)) {
+      this.shadowRoot.innerHTML = getTemplateHTML(attrs);
+      iframe = this.shadowRoot.querySelector('iframe');
+    }
 
     const YT = await loadScript(API_URL, API_GLOBAL, API_GLOBAL_READY);
     this.api = new YT.Player(iframe, {
@@ -426,14 +426,15 @@ function serializeAttributes(attrs) {
 }
 
 function serialize(props) {
-  return String(new URLSearchParams(props));
+  return String(new URLSearchParams(boolToBinary(props)));
 }
 
 function boolToBinary(props) {
   let p = {};
   for (let key in props) {
     let val = props[key];
-    if (val === '') p[key] = 1;
+    if (val === true || val === '') p[key] = 1;
+    else if (val === false) p[key] = 0;
     else if (val != null) p[key] = val;
   }
   return p;

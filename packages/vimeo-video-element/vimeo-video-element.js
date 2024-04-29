@@ -42,7 +42,7 @@ function serializeIframeUrl(attrs) {
 
   const params = {
     // ?controls=true is enabled by default in the iframe
-    controls: attrs.controls === '' ? null : '0',
+    controls: attrs.controls === '' ? null : 0,
     autoplay: attrs.autoplay,
     loop: attrs.loop,
     muted: attrs.muted,
@@ -52,7 +52,7 @@ function serializeIframeUrl(attrs) {
     autopause: attrs.autopause,
   };
 
-  return `${EMBED_BASE}/${srcId}?${serialize(boolToBinary(params))}`;
+  return `${EMBED_BASE}/${srcId}?${serialize(params)}`;
 }
 
 class VimeoVideoElement extends (globalThis.HTMLElement ?? class {}) {
@@ -457,14 +457,15 @@ function serializeAttributes(attrs) {
 }
 
 function serialize(props) {
-  return String(new URLSearchParams(props));
+  return String(new URLSearchParams(boolToBinary(props)));
 }
 
 function boolToBinary(props) {
   let p = {};
   for (let key in props) {
     let val = props[key];
-    if (val === '') p[key] = 1;
+    if (val === true || val === '') p[key] = 1;
+    else if (val === false) p[key] = 0;
     else if (val != null) p[key] = val;
   }
   return p;

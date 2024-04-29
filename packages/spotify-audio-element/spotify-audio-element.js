@@ -331,8 +331,18 @@ function serializeAttributes(attrs) {
 }
 
 function serialize(props) {
-  Object.keys(props).forEach(key => props[key] == null && delete props[key]);
-  return String(new URLSearchParams(props));
+  return String(new URLSearchParams(boolToBinary(props)));
+}
+
+function boolToBinary(props) {
+  let p = {};
+  for (let key in props) {
+    let val = props[key];
+    if (val === true || val === '') p[key] = 1;
+    else if (val === false) p[key] = 0;
+    else if (val != null) p[key] = val;
+  }
+  return p;
 }
 
 function namedNodeMapToObject(namedNodeMap) {
