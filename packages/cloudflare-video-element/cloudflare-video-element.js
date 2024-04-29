@@ -66,7 +66,7 @@ function getTemplateHTML(attrs) {
         pointer-events: none;
       }
     </style>
-    <iframe ${serializeAttributes(iframeAttrs)}></iframe>
+    <iframe${serializeAttributes(iframeAttrs)}></iframe>
   `;
 }
 
@@ -188,12 +188,12 @@ class CloudflareVideoElement extends (globalThis.HTMLElement ?? class {}) {
   }
 
   async attributeChangedCallback(attrName, oldValue, newValue) {
+    if (oldValue === newValue) return;
+
     // This is required to come before the await for resolving loadComplete.
     switch (attrName) {
       case 'src': {
-        if (oldValue !== newValue) {
-          this.load();
-        }
+        this.load();
         return;
       }
     }
@@ -204,16 +204,12 @@ class CloudflareVideoElement extends (globalThis.HTMLElement ?? class {}) {
       case 'autoplay':
       case 'controls':
       case 'loop': {
-        if (this.api[attrName] !== this.hasAttribute(attrName)) {
-          this.api[attrName] = this.hasAttribute(attrName);
-        }
+        this.api[attrName] = this.hasAttribute(attrName);
         break;
       }
       case 'poster':
       case 'preload': {
-        if (this.api[attrName] !== this.getAttribute(attrName)) {
-          this.api[attrName] = this.getAttribute(attrName);
-        }
+        this.api[attrName] = this.getAttribute(attrName);
         break;
       }
     }

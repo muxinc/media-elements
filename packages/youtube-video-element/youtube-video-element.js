@@ -31,7 +31,7 @@ function getTemplateHTML(attrs) {
         left: 0;
       }
     </style>
-    <iframe ${serializeAttributes(iframeAttrs)}></iframe>
+    <iframe${serializeAttributes(iframeAttrs)}></iframe>
   `;
 }
 
@@ -48,7 +48,7 @@ function serializeIframeUrl(attrs) {
     mute: attrs.muted,
     playsinline: attrs.playsinline,
     preload: attrs.preload ?? 'metadata',
-    origin: globalThis.location?.origin,
+    // origin: globalThis.location?.origin,
     enablejsapi: 1,
     showinfo: 0,
     rel: 0,
@@ -78,13 +78,24 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
   #seeking = false;
   #seekComplete;
   isLoaded = false;
-
-  constructor() {
-    super();
-    this.loadComplete = new PublicPromise();
-  }
+  loadComplete = new PublicPromise();
+  #loadRequested;
 
   async load() {
+    if (this.#loadRequested) return;
+    // Wait 1 tick to allow other attributes to be set.
+    await (this.#loadRequested = Promise.resolve());
+    this.#loadRequested = null;
+
+    if (!this.shadowRoot) {
+      this.attachShadow({ mode: 'open' });
+    }
+
+    let iframe = this.shadowRoot.querySelector('iframe');
+    let attrs = namedNodeMapToObject(this.attributes);
+
+    if (iframe?.src && iframe.src === serializeIframeUrl(attrs)) return;
+
     if (this.hasLoaded) {
       this.loadComplete = new PublicPromise();
       this.isLoaded = false;
@@ -97,23 +108,16 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
     let oldApi = this.api;
     this.api = null;
 
-    // Wait 1 tick to allow other attributes to be set.
-    await Promise.resolve();
-
-    oldApi?.destroy();
-
     if (!this.src) {
+      // Removes the <iframe> containing the player.
+      oldApi?.destroy();
       return;
     }
 
     this.dispatchEvent(new Event('loadstart'));
 
-    if (!this.shadowRoot) {
-      this.attachShadow({ mode: 'open' });
-    }
-
-    this.shadowRoot.innerHTML = getTemplateHTML(namedNodeMapToObject(this.attributes));
-    let iframe = this.shadowRoot.querySelector('iframe');
+    this.shadowRoot.innerHTML = getTemplateHTML(attrs);
+    iframe = this.shadowRoot.querySelector('iframe');
 
     const YT = await loadScript(API_URL, API_GLOBAL, API_GLOBAL_READY);
     this.api = new YT.Player(iframe, {
@@ -224,25 +228,17 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
     }, 100);
   }
 
-  async attributeChangedCallback(attrName) {
+  async attributeChangedCallback(attrName, oldValue, newValue) {
+    if (oldValue === newValue) return;
+
     // This is required to come before the await for resolving loadComplete.
     switch (attrName) {
-      case 'src': {
-        this.load();
-        return;
-      }
-    }
-
-    await this.loadComplete;
-
-    switch (attrName) {
+      case 'src':
       case 'autoplay':
       case 'controls':
-      case 'loop': {
-        if (this[attrName] !== this.hasAttribute(attrName)) {
-          this.load();
-        }
-        break;
+      case 'loop':
+      case 'playsinline': {
+        this.load();
       }
     }
   }
