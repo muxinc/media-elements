@@ -109,30 +109,27 @@ class CloudflareVideoElement extends (globalThis.HTMLElement ?? class {}) {
     'src',
   ];
 
+  loadComplete = new PublicPromise();
+  #loadRequested;
   #hasLoaded;
-  #noInit;
+  #isInit;
   #readyState = 0;
 
-  constructor() {
-    super();
-    this.loadComplete = new PublicPromise();
-  }
-
   async load() {
-    if (this.#hasLoaded) {
-      this.loadComplete = new PublicPromise();
-      this.#noInit = true;
-    }
+    if (this.#loadRequested) return;
+
+    if (this.#hasLoaded) this.loadComplete = new PublicPromise();
     this.#hasLoaded = true;
+
+    // Wait 1 tick to allow other attributes to be set.
+    await (this.#loadRequested = Promise.resolve());
+    this.#loadRequested = null;
 
     this.#readyState = 0;
     this.dispatchEvent(new Event('emptied'));
 
     let oldApi = this.api;
     this.api = null;
-
-    // Wait 1 tick to allow other attributes to be set.
-    await Promise.resolve();
 
     if (!this.src) {
       return;
@@ -141,12 +138,13 @@ class CloudflareVideoElement extends (globalThis.HTMLElement ?? class {}) {
     const matches = this.src.match(MATCH_SRC);
     const srcId = matches && matches[1];
 
-    if (this.#noInit) {
+    if (this.#isInit) {
 
       this.api = oldApi;
       this.api.src = srcId;
 
     } else {
+      this.#isInit = true;
 
       if (!this.shadowRoot) {
         this.attachShadow({ mode: 'open' });
@@ -179,7 +177,7 @@ class CloudflareVideoElement extends (globalThis.HTMLElement ?? class {}) {
       }
     }
 
-    this.api.addEventListener('loadstart', () => {
+    Promise.resolve().then(() => {
       this.dispatchEvent(new Event('loadcomplete'));
       this.loadComplete.resolve();
     });

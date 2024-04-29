@@ -4,29 +4,60 @@ import VimeoPlayerAPI from '@vimeo/player/dist/player.es.js';
 const EMBED_BASE = 'https://player.vimeo.com/video';
 const MATCH_SRC = /vimeo\.com\/(?:video\/)?(\d+)/;
 
-const templateShadowDOM = globalThis.document?.createElement('template');
-if (templateShadowDOM) {
-  templateShadowDOM.innerHTML = /*html*/`
-  <style>
-    :host {
-      display: inline-block;
-      min-width: 300px;
-      min-height: 150px;
-      position: relative;
-    }
-    iframe {
-      position: absolute;
-      top: 0;
-      left: 0;
-    }
-    :host(:not([controls])) {
-      pointer-events: none;
-    }
-  </style>
+function getTemplateHTML(attrs) {
+  const iframeAttrs = {
+    src: serializeIframeUrl(attrs),
+    frameborder: 0,
+    width: '100%',
+    height: '100%',
+    allow: 'accelerometer; fullscreen; autoplay; encrypted-media; gyroscope; picture-in-picture',
+  };
+
+  return /*html*/`
+    <style>
+      :host {
+        display: inline-block;
+        min-width: 300px;
+        min-height: 150px;
+        position: relative;
+      }
+      iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+      :host(:not([controls])) {
+        pointer-events: none;
+      }
+    </style>
+    <iframe${serializeAttributes(iframeAttrs)}></iframe>
   `;
 }
 
+function serializeIframeUrl(attrs) {
+  if (!attrs.src) return;
+
+  const matches = attrs.src.match(MATCH_SRC);
+  const srcId = matches && matches[1];
+
+  const params = {
+    // ?controls=true is enabled by default in the iframe
+    controls: attrs.controls === '' ? null : '0',
+    autoplay: attrs.autoplay,
+    loop: attrs.loop,
+    muted: attrs.muted,
+    playsinline: attrs.playsinline,
+    preload: attrs.preload ?? 'metadata',
+    transparent: false,
+    autopause: attrs.autopause,
+  };
+
+  return `${EMBED_BASE}/${srcId}?${serialize(boolToBinary(params))}`;
+}
+
 class VimeoVideoElement extends (globalThis.HTMLElement ?? class {}) {
+  static getTemplateHTML = getTemplateHTML;
+  static shadowRootOptions = { mode: 'open' };
   static observedAttributes = [
     'autoplay',
     'controls',
@@ -39,9 +70,10 @@ class VimeoVideoElement extends (globalThis.HTMLElement ?? class {}) {
     'src',
   ];
 
+  loadComplete = new PublicPromise();
+  #loadRequested;
   #hasLoaded;
-  #noInit;
-  #options;
+  #isInit;
   #currentTime = 0;
   #duration = NaN;
   #muted = false;
@@ -54,21 +86,15 @@ class VimeoVideoElement extends (globalThis.HTMLElement ?? class {}) {
   #videoWidth = NaN;
   #videoHeight = NaN;
 
-  constructor() {
-    super();
-
-    this.attachShadow({ mode: 'open' });
-    this.shadowRoot.append(templateShadowDOM.content.cloneNode(true));
-
-    this.loadComplete = new PublicPromise();
-  }
-
   async load() {
-    if (this.#hasLoaded) {
-      this.loadComplete = new PublicPromise();
-      this.#noInit = true;
-    }
+    if (this.#loadRequested) return;
+
+    if (this.#hasLoaded) this.loadComplete = new PublicPromise();
     this.#hasLoaded = true;
+
+    // Wait 1 tick to allow other attributes to be set.
+    await (this.#loadRequested = Promise.resolve());
+    this.#loadRequested = null;
 
     this.#currentTime = 0;
     this.#duration = NaN;
@@ -87,16 +113,13 @@ class VimeoVideoElement extends (globalThis.HTMLElement ?? class {}) {
     let oldApi = this.api;
     this.api = null;
 
-    // Wait 1 tick to allow other attributes to be set.
-    await Promise.resolve();
-
     if (!this.src) {
       return;
     }
 
     this.dispatchEvent(new Event('loadstart'));
 
-    this.#options = {
+    const options = {
       autoplay: this.autoplay,
       controls: this.controls,
       loop: this.loop,
@@ -124,10 +147,10 @@ class VimeoVideoElement extends (globalThis.HTMLElement ?? class {}) {
       this.loadComplete.resolve();
     };
 
-    if (this.#noInit) {
+    if (this.#isInit) {
       this.api = oldApi;
       await this.api.loadVideo({
-        ...this.#options,
+        ...options,
         url: this.src,
       });
       await onLoaded();
@@ -135,16 +158,14 @@ class VimeoVideoElement extends (globalThis.HTMLElement ?? class {}) {
       return;
     }
 
-    const matches = this.src.match(MATCH_SRC);
-    const metaId = matches && matches[1];
-    const src = `${EMBED_BASE}/${metaId}?${serialize(
-      boolToBinary(this.#options)
-    )}`;
-    let iframe = this.shadowRoot.querySelector('iframe');
-    if (!iframe) {
-      iframe = createEmbedIframe({ src });
-      this.shadowRoot.append(iframe);
+    this.#isInit = true;
+
+    if (!this.shadowRoot) {
+      this.attachShadow({ mode: 'open' });
+      this.shadowRoot.innerHTML = getTemplateHTML(namedNodeMapToObject(this.attributes));
     }
+
+    let iframe = this.shadowRoot.querySelector('iframe');
 
     this.api = new VimeoPlayerAPI(iframe);
     const onceLoaded = () => {
@@ -233,12 +254,14 @@ class VimeoVideoElement extends (globalThis.HTMLElement ?? class {}) {
   }
 
   async attributeChangedCallback(attrName, oldValue, newValue) {
+    if (oldValue === newValue) return;
+
     // This is required to come before the await for resolving loadComplete.
     switch (attrName) {
+      case 'autoplay':
+      case 'controls':
       case 'src': {
-        if (oldValue !== newValue) {
-          this.load();
-        }
+        this.load();
         return;
       }
     }
@@ -246,13 +269,6 @@ class VimeoVideoElement extends (globalThis.HTMLElement ?? class {}) {
     await this.loadComplete;
 
     switch (attrName) {
-      case 'autoplay':
-      case 'controls': {
-        if (this.#options[attrName] !== this.hasAttribute(attrName)) {
-          this.load();
-        }
-        break;
-      }
       case 'loop': {
         this.api.setLoop(this.loop);
         break;
@@ -430,6 +446,38 @@ class VimeoVideoElement extends (globalThis.HTMLElement ?? class {}) {
   }
 }
 
+function serializeAttributes(attrs) {
+  let html = '';
+  for (const key in attrs) {
+    const value = attrs[key];
+    if (value === '') html += ` ${key}`;
+    else html += ` ${key}="${value}"`;
+  }
+  return html;
+}
+
+function serialize(props) {
+  return String(new URLSearchParams(props));
+}
+
+function boolToBinary(props) {
+  let p = {};
+  for (let key in props) {
+    let val = props[key];
+    if (val === '') p[key] = 1;
+    else if (val != null) p[key] = val;
+  }
+  return p;
+}
+
+function namedNodeMapToObject(namedNodeMap) {
+  let obj = {};
+  for (let attr of namedNodeMap) {
+    obj[attr.name] = attr.value;
+  }
+  return obj;
+}
+
 /**
  * A utility to create Promises with convenient public resolve and reject methods.
  * @return {Promise}
@@ -445,48 +493,6 @@ class PublicPromise extends Promise {
     this.resolve = res;
     this.reject = rej;
   }
-}
-
-function createElement(tag, attrs = {}, ...children) {
-  const el = document.createElement(tag);
-  Object.keys(attrs).forEach(
-    (name) => attrs[name] != null && el.setAttribute(name, attrs[name])
-  );
-  el.append(...children);
-  return el;
-}
-
-const allow =
-  'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture';
-
-function createEmbedIframe({ src, ...props }) {
-  return createElement('iframe', {
-    src,
-    width: '100%',
-    height: '100%',
-    allow,
-    allowfullscreen: '',
-    frameborder: 0,
-    ...props,
-  });
-}
-
-function serialize(props) {
-  return Object.keys(props)
-    .map((key) => {
-      if (props[key] == null) return '';
-      return `${key}=${encodeURIComponent(props[key])}`;
-    })
-    .join('&');
-}
-
-function boolToBinary(props) {
-  let p = { ...props };
-  for (let key in p) {
-    if (p[key] === false) p[key] = 0;
-    else if (p[key] === true) p[key] = 1;
-  }
-  return p;
 }
 
 /**

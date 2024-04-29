@@ -42,8 +42,9 @@ function serializeIframeUrl(attrs) {
   const srcId = matches && matches[1];
 
   const params = {
+    // ?controls=true is enabled by default in the iframe
+    controls: attrs.controls === '' ? null : '0',
     autoplay: attrs.autoplay,
-    controls: attrs.controls,
     loop: attrs.loop,
     mute: attrs.muted,
     playsinline: attrs.playsinline,
@@ -74,18 +75,16 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
     'src',
   ];
 
+  loadComplete = new PublicPromise();
+  #loadRequested;
+  #hasLoaded;
   #readyState = 0;
   #seeking = false;
   #seekComplete;
   isLoaded = false;
-  loadComplete = new PublicPromise();
-  #loadRequested;
 
   async load() {
     if (this.#loadRequested) return;
-    // Wait 1 tick to allow other attributes to be set.
-    await (this.#loadRequested = Promise.resolve());
-    this.#loadRequested = null;
 
     if (!this.shadowRoot) {
       this.attachShadow({ mode: 'open' });
@@ -96,11 +95,15 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
 
     if (iframe?.src && iframe.src === serializeIframeUrl(attrs)) return;
 
-    if (this.hasLoaded) {
+    if (this.#hasLoaded) {
       this.loadComplete = new PublicPromise();
       this.isLoaded = false;
     }
-    this.hasLoaded = true;
+    this.#hasLoaded = true;
+
+    // Wait 1 tick to allow other attributes to be set.
+    await (this.#loadRequested = Promise.resolve());
+    this.#loadRequested = null;
 
     this.#readyState = 0;
     this.dispatchEvent(new Event('emptied'));
