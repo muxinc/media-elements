@@ -7,27 +7,61 @@ const API_GLOBAL_READY = 'onYouTubeIframeAPIReady';
 const MATCH_SRC =
   /(?:youtu\.be\/|youtube\.com\/(?:shorts\/|embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})/;
 
-const templateShadowDOM = globalThis.document?.createElement('template');
-if (templateShadowDOM) {
-  templateShadowDOM.innerHTML = /*html*/`
-  <style>
-    :host {
-      display: inline-block;
-      line-height: 0;
-      position: relative;
-      min-width: 300px;
-      min-height: 150px;
-    }
-    iframe {
-      position: absolute;
-      top: 0;
-      left: 0;
-    }
-  </style>
+function getTemplateHTML(attrs) {
+  const iframeAttrs = {
+    src: serializeIframeUrl(attrs),
+    frameborder: 0,
+    width: '100%',
+    height: '100%',
+    allow: 'accelerometer; fullscreen; autoplay; encrypted-media; gyroscope; picture-in-picture',
+  };
+
+  return /*html*/`
+    <style>
+      :host {
+        display: inline-block;
+        line-height: 0;
+        position: relative;
+        min-width: 300px;
+        min-height: 150px;
+      }
+      iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+    </style>
+    <iframe ${serializeAttributes(iframeAttrs)}></iframe>
   `;
 }
 
+function serializeIframeUrl(attrs) {
+  if (!attrs.src) return;
+
+  const matches = attrs.src.match(MATCH_SRC);
+  const srcId = matches && matches[1];
+
+  const params = {
+    autoplay: attrs.autoplay,
+    controls: attrs.controls,
+    loop: attrs.loop,
+    mute: attrs.muted,
+    playsinline: attrs.playsinline,
+    preload: attrs.preload ?? 'metadata',
+    origin: globalThis.location?.origin,
+    enablejsapi: 1,
+    showinfo: 0,
+    rel: 0,
+    iv_load_policy: 3,
+    modestbranding: 1,
+  };
+
+  return `${EMBED_BASE}/${srcId}?${serialize(boolToBinary(params))}`;
+}
+
 class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
+  static getTemplateHTML = getTemplateHTML;
+  static shadowRootOptions = { mode: 'open' };
   static observedAttributes = [
     'autoplay',
     'controls',
@@ -40,7 +74,6 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
     'src',
   ];
 
-  #options;
   #readyState = 0;
   #seeking = false;
   #seekComplete;
@@ -48,10 +81,6 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
 
   constructor() {
     super();
-
-    this.attachShadow({ mode: 'open' });
-    this.shadowRoot.append(templateShadowDOM.content.cloneNode(true));
-
     this.loadComplete = new PublicPromise();
   }
 
@@ -79,31 +108,12 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
 
     this.dispatchEvent(new Event('loadstart'));
 
-    this.#options = {
-      autoplay: this.autoplay,
-      controls: this.controls,
-      loop: this.loop,
-      mute: this.defaultMuted,
-      playsinline: this.playsInline,
-      preload: this.preload ?? 'metadata',
-      origin: location.origin,
-      enablejsapi: 1,
-      showinfo: 0,
-      rel: 0,
-      iv_load_policy: 3,
-      modestbranding: 1,
-    };
-
-    const matches = this.src.match(MATCH_SRC);
-    const metaId = matches && matches[1];
-    const src = `${EMBED_BASE}/${metaId}?${serialize(
-      boolToBinary(this.#options)
-    )}`;
-    let iframe = this.shadowRoot.querySelector('iframe');
-    if (!iframe) {
-      iframe = createEmbedIframe({ src });
-      this.shadowRoot.append(iframe);
+    if (!this.shadowRoot) {
+      this.attachShadow({ mode: 'open' });
     }
+
+    this.shadowRoot.innerHTML = getTemplateHTML(namedNodeMapToObject(this.attributes));
+    let iframe = this.shadowRoot.querySelector('iframe');
 
     const YT = await loadScript(API_URL, API_GLOBAL, API_GLOBAL_READY);
     this.api = new YT.Player(iframe, {
@@ -228,9 +238,8 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
     switch (attrName) {
       case 'autoplay':
       case 'controls':
-      case 'loop':
-      case 'playsinline': {
-        if (this.#options[attrName] !== this.hasAttribute(attrName)) {
+      case 'loop': {
+        if (this[attrName] !== this.hasAttribute(attrName)) {
           this.load();
         }
         break;
@@ -295,8 +304,7 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
 
   set autoplay(val) {
     if (this.autoplay == val) return;
-    if (val) this.setAttribute('autoplay', '');
-    else this.removeAttribute('autoplay');
+    this.toggleAttribute('autoplay', Boolean(val));
   }
 
   get buffered() {
@@ -315,8 +323,7 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
 
   set controls(val) {
     if (this.controls == val) return;
-    if (val) this.setAttribute('controls', '');
-    else this.removeAttribute('controls');
+    this.toggleAttribute('controls', Boolean(val));
   }
 
   get currentTime() {
@@ -339,8 +346,7 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
 
   set defaultMuted(val) {
     if (this.defaultMuted == val) return;
-    if (val) this.setAttribute('muted', '');
-    else this.removeAttribute('muted');
+    this.toggleAttribute('muted', Boolean(val));
   }
 
   get defaultMuted() {
@@ -353,8 +359,7 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
 
   set loop(val) {
     if (this.loop == val) return;
-    if (val) this.setAttribute('loop', '');
-    else this.removeAttribute('loop');
+    this.toggleAttribute('loop', Boolean(val));
   }
 
   set muted(val) {
@@ -386,8 +391,7 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
 
   set playsInline(val) {
     if (this.playsInline == val) return;
-    if (val) this.setAttribute('playsinline', '');
-    else this.removeAttribute('playsinline');
+    this.toggleAttribute('playsinline', Boolean(val));
   }
 
   get poster() {
@@ -410,6 +414,38 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
     if (!this.isLoaded) return 1;
     return this.api?.getVolume() / 100;
   }
+}
+
+function serializeAttributes(attrs) {
+  let html = '';
+  for (const key in attrs) {
+    const value = attrs[key];
+    if (value === '') html += ` ${key}`;
+    else html += ` ${key}="${value}"`;
+  }
+  return html;
+}
+
+function serialize(props) {
+  return String(new URLSearchParams(props));
+}
+
+function boolToBinary(props) {
+  let p = {};
+  for (let key in props) {
+    let val = props[key];
+    if (val === '') p[key] = 1;
+    else if (val != null) p[key] = val;
+  }
+  return p;
+}
+
+function namedNodeMapToObject(namedNodeMap) {
+  let obj = {};
+  for (let attr of namedNodeMap) {
+    obj[attr.name] = attr.value;
+  }
+  return obj;
 }
 
 const loadScriptCache = {};
@@ -470,47 +506,6 @@ class PublicPromise extends Promise {
     this.resolve = res;
     this.reject = rej;
   }
-}
-
-function createElement(tag, attrs = {}, ...children) {
-  const el = document.createElement(tag);
-  Object.keys(attrs).forEach(
-    (name) => attrs[name] != null && el.setAttribute(name, attrs[name])
-  );
-  el.append(...children);
-  return el;
-}
-
-const allow =
-  'accelerometer; autoplay; fullscreen; encrypted-media; gyroscope; picture-in-picture';
-
-function createEmbedIframe({ src, ...props }) {
-  return createElement('iframe', {
-    src,
-    width: '100%',
-    height: '100%',
-    allow,
-    frameborder: 0,
-    ...props,
-  });
-}
-
-function serialize(props) {
-  return Object.keys(props)
-    .map((key) => {
-      if (props[key] == null) return '';
-      return `${key}=${encodeURIComponent(props[key])}`;
-    })
-    .join('&');
-}
-
-function boolToBinary(props) {
-  let p = { ...props };
-  for (let key in p) {
-    if (p[key] === false) p[key] = 0;
-    else if (p[key] === true) p[key] = 1;
-  }
-  return p;
 }
 
 /**
