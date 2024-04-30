@@ -1,0 +1,71 @@
+{
+  "name": "media-tracks",
+  "version": "0.3.0",
+  "description": "Polyfill audio and video tracks with renditions.",
+  "author": "@muxinc",
+  "license": "MIT",
+  "homepage": "https://github.com/muxinc/media-tracks#readme",
+  "bugs": {
+    "url": "https://github.com/muxinc/media-tracks/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/muxinc/media-elements.git",
+    "directory": "packages/media-tracks"
+  },
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js",
+    "./polyfill": "./dist/polyfill.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "lint": "npx eslint src/*.ts",
+    "pretest": "npm run build -- --sourcemap=inline",
+    "test": "npm run test:types && wet test --coverage",
+    "test:types": "tsc test/test.js --module nodenext --moduleResolution nodenext --target esnext --noEmit --allowJs",
+    "dev": "tsc -w & esbuild src/*.ts --format=esm --outdir=dist --servedir=. --watch=forever",
+    "build": "rm -rf dist && esbuild src/*.ts --format=esm --outdir=dist",
+    "postbuild": "tsc"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^7.8.0",
+    "@typescript-eslint/parser": "^7.8.0",
+    "esbuild": "^0.20.2",
+    "eslint": "^8.55.0",
+    "typescript": "5.4.5",
+    "wet-run": "^1.2.2"
+  },
+  "eslintConfig": {
+    "root": true,
+    "extends": [
+      "eslint:recommended",
+      "plugin:@typescript-eslint/recommended"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+      "@typescript-eslint"
+    ],
+    "globals": {
+      "globalThis": "writable"
+    },
+    "env": {
+      "browser": true,
+      "es6": true,
+      "node": true,
+      "mocha": true
+    },
+    "parserOptions": {
+      "ecmaVersion": 2022,
+      "sourceType": "module"
+    },
+    "rules": {
+      "@typescript-eslint/ban-ts-comment": 0,
+      "@typescript-eslint/no-explicit-any": 0
+    }
+  }
+}
