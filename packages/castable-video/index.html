@@ -1,0 +1,123 @@
+<html>
+  <head>
+    <title>Castable Video</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+    <style>
+      body {
+        min-height: 80%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+      }
+      castable-video,
+      video {
+        width: 100%;
+        aspect-ratio: 16 / 9;
+      }
+      .controls {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      button {
+        padding: 7px 14px;
+      }
+    </style>
+
+    <script defer src="https://cdn.jsdelivr.net/npm/es-module-shims"></script>
+    <script type="importmap">
+      {
+        "imports": {
+          "custom-media-element": "https://cdn.jsdelivr.net/npm/custom-media-element@1.0/+esm"
+        }
+      }
+    </script>
+    <script type="module" src="./castable-video.js"></script>
+  </head>
+  <body>
+    <h1>Castable Video</h1>
+    <br />
+
+    <castable-video
+      id="castable"
+      poster="https://image.mux.com/O6LdRc0112FEJXH00bGsN9Q31yu5EIVHTgjTKRkKtEq1k/thumbnail.jpg?time=56"
+      src="https://stream.mux.com/O6LdRc0112FEJXH00bGsN9Q31yu5EIVHTgjTKRkKtEq1k/high.mp4"
+      crossorigin
+    >
+      <!-- Uses progressive enhancement for best performance -->
+      <video
+        poster="https://image.mux.com/O6LdRc0112FEJXH00bGsN9Q31yu5EIVHTgjTKRkKtEq1k/thumbnail.jpg?time=56"
+        src="https://stream.mux.com/O6LdRc0112FEJXH00bGsN9Q31yu5EIVHTgjTKRkKtEq1k/high.mp4"
+        crossorigin
+      ></video>
+      <track
+        default
+        label="English"
+        kind="captions"
+        srclang="en"
+        src="https://castable-video.vercel.app/en-cc.vtt"
+      />
+    </castable-video>
+
+    <br />
+
+    <div class="controls">
+      <button onclick="castable.play()">Play</button>
+      <button onclick="castable.pause()">Pause</button>
+      <button onclick="castable.currentTime += 10">+10s</button>
+      <button onclick="castable.currentTime -= 10">-10s</button>
+      <button onclick="castable.muted = true">Mute</button>
+      <button onclick="castable.muted = false">Unmute</button>
+      <button id="castBtn" hidden onclick="castable.remote.prompt()">Cast...</button>
+    </div>
+
+    <script type="module">
+
+      castable.addEventListener('timeupdate', () => {
+        console.log(`> Current time: ${castable.currentTime}`);
+      });
+
+      if (castable.remote.state === 'disconnected') {
+        castable.remote.watchAvailability((available) => {
+          castBtn.hidden = !available;
+          castBtn2.hidden = !available;
+        })
+        .then((id) => {
+          console.log(`> Started watching remote device availability: ${id}`);
+        });
+      }
+
+      castable.remote.addEventListener('connect', function (event) {
+        console.log('remote', `event: ${event.type}`, '|', `state: ${castable.remote.state}`);
+      });
+
+      castable.remote.addEventListener('connecting', function (event) {
+        console.log('remote', `event: ${event.type}`, '|', `state: ${castable.remote.state}`);
+      });
+
+      castable.remote.addEventListener('disconnect', function (event) {
+        console.log('remote', `event: ${event.type}`, '|', `state: ${castable.remote.state}`);
+      });
+    </script>
+
+    <castable-video
+      id="castable2"
+      src="https://stream.mux.com/A3VXy02VoUinw01pwyomEO3bHnG4P32xzV7u1j1FSzjNg/high.mp4"
+      crossorigin
+    ></castable-video>
+
+    <br />
+
+    <div class="controls">
+      <button onclick="castable2.play()">Play</button>
+      <button onclick="castable2.pause()">Pause</button>
+      <button onclick="castable2.currentTime += 10">+10s</button>
+      <button onclick="castable2.currentTime -= 10">-10s</button>
+      <button onclick="castable2.muted = true">Mute</button>
+      <button onclick="castable2.muted = false">Unmute</button>
+      <button id="castBtn2" hidden onclick="castable2.remote.prompt()">Cast...</button>
+    </div>
+  </body>
+</html>

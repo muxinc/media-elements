@@ -1,0 +1,45 @@
+{
+  "name": "castable-video",
+  "version": "1.0.6",
+  "description": "Cast your video element to the big screen with ease!",
+  "author": "@muxinc",
+  "license": "MIT",
+  "homepage": "https://github.com/muxinc/media-elements#readme",
+  "bugs": {
+    "url": "https://github.com/muxinc/media-elements/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/muxinc/media-elements.git",
+    "directory": "packages/castable-video"
+  },
+  "type": "module",
+  "main": "castable-video.js",
+  "files": [
+    "castable-mixin.d.ts",
+    "castable-mixin.js",
+    "castable-remote-playback.js",
+    "castable-utils.js"
+  ],
+  "scripts": {
+    "lint": "eslint *.js",
+    "serve": "wet serve"
+  },
+  "dependencies": {
+    "custom-media-element": "~1.2.3"
+  },
+  "devDependencies": {
+    "wet-run": "^1.2.2"
+  },
+  "keywords": [
+    "chromecast",
+    "cast",
+    "webcomponent",
+    "html5",
+    "video",
+    "audio",
+    "media",
+    "player",
+    "controls"
+  ]
+}
