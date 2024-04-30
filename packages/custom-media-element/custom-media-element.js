@@ -213,15 +213,6 @@ export const CustomMediaMixin = (superclass, { tag, is }) => {
     constructor() {
       super();
 
-      if (!this.shadowRoot) {
-        this.attachShadow({ mode: 'open' });
-
-        const attrs = namedNodeMapToObject(this.attributes);
-        if (is) attrs.is = is;
-        if (tag) attrs.part = tag;
-        this.shadowRoot.innerHTML = this.constructor.getTemplateHTML(attrs);
-      }
-
       // If the custom element is defined before the custom element's HTML is parsed
       // no attributes will be available in the constructor (construction process).
       // Wait until initializing in the attributeChangedCallback or
@@ -270,6 +261,15 @@ export const CustomMediaMixin = (superclass, { tag, is }) => {
     }
 
     init() {
+      if (!this.shadowRoot) {
+        this.attachShadow({ mode: 'open' });
+
+        const attrs = namedNodeMapToObject(this.attributes);
+        if (is) attrs.is = is;
+        if (tag) attrs.part = tag;
+        this.shadowRoot.innerHTML = this.constructor.getTemplateHTML(attrs);
+      }
+
       // Neither Chrome or Firefox support setting the muted attribute
       // after using document.createElement.
       // Get around this by setting the muted property manually.
