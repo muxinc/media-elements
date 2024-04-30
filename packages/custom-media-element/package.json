@@ -20,7 +20,7 @@
   "main": "custom-media-element.js",
   "types": "custom-media-element.d.ts",
   "scripts": {
-    "lint": "eslint *.js",
+    "lint": "npx eslint@8 *.js",
     "pretest": "esbuild custom-media-element.js --target=es2019 --bundle --outdir=dist --global-name=CustomMediaElement",
     "test": "wet test test/eager-upgrade.html test/lazy-upgrade.html --coverage",
     "serve": "wet serve --redirect :examples/ --cors"

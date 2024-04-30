@@ -25,7 +25,7 @@
     "./react": "./dist/react.js"
   },
   "scripts": {
-    "lint": "eslint *.js",
+    "lint": "npx eslint@8 *.js",
     "test": "wet test --coverage",
     "serve": "wet serve --cors --livereload",
     "build:react": "build-react",

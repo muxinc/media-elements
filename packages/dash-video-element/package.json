@@ -21,7 +21,7 @@
     "./react": "./dist/react.js"
   },
   "scripts": {
-    "lint": "eslint *.js",
+    "lint": "npx eslint@8 *.js",
     "test": "wet run",
     "serve": "wet serve",
     "build:react": "build-react",

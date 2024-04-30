@@ -20,7 +20,7 @@
     "super-media-element.d.ts"
   ],
   "scripts": {
-    "lint": "eslint *.js",
+    "lint": "npx eslint@8 *.js",
     "pretest": "esbuild test/test.js --bundle --format=iife --outdir=dist",
     "test": "wet run test/lazy.html test/eager.html",
     "serve": "wet serve --cors --redirect :example/"
