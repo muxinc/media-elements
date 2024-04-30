@@ -25,7 +25,7 @@ reflectPreference();
 globalThis.onload = () => {
   reflectPreference();
 
-  document.querySelector('#theme-toggle')?.addEventListener('click', (e) => {
+  document.querySelector('#theme-toggle')?.addEventListener('click', () => {
     theme.value = theme.value === 'light' ? 'dark' : 'light';
     setPreference();
   });

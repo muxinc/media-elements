@@ -1,6 +1,7 @@
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import * as fs from 'node:fs/promises';
+import type React from 'react';
 
 import type { Metadata } from 'next';
 import { DM_Sans, JetBrains_Mono } from 'next/font/google';
