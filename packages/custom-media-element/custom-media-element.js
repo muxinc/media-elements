@@ -42,10 +42,8 @@ export const Events = [
   'webkitpresentationmodechanged',
 ];
 
-export const audioTemplate = globalThis.document?.createElement('template');
-
-if (audioTemplate) {
-  audioTemplate.innerHTML = /*html*/`
+function getAudioTemplateHTML(attrs) {
+  return /*html*/`
     <style>
       :host {
         display: inline-flex;
@@ -58,7 +56,9 @@ if (audioTemplate) {
         width: 100%;
       }
     </style>
-    <slot name="media"></slot>
+    <slot name="media">
+      <audio${serializeAttributes(attrs)}></audio>
+    </slot>
     <slot></slot>
   `;
 }
@@ -66,10 +66,8 @@ if (audioTemplate) {
 // If the `media` slot is used leave the styling up to the user.
 // It's a more consistent behavior pre and post custom element upgrade.
 
-export const videoTemplate = globalThis.document?.createElement('template');
-
-if (videoTemplate) {
-  videoTemplate.innerHTML = /*html*/`
+function getVideoTemplateHTML(attrs) {
+  return /*html*/`
     <style>
       :host {
         display: inline-block;
@@ -90,7 +88,9 @@ if (videoTemplate) {
         transition: var(--media-webkit-text-track-transition);
       }
     </style>
-    <slot name="media"></slot>
+    <slot name="media">
+      <video${serializeAttributes(attrs)}></video>
+    </slot>
     <slot></slot>
   `;
 }
@@ -101,12 +101,13 @@ if (videoTemplate) {
 export const CustomMediaMixin = (superclass, { tag, is }) => {
 
   // `is` makes it possible to extend a custom built-in. e.g. castable-video
-  const nativeElTest = globalThis.document?.createElement(tag, { is });
+  const nativeElTest = globalThis.document?.createElement?.(tag, { is });
   const nativeElProps = nativeElTest ? getNativeElProps(nativeElTest) : [];
 
   return class CustomMedia extends superclass {
+    static getTemplateHTML = tag.endsWith('audio') ? getAudioTemplateHTML : getVideoTemplateHTML;
+    static shadowRootOptions = { mode: 'open' };
     static Events = Events;
-    static template = tag.endsWith('audio') ? audioTemplate : videoTemplate;
     static #isDefined;
 
     static get observedAttributes() {
@@ -214,7 +215,11 @@ export const CustomMediaMixin = (superclass, { tag, is }) => {
 
       if (!this.shadowRoot) {
         this.attachShadow({ mode: 'open' });
-        this.shadowRoot.append(this.constructor.template.content.cloneNode(true));
+
+        const attrs = namedNodeMapToObject(this.attributes);
+        if (is) attrs.is = is;
+        if (tag) attrs.part = tag;
+        this.shadowRoot.innerHTML = this.constructor.getTemplateHTML(attrs);
       }
 
       // If the custom element is defined before the custom element's HTML is parsed
@@ -265,14 +270,6 @@ export const CustomMediaMixin = (superclass, { tag, is }) => {
     }
 
     init() {
-      // If there is no nativeEl by now, create it.
-      if (!this.nativeEl) {
-        const nativeEl = document.createElement(tag, { is });
-        nativeEl.part = tag;
-        const mediaSlot = this.shadowRoot.querySelector('slot[name="media"]');
-        mediaSlot.append(nativeEl);
-      }
-
       // Neither Chrome or Firefox support setting the muted attribute
       // after using document.createElement.
       // Get around this by setting the muted property manually.
@@ -413,6 +410,24 @@ function getNativeElProps(nativeElTest) {
   return nativeElProps;
 }
 
-export const CustomVideoElement = globalThis.document ? CustomMediaMixin(HTMLElement, { tag: 'video' }) : class {};
+function serializeAttributes(attrs) {
+  let html = '';
+  for (const key in attrs) {
+    const value = attrs[key];
+    if (value === '') html += ` ${key}`;
+    else html += ` ${key}="${value}"`;
+  }
+  return html;
+}
 
-export const CustomAudioElement = globalThis.document ? CustomMediaMixin(HTMLElement, { tag: 'audio' }) : class {};
+function namedNodeMapToObject(namedNodeMap) {
+  let obj = {};
+  for (let attr of namedNodeMap) {
+    obj[attr.name] = attr.value;
+  }
+  return obj;
+}
+
+export const CustomVideoElement = CustomMediaMixin(globalThis.HTMLElement ?? class {}, { tag: 'video' });
+
+export const CustomAudioElement = CustomMediaMixin(globalThis.HTMLElement ?? class {}, { tag: 'audio' });

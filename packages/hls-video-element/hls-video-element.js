@@ -5,6 +5,12 @@ import Hls from 'hls.js/dist/hls.mjs';
 const HlsVideoMixin = (superclass) => {
 
   return class HlsVideo extends superclass {
+    static shadowRootOptions = { ...superclass.shadowRootOptions };
+
+    static getTemplateHTML = (attrs) => {
+      const { src, ...rest } = attrs; // eslint-disable-line no-unused-vars
+      return superclass.getTemplateHTML(rest);
+    };
 
     attributeChangedCallback(attrName, oldValue, newValue) {
       if (attrName !== 'src') {

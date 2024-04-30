@@ -21,7 +21,7 @@
   ],
   "scripts": {
     "lint": "turbo lint",
-    "test": "turbo test --concurrency=3",
+    "test": "turbo test --concurrency=1",
     "build": "turbo build"
   },
   "devDependencies": {
