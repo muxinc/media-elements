@@ -2,7 +2,7 @@
   "private": true,
   "name": "media-elements",
   "version": "0.0.0",
-  "description": "",
+  "description": "A collection of HTMLMediaElement compatible elements and add-ons.",
   "author": "@muxinc",
   "license": "MIT",
   "type": "module",
