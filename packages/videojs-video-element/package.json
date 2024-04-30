@@ -13,9 +13,13 @@
     "url": "git+https://github.com/muxinc/media-elements.git",
     "directory": "packages/videojs-video-element"
   },
+  "files": ["dist"],
   "type": "module",
   "main": "videojs-video-element.js",
-  "files": [],
+  "exports": {
+    ".": "./videojs-video-element.js",
+    "./react": "./dist/react.js"
+  },
   "scripts": {
     "lint": "eslint *.js",
     "test": "wet run",

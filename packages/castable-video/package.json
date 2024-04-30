@@ -13,14 +13,14 @@
     "url": "git+https://github.com/muxinc/media-elements.git",
     "directory": "packages/castable-video"
   },
-  "type": "module",
-  "main": "castable-video.js",
   "files": [
     "castable-mixin.d.ts",
     "castable-mixin.js",
     "castable-remote-playback.js",
     "castable-utils.js"
   ],
+  "type": "module",
+  "main": "castable-video.js",
   "scripts": {
     "lint": "eslint *.js",
     "serve": "wet serve"

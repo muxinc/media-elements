@@ -13,9 +13,13 @@
     "url": "git+https://github.com/muxinc/media-elements.git",
     "directory": "packages/spotify-audio-element"
   },
+  "files": ["dist"],
   "type": "module",
   "main": "spotify-audio-element.js",
-  "files": [],
+  "exports": {
+    ".": "./spotify-audio-element.js",
+    "./react": "./dist/react.js"
+  },
   "scripts": {
     "lint": "eslint spotify-audio-element.js",
     "test": "wet test",

@@ -13,14 +13,17 @@
     "url": "git+https://github.com/muxinc/media-elements.git",
     "directory": "packages/hls-video-element"
   },
+  "files": [
+    "hls-video-element.d.ts",
+    "dist"
+  ],
   "type": "module",
   "main": "hls-video-element.js",
   "types": "hls-video-element.d.ts",
-  "files": [
-    "hls-video-element.d.ts",
-    "react.js",
-    "react.d.ts"
-  ],
+  "exports": {
+    ".": "./hls-video-element.js",
+    "./react": "./dist/react.js"
+  },
   "scripts": {
     "lint": "eslint *.js",
     "test": "wet test --coverage",

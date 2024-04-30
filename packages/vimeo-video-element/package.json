@@ -13,12 +13,13 @@
     "url": "git+https://github.com/muxinc/media-elements.git",
     "directory": "packages/vimeo-video-element"
   },
+  "files": ["dist"],
   "type": "module",
   "main": "vimeo-video-element.js",
-  "files": [
-    "react.js",
-    "react.d.ts"
-  ],
+  "exports": {
+    ".": "./vimeo-video-element.js",
+    "./react": "./dist/react.js"
+  },
   "scripts": {
     "lint": "eslint *.js",
     "test": "wet run",

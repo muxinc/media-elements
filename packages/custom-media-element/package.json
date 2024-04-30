@@ -13,12 +13,12 @@
     "url": "git+https://github.com/muxinc/media-elements.git",
     "directory": "packages/custom-media-element"
   },
-  "type": "module",
-  "main": "custom-media-element.js",
-  "types": "custom-media-element.d.ts",
   "files": [
     "custom-media-element.d.ts"
   ],
+  "type": "module",
+  "main": "custom-media-element.js",
+  "types": "custom-media-element.d.ts",
   "scripts": {
     "lint": "eslint *.js",
     "pretest": "esbuild custom-media-element.js --target=es2019 --bundle --outdir=dist --global-name=CustomMediaElement",

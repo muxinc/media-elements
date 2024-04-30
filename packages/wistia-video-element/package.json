@@ -13,12 +13,13 @@
     "url": "git+https://github.com/muxinc/media-elements.git",
     "directory": "packages/wistia-video-element"
   },
+  "files": ["dist"],
   "type": "module",
   "main": "wistia-video-element.js",
-  "files": [
-    "react.js",
-    "react.d.ts"
-  ],
+  "exports": {
+    ".": "./wistia-video-element.js",
+    "./react": "./dist/react.js"
+  },
   "scripts": {
     "lint": "eslint *.js",
     "test": "wet run",

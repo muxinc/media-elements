@@ -13,12 +13,15 @@
     "url": "git+https://github.com/muxinc/media-elements.git",
     "directory": "packages/jwplayer-video-element"
   },
+  "files": [
+    "dist"
+  ],
   "type": "module",
   "main": "jwplayer-video-element.js",
-  "files": [
-    "react.js",
-    "react.d.ts"
-  ],
+  "exports": {
+    ".": "./jwplayer-video-element.js",
+    "./react": "./dist/react.js"
+  },
   "scripts": {
     "lint": "eslint *.js",
     "test": "wet run",

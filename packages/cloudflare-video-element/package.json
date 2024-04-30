@@ -13,12 +13,13 @@
     "url": "git+https://github.com/muxinc/media-elements.git",
     "directory": "packages/cloudflare-video-element"
   },
+  "files": ["dist"],
   "type": "module",
   "main": "cloudflare-video-element.js",
-  "files": [
-    "react.js",
-    "react.d.ts"
-  ],
+  "exports": {
+    ".": "./cloudflare-video-element.js",
+    "./react": "./dist/react.js"
+  },
   "scripts": {
     "lint": "eslint *.js",
     "test": "wet run",
