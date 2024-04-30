@@ -1,7 +1,9 @@
 # Media Tracks
 
-[![Version](https://img.shields.io/npm/v/media-tracks?style=flat-square)](https://www.npmjs.com/package/media-tracks) 
-[![Badge size](https://img.badgesize.io/https://cdn.jsdelivr.net/npm/media-tracks/+esm?compression=gzip&label=gzip&style=flat-square)](https://cdn.jsdelivr.net/npm/media-tracks/+esm)
+[![NPM Version](https://img.shields.io/npm/v/media-tracks?style=flat-square&color=informational)](https://www.npmjs.com/package/media-tracks) 
+[![NPM Downloads](https://img.shields.io/npm/dm/media-tracks?style=flat-square&color=informational&label=npm)](https://www.npmjs.com/package/media-tracks) 
+[![jsDelivr hits (npm)](https://img.shields.io/jsdelivr/npm/hm/media-tracks?style=flat-square&color=%23FF5627)](https://www.jsdelivr.com/package/npm/media-tracks)
+[![npm bundle size](https://img.shields.io/bundlephobia/minzip/media-tracks?style=flat-square&color=success&label=gzip)](https://bundlephobia.com/result?p=media-tracks) 
 [![Codecov](https://img.shields.io/codecov/c/github/muxinc/media-tracks?style=flat-square)](https://app.codecov.io/gh/muxinc/media-tracks)
 
 

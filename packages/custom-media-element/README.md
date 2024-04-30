@@ -1,7 +1,9 @@
 # Custom Media Element
 
-[![Version](https://img.shields.io/npm/v/custom-media-element?style=flat-square)](https://www.npmjs.com/package/custom-media-element) 
-[![Badge size](https://img.badgesize.io/https://cdn.jsdelivr.net/npm/custom-media-element/+esm?compression=gzip&label=gzip&style=flat-square)](https://cdn.jsdelivr.net/npm/custom-media-element/+esm)
+[![NPM Version](https://img.shields.io/npm/v/custom-media-element?style=flat-square&color=informational)](https://www.npmjs.com/package/custom-media-element) 
+[![NPM Downloads](https://img.shields.io/npm/dm/custom-media-element?style=flat-square&color=informational&label=npm)](https://www.npmjs.com/package/custom-media-element) 
+[![jsDelivr hits (npm)](https://img.shields.io/jsdelivr/npm/hm/custom-media-element?style=flat-square&color=%23FF5627)](https://www.jsdelivr.com/package/npm/custom-media-element)
+[![npm bundle size](https://img.shields.io/bundlephobia/minzip/custom-media-element?style=flat-square&color=success&label=gzip)](https://bundlephobia.com/result?p=custom-media-element) 
 [![Codecov](https://img.shields.io/codecov/c/github/muxinc/custom-media-element?style=flat-square)](https://app.codecov.io/gh/muxinc/custom-media-element)
 
 A custom element for extending the native media elements (`<audio>` or `<video>`).
