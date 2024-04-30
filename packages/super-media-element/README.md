@@ -1,7 +1,9 @@
 # Super Media Element
 
-[![Version](https://img.shields.io/npm/v/super-media-element?style=flat-square)](https://www.npmjs.com/package/super-media-element) 
-[![Badge size](https://img.badgesize.io/https://cdn.jsdelivr.net/npm/super-media-element/+esm?compression=gzip&label=gzip&style=flat-square)](https://cdn.jsdelivr.net/npm/super-media-element/+esm)
+[![NPM Version](https://img.shields.io/npm/v/super-media-element?style=flat-square&color=informational)](https://www.npmjs.com/package/super-media-element) 
+[![NPM Downloads](https://img.shields.io/npm/dm/super-media-element?style=flat-square&color=informational&label=npm)](https://www.npmjs.com/package/super-media-element) 
+[![jsDelivr hits (npm)](https://img.shields.io/jsdelivr/npm/hm/super-media-element?style=flat-square&color=%23FF5627)](https://www.jsdelivr.com/package/npm/super-media-element)
+[![npm bundle size](https://img.shields.io/bundlephobia/minzip/super-media-element?style=flat-square&color=success&label=gzip)](https://bundlephobia.com/result?p=super-media-element) 
 
 A custom element that helps save alienated player API's in bringing back their true inner 
 [HTMLMediaElement API](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement), 
