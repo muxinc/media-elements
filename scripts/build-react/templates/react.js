@@ -1,10 +1,28 @@
 'use client';
 
-import React from 'react';
-import Element from './{{{file_name}}}.js';
+import React, { useRef, useEffect } from 'react';
+import Element from '../{{{file_name}}}.js';
 
 export default React.forwardRef(({ children, ...props }, ref) => {
+  ref ??= useRef();
+
   const attrs = propsToAttrs({ ...props, ref });
+
+  for (let propName in props) {
+    if (/^on[A-Z]/.test(propName)) {
+      const type = propName.slice(2).toLowerCase();
+      const callback = props[propName];
+
+      useEffect(() => {
+        const eventTarget = ref?.current;
+        if (!eventTarget || !callback) return;
+        eventTarget.addEventListener(type, callback);
+        return () => {
+          eventTarget.removeEventListener(type, callback);
+        };
+      }, [ref?.current, callback]);
+    }
+  }
 
   // Only render the custom element template HTML on the server.
   // The custom element will render itself on the client.
@@ -45,6 +63,7 @@ function toAttrName(propName, propValue) {
   if (ReactPropToAttrNameMap[propName]) return ReactPropToAttrNameMap[propName];
   if (typeof propValue == 'undefined') return undefined;
   if (typeof propValue === 'boolean' && !propValue) return undefined;
+  if (/^on[A-Z]/.test(propName)) return undefined;
   if (/[A-Z]/.test(propName)) return propName.toLowerCase();
   return propName;
 }

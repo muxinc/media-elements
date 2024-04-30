@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "cloudflare-video-element": "^1.0.3",
     "dash-video-element": "^0.0.3",
     "hls-video-element": "^1.1.4",
     "jwplayer-video-element": "^1.0.6",
