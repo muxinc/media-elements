@@ -1,0 +1,15 @@
+{
+  "private": true,
+  "name": "version-update",
+  "version": "0.0.0",
+  "type": "module",
+  "main": "./version-update.js",
+  "bin": {
+    "version-update": "./version-update.js"
+  },
+  "dependencies": {
+    "conventional-changelog-angular": "^7.0.0",
+    "conventional-recommended-bump": "^9.0.0",
+    "semver": "^7.6.0"
+  }
+}
