@@ -1,6 +1,6 @@
 {
   "name": "spotify-audio-element",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "A custom element for the Spotify player with an API that aims to match the `<audio>` API",
   "author": "@muxinc",
   "license": "MIT",
@@ -13,7 +13,9 @@
     "url": "git+https://github.com/muxinc/media-elements.git",
     "directory": "packages/spotify-audio-element"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "type": "module",
   "main": "spotify-audio-element.js",
   "exports": {

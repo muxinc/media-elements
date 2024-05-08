@@ -1,6 +1,6 @@
 {
   "name": "nextjs",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -9,19 +9,19 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "cloudflare-video-element": "^1.0.3",
-    "dash-video-element": "^0.0.3",
-    "hls-video-element": "^1.1.4",
-    "jwplayer-video-element": "^1.0.6",
+    "cloudflare-video-element": "^1.1.0",
+    "dash-video-element": "^0.0.4",
+    "hls-video-element": "^1.2.0",
+    "jwplayer-video-element": "^1.1.0",
     "next": "14.2.3",
     "open-props": "^1.7.4",
     "react": "^18",
     "react-dom": "^18",
-    "spotify-audio-element": "^0.1.2",
-    "videojs-video-element": "^1.1.1",
-    "vimeo-video-element": "^1.0.3",
-    "wistia-video-element": "^1.0.8",
-    "youtube-video-element": "^1.0.0"
+    "spotify-audio-element": "^0.1.4",
+    "videojs-video-element": "^1.2.0",
+    "vimeo-video-element": "^1.1.0",
+    "wistia-video-element": "^1.1.0",
+    "youtube-video-element": "^1.1.0"
   },
   "devDependencies": {
     "@types/node": "^20",
