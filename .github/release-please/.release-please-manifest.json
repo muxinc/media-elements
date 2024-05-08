@@ -1,4 +1,5 @@
 {
+  "examples/nextjs": "0.1.0",
   "packages/castable-video": "1.0.6",
   "packages/cloudflare-video-element": "1.0.3",
   "packages/custom-media-element": "1.2.3",

@@ -6,6 +6,9 @@
   "include-v-in-tag": false,
   "plugins": ["node-workspace"],
   "packages": {
+    "examples/nextjs": {
+      "skip-github-release": true
+    },
     "packages/castable-video": {},
     "packages/cloudflare-video-element": {},
     "packages/custom-media-element": {},
