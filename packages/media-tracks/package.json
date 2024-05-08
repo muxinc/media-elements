@@ -24,7 +24,7 @@
     "dist"
   ],
   "scripts": {
-    "lint": "npx eslint@8 src/*.ts",
+    "lint": "eslint src/*.ts",
     "pretest": "npm run build -- --sourcemap=inline",
     "test": "npm run test:types && wet test --coverage",
     "test:types": "tsc test/test.js --module nodenext --moduleResolution nodenext --target esnext --noEmit --allowJs",

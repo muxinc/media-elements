@@ -23,7 +23,7 @@
     "./react": "./dist/react.js"
   },
   "scripts": {
-    "lint": "npx eslint@8 spotify-audio-element.js",
+    "lint": "eslint spotify-audio-element.js",
     "test": "wet test",
     "serve": "wet serve",
     "build:react": "build-react",
