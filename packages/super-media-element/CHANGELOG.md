@@ -7,6 +7,13 @@
 
 
 
+## 1.0.0 (2024-05-08)
+
+
+### Features
+
+* media elements arise 🌱 ([5303770](https://github.com/muxinc/media-elements/commit/530377067b9d87b464b3c4eadc93c6b210deac56))
+
 ## [1.2.5](https://github.com/luwes/super-media-element/compare/v1.2.4...v1.2.5) (2023-04-19)
 
 

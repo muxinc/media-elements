@@ -7,6 +7,13 @@
 
 
 
+## 1.0.0 (2024-05-08)
+
+
+### Bug Fixes
+
+* add media-tracks package ([9042141](https://github.com/muxinc/media-elements/commit/9042141b3403d6bd20a81d0d4fb803a2eb6b1cbe))
+
 ## [0.2.4](https://github.com/muxinc/media-tracks/compare/v0.2.3...v0.2.4) (2023-09-14)
 
 
@@ -700,6 +707,3 @@
 * add video tracks shim ([59ce4df](https://github.com/muxinc/media-tracks/commit/59ce4dff59dc3a041e014d5f18bd9b76c589df64))
 * add VideoRendition, VideoRenditionList ([#1](https://github.com/muxinc/media-tracks/issues/1)) ([e6bbb53](https://github.com/muxinc/media-tracks/commit/e6bbb535c99fba04320156a6eff48a7af96d0cef))
 * implement alpha ready API's ([1886275](https://github.com/muxinc/media-tracks/commit/1886275c73808232581a47b19c824605adb7c907))
-
-
-

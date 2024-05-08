@@ -1,6 +1,6 @@
 {
   "name": "dash-video-element",
-  "version": "0.0.3",
+  "version": "1.0.0",
   "description": "Custom element for playing video using the DASH format. Uses dash.js.",
   "author": "@muxinc",
   "license": "MIT",
@@ -13,7 +13,9 @@
     "url": "git+https://github.com/muxinc/media-elements.git",
     "directory": "packages/dash-video-element"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "type": "module",
   "main": "dash-video-element.js",
   "exports": {
@@ -28,7 +30,7 @@
     "build": "run-s build:*"
   },
   "dependencies": {
-    "custom-media-element": "^1.2.3",
+    "custom-media-element": "^1.0.0",
     "dashjs-esm": "^4.6.0"
   },
   "devDependencies": {

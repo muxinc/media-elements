@@ -1,6 +1,6 @@
 {
   "name": "cloudflare-video-element",
-  "version": "1.0.3",
+  "version": "1.0.0",
   "description": "A custom element for the Cloudflare player with an API that matches the `<video>` API",
   "author": "@muxinc",
   "license": "MIT",
@@ -13,7 +13,9 @@
     "url": "git+https://github.com/muxinc/media-elements.git",
     "directory": "packages/cloudflare-video-element"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "type": "module",
   "main": "cloudflare-video-element.js",
   "exports": {

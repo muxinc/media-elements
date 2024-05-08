@@ -7,6 +7,15 @@
 
 
 
+## 1.0.7 (2024-05-08)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * custom-media-element bumped from ~1.2.3 to ~1.0.0
+
 ## [1.0.5](https://github.com/muxinc/castable-video/compare/v1.0.4...v1.0.5) (2023-12-11)
 
 
@@ -143,6 +152,3 @@
 ### BREAKING CHANGES
 
 * for consistency with other Mux media elements
-
-
-

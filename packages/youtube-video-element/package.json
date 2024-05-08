@@ -13,7 +13,9 @@
     "url": "git+https://github.com/muxinc/media-elements.git",
     "directory": "packages/youtube-video-element"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "type": "module",
   "main": "youtube-video-element.js",
   "exports": {

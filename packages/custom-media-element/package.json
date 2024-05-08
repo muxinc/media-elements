@@ -1,6 +1,6 @@
 {
   "name": "custom-media-element",
-  "version": "1.2.3",
+  "version": "1.0.0",
   "description": "A custom element for extending the native media elements (<audio> or <video>)",
   "author": "@muxinc",
   "license": "MIT",
