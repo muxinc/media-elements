@@ -7,6 +7,20 @@
 
 
 
+## [1.1.0](https://github.com/muxinc/media-elements/compare/vimeo-video-element-v1.0.3...vimeo-video-element@1.1.0) (2024-05-08)
+
+
+### Features
+
+* add SSR to vimeo-video-element ([c44e755](https://github.com/muxinc/media-elements/commit/c44e755a57c252631971b17b0f3b1607ac0ec70f))
+* media elements arise 🌱 ([5303770](https://github.com/muxinc/media-elements/commit/530377067b9d87b464b3c4eadc93c6b210deac56))
+
+
+### Bug Fixes
+
+* add React SSR in cloudflare-video-element ([e7d3651](https://github.com/muxinc/media-elements/commit/e7d36517ce2682a6642e3dbcb2e48875678d53bd))
+* state issues ([dbc5de7](https://github.com/muxinc/media-elements/commit/dbc5de783596dec7b816b7cd09790e363a5a682f))
+
 ## [1.0.2](https://github.com/luwes/vimeo-video-element/compare/v1.0.1...v1.0.2) (2023-08-06)
 
 
@@ -135,6 +149,3 @@
 ### Features
 
 * add vimeo-video ([ba6112c](https://github.com/luwes/vimeo-video-element/commit/ba6112c4f3900629b1d2fc74792be857b0a9a28b))
-
-
-
