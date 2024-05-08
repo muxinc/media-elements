@@ -23,6 +23,27 @@
 
 
 
+## [1.2.0](https://github.com/muxinc/media-elements/compare/videojs-video-element-v1.1.2...videojs-video-element@1.2.0) (2024-05-08)
+
+
+### Features
+
+* media elements arise 🌱 ([5303770](https://github.com/muxinc/media-elements/commit/530377067b9d87b464b3c4eadc93c6b210deac56))
+
+
+### Bug Fixes
+
+* add React SSR in cloudflare-video-element ([e7d3651](https://github.com/muxinc/media-elements/commit/e7d36517ce2682a6642e3dbcb2e48875678d53bd))
+* state issues ([dbc5de7](https://github.com/muxinc/media-elements/commit/dbc5de783596dec7b816b7cd09790e363a5a682f))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * media-tracks bumped from ^0.3.0 to ^0.3.1
+    * super-media-element bumped from ~1.3.0 to ~1.4.0
+
 ## [1.0.3](https://github.com/luwes/videojs-video-element/compare/v1.0.2...v1.0.3) (2023-06-04)
 
 
@@ -141,6 +162,3 @@
 ### Features
 
 * sow the seeds of videojs-video ([6b41c85](https://github.com/luwes/videojs-video-element/commit/6b41c855bb14e0d38c2a4006087624bcee1b907b))
-
-
-

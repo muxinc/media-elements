@@ -7,6 +7,27 @@
 
 
 
+## [1.2.0](https://github.com/muxinc/media-elements/compare/hls-video-element-v1.1.4...hls-video-element@1.2.0) (2024-05-08)
+
+
+### Features
+
+* add SSR to hls and dash video element ([08a4d09](https://github.com/muxinc/media-elements/commit/08a4d09c7a514e9d22a74a9b21abf7df2c27298d))
+* media elements arise 🌱 ([5303770](https://github.com/muxinc/media-elements/commit/530377067b9d87b464b3c4eadc93c6b210deac56))
+
+
+### Bug Fixes
+
+* add React SSR in cloudflare-video-element ([e7d3651](https://github.com/muxinc/media-elements/commit/e7d36517ce2682a6642e3dbcb2e48875678d53bd))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * custom-media-element bumped from ^1.2.3 to ^1.3.0
+    * media-tracks bumped from ^0.3.0 to ^0.3.1
+
 ## [1.1.3](https://github.com/muxinc/hls-video-element/compare/v1.1.2...v1.1.3) (2024-02-07)
 
 
@@ -131,6 +152,3 @@
 * `video` typo ([#19](https://github.com/muxinc/hls-video-element/issues/19)) ([a5319df](https://github.com/muxinc/hls-video-element/commit/a5319df0d6fa063fec46fa979128fdcc8d1a420c))
 * fix loading new src ([#26](https://github.com/muxinc/hls-video-element/issues/26)) ([5909fa6](https://github.com/muxinc/hls-video-element/commit/5909fa6e0bf2afc79ef956635db0a6224cc7aa17))
 * use custom-media-element ([#25](https://github.com/muxinc/hls-video-element/issues/25)) ([9bd6169](https://github.com/muxinc/hls-video-element/commit/9bd6169b271750c960c10ffd61d57c2e9bbef835))
-
-
-

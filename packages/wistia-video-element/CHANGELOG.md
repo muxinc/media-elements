@@ -8,6 +8,26 @@
 
 
 
+## [1.1.0](https://github.com/muxinc/media-elements/compare/wistia-video-element-v1.0.9...wistia-video-element@1.1.0) (2024-05-08)
+
+
+### Features
+
+* media elements arise 🌱 ([5303770](https://github.com/muxinc/media-elements/commit/530377067b9d87b464b3c4eadc93c6b210deac56))
+
+
+### Bug Fixes
+
+* add React SSR in cloudflare-video-element ([e7d3651](https://github.com/muxinc/media-elements/commit/e7d36517ce2682a6642e3dbcb2e48875678d53bd))
+* state issues ([dbc5de7](https://github.com/muxinc/media-elements/commit/dbc5de783596dec7b816b7cd09790e363a5a682f))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * super-media-element bumped from ~1.3.0 to ~1.4.0
+
 ## [1.0.7](https://github.com/luwes/wistia-video-element/compare/v1.0.6...v1.0.7) (2023-04-09)
 
 
@@ -165,6 +185,3 @@
 
 
 ## 0.0.2 (2022-03-07)
-
-
-

@@ -1,6 +1,6 @@
 {
   "name": "videojs-video-element",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "description": "A custom element for Video.js with an API that matches the `<video>` API",
   "author": "@muxinc",
   "license": "MIT",
@@ -13,7 +13,9 @@
     "url": "git+https://github.com/muxinc/media-elements.git",
     "directory": "packages/videojs-video-element"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "type": "module",
   "main": "videojs-video-element.js",
   "exports": {
@@ -28,8 +30,8 @@
     "build": "run-s build:*"
   },
   "dependencies": {
-    "media-tracks": "^0.3.0",
-    "super-media-element": "~1.3.0"
+    "media-tracks": "^0.3.1",
+    "super-media-element": "~1.4.0"
   },
   "devDependencies": {
     "npm-run-all": "^4.1.5",
