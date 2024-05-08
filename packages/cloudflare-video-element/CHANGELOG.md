@@ -1,11 +1,8 @@
-## [1.0.3](https://github.com/luwes/cloudflare-video-element/compare/v1.0.2...v1.0.3) (2024-04-21)
+# Changelog
 
+[npm history][1]
 
-### Bug Fixes
-
-* video id regex ([#4](https://github.com/luwes/cloudflare-video-element/issues/4)) ([9a2c61a](https://github.com/luwes/cloudflare-video-element/commit/9a2c61a457c19223bdb27250f95bcd51fb2c747e)), closes [#3](https://github.com/luwes/cloudflare-video-element/issues/3)
-
-
+[1]: https://www.npmjs.com/package/cloudflare-video-element?activeTab=versions
 
 ## [1.1.0](https://github.com/muxinc/media-elements/compare/cloudflare-video-element-v1.0.3...cloudflare-video-element@1.1.0) (2024-05-08)
 
@@ -21,6 +18,15 @@
 * add React SSR in cloudflare-video-element ([e7d3651](https://github.com/muxinc/media-elements/commit/e7d36517ce2682a6642e3dbcb2e48875678d53bd))
 * duplicate iframe load ([8a532f2](https://github.com/muxinc/media-elements/commit/8a532f2f23d9d5dd5d80773c9cfc88a8cab1d69c))
 * state issues ([dbc5de7](https://github.com/muxinc/media-elements/commit/dbc5de783596dec7b816b7cd09790e363a5a682f))
+
+
+## [1.0.3](https://github.com/luwes/cloudflare-video-element/compare/v1.0.2...v1.0.3) (2024-04-21)
+
+
+### Bug Fixes
+
+* video id regex ([#4](https://github.com/luwes/cloudflare-video-element/issues/4)) ([9a2c61a](https://github.com/luwes/cloudflare-video-element/commit/9a2c61a457c19223bdb27250f95bcd51fb2c747e)), closes [#3](https://github.com/luwes/cloudflare-video-element/issues/3)
+
 
 ## [1.0.2](https://github.com/luwes/cloudflare-video-element/compare/v1.0.1...v1.0.2) (2023-09-17)
 

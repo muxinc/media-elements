@@ -1,9 +1,8 @@
-## [1.1.4](https://github.com/muxinc/hls-video-element/compare/v1.1.3...v1.1.4) (2024-04-21)
+# Changelog
 
+[npm history][1]
 
-### Bug Fixes
-
-* upgrade deps & fix readme badges ([deafb89](https://github.com/muxinc/hls-video-element/commit/deafb891b3a4bc308a97c53c1e2a10eaade20fce))
+[1]: https://www.npmjs.com/package/hls-video-element?activeTab=versions
 
 
 
@@ -27,6 +26,16 @@
   * dependencies
     * custom-media-element bumped from ^1.2.3 to ^1.3.0
     * media-tracks bumped from ^0.3.0 to ^0.3.1
+
+
+## [1.1.4](https://github.com/muxinc/hls-video-element/compare/v1.1.3...v1.1.4) (2024-04-21)
+
+
+### Bug Fixes
+
+* upgrade deps & fix readme badges ([deafb89](https://github.com/muxinc/hls-video-element/commit/deafb891b3a4bc308a97c53c1e2a10eaade20fce))
+
+
 
 ## [1.1.3](https://github.com/muxinc/hls-video-element/compare/v1.1.2...v1.1.3) (2024-02-07)
 

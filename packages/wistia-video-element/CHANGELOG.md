@@ -1,11 +1,8 @@
-## [1.0.8](https://github.com/luwes/wistia-video-element/compare/v1.0.7...v1.0.8) (2023-04-19)
+# Changelog
 
+[npm history][1]
 
-### Bug Fixes
-
-* default muted bug ([825ccb9](https://github.com/luwes/wistia-video-element/commit/825ccb9e25e348ba3613fc2beaed36746e6e60cc))
-* Next.js SSR document type error ([afc2e9c](https://github.com/luwes/wistia-video-element/commit/afc2e9cd7f92e3e7db98a46750f214fe81354500))
-
+[1]: https://www.npmjs.com/package/wistia-video-element?activeTab=versions
 
 
 ## [1.1.0](https://github.com/muxinc/media-elements/compare/wistia-video-element-v1.0.9...wistia-video-element@1.1.0) (2024-05-08)
@@ -27,6 +24,17 @@
 * The following workspace dependencies were updated
   * dependencies
     * super-media-element bumped from ~1.3.0 to ~1.4.0
+
+
+## [1.0.8](https://github.com/luwes/wistia-video-element/compare/v1.0.7...v1.0.8) (2023-04-19)
+
+
+### Bug Fixes
+
+* default muted bug ([825ccb9](https://github.com/luwes/wistia-video-element/commit/825ccb9e25e348ba3613fc2beaed36746e6e60cc))
+* Next.js SSR document type error ([afc2e9c](https://github.com/luwes/wistia-video-element/commit/afc2e9cd7f92e3e7db98a46750f214fe81354500))
+
+
 
 ## [1.0.7](https://github.com/luwes/wistia-video-element/compare/v1.0.6...v1.0.7) (2023-04-09)
 

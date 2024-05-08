@@ -1,5 +1,8 @@
-# [1.0.0](https://github.com/luwes/dash-video-element/compare/v0.1.1...v1.0.0) (2023-04-15)
+# Changelog
 
+[npm history][1]
+
+[1]: https://www.npmjs.com/package/dash-video-element?activeTab=versions
 
 
 ## [0.0.4](https://github.com/muxinc/media-elements/compare/dash-video-element-v0.0.3...dash-video-element@0.0.4) (2024-05-08)
@@ -21,9 +24,3 @@
 * The following workspace dependencies were updated
   * dependencies
     * custom-media-element bumped from ^1.2.3 to ^1.3.0
-
-## [0.1.1](https://github.com/luwes/dash-video-element/compare/v0.1.0...v0.1.1) (2023-04-15)
-
-
-
-# 0.1.0 (2023-04-15)
