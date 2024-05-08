@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import SpotifyAudio from 'spotify-audio-element/react';
 
 export const metadata: Metadata = {
-  title: 'Spotify Audio Element - Media Elements',
+  title: 'Spotify Audio - Media Elements',
 };
 
 export default function Page() {

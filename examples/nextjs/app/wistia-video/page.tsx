@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import WistiaVideo from 'wistia-video-element/react';
 
 export const metadata: Metadata = {
-  title: 'Wistia Video Element - Media Elements',
+  title: 'Wistia Video - Media Elements',
 };
 
 export default function Page() {

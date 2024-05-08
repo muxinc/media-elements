@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import VideojsVideo from 'videojs-video-element/react';
 
 export const metadata: Metadata = {
-  title: 'Video.js Video Element - Media Elements',
+  title: 'Video.js Video - Media Elements',
 };
 
 export default function Page() {

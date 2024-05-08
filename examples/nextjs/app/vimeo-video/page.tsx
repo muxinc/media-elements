@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import VimeoVideo from 'vimeo-video-element/react';
 
 export const metadata: Metadata = {
-  title: 'Vimeo Video Element - Media Elements',
+  title: 'Vimeo Video - Media Elements',
 };
 
 export default function Page() {

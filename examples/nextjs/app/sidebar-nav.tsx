@@ -9,31 +9,34 @@ export default function SidebarNav() {
   return <nav>
     <ul>
       <li>
-        <Link className={`link ${pathname === '/' ? 'active' : ''}`} href="/">hls-video-element</Link>
-      </li>
-     <li>
-        <Link className={`link ${pathname === '/dash-video-element' ? 'active' : ''}`} href="/dash-video-element">dash-video-element</Link>
+        <Link className={`link ${pathname === '/' ? 'active' : ''}`} href="/">mux-video</Link>
       </li>
       <li>
-        <Link className={`link ${pathname === '/cloudflare-video-element' ? 'active' : ''}`} href="/cloudflare-video-element">cloudflare-video-element</Link>
+        <Link className={`link ${pathname === '/hls-video' ? 'active' : ''}`} href="/hls-video">hls-video</Link>
       </li>
       <li>
-        <Link className={`link ${pathname === '/jwplayer-video-element' ? 'active' : ''}`} href="/jwplayer-video-element">jwplayer-video-element</Link>
+        <Link className={`link ${pathname === '/dash-video' ? 'active' : ''}`} href="/dash-video">dash-video</Link>
       </li>
       <li>
-        <Link className={`link ${pathname === '/videojs-video-element' ? 'active' : ''}`} href="/videojs-video-element">videojs-video-element</Link>
+        <Link className={`link ${pathname === '/cloudflare-video' ? 'active' : ''}`} href="/cloudflare-video">cloudflare-video</Link>
       </li>
       <li>
-        <Link className={`link ${pathname === '/vimeo-video-element' ? 'active' : ''}`} href="/vimeo-video-element">vimeo-video-element</Link>
+        <Link className={`link ${pathname === '/jwplayer-video' ? 'active' : ''}`} href="/jwplayer-video">jwplayer-video</Link>
       </li>
       <li>
-        <Link className={`link ${pathname === '/wistia-video-element' ? 'active' : ''}`} href="/wistia-video-element">wistia-video-element</Link>
+        <Link className={`link ${pathname === '/videojs-video' ? 'active' : ''}`} href="/videojs-video">videojs-video</Link>
       </li>
       <li>
-        <Link className={`link ${pathname === '/youtube-video-element' ? 'active' : ''}`} href="/youtube-video-element">youtube-video-element</Link>
+        <Link className={`link ${pathname === '/vimeo-video' ? 'active' : ''}`} href="/vimeo-video">vimeo-video</Link>
       </li>
       <li>
-        <Link className={`link ${pathname === '/spotify-audio-element' ? 'active' : ''}`} href="/spotify-audio-element">spotify-audio-element</Link>
+        <Link className={`link ${pathname === '/wistia-video' ? 'active' : ''}`} href="/wistia-video">wistia-video</Link>
+      </li>
+      <li>
+        <Link className={`link ${pathname === '/youtube-video' ? 'active' : ''}`} href="/youtube-video">youtube-video</Link>
+      </li>
+      <li>
+        <Link className={`link ${pathname === '/spotify-audio' ? 'active' : ''}`} href="/spotify-audio">spotify-audio</Link>
       </li>
     </ul>
   </nav>

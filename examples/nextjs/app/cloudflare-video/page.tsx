@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import CloudflareVideo from 'cloudflare-video-element/react';
 
 export const metadata: Metadata = {
-  title: 'Cloudflare Video Element - Media Elements',
+  title: 'Cloudflare Video - Media Elements',
 };
 
 export default function Page() {

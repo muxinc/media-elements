@@ -1,20 +1,20 @@
 import { Metadata } from 'next';
-import YoutubeVideo from 'youtube-video-element/react';
+import JwplayerVideo from 'jwplayer-video-element/react';
 
 export const metadata: Metadata = {
-  title: 'Youtube Video Element - Media Elements',
+  title: 'JWPlayer Video - Media Elements',
 };
 
 export default function Page() {
   return (
     <>
       <section>
-        <YoutubeVideo
+        <JwplayerVideo
           className="video"
-          src="https://www.youtube.com/watch?v=uxsOYVWclA0"
+          src="https://cdn.jwplayer.com/players/C8YE48zj-IxzuqJ4M.html"
           controls
           playsInline
-        ></YoutubeVideo>
+        ></JwplayerVideo>
       </section>
     </>
   );
