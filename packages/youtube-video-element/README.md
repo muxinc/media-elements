@@ -57,9 +57,9 @@ This will register the custom elements with the browser so they can be used as H
 - [Media Chrome](https://github.com/muxinc/media-chrome) Your media player's dancing suit. 🕺
 - [`<mux-video>`](https://github.com/muxinc/elements/tree/main/packages/mux-video) A Mux-flavored HTML5 video element w/ hls.js and Mux data builtin.
 - [`<mux-player>`](https://github.com/muxinc/elements/tree/main/packages/mux-player) The official Mux-flavored video player web component.
-- [`<vimeo-video>`](https://github.com/luwes/vimeo-video-element) A web component for the Vimeo player.
-- [`<videojs-video>`](https://github.com/luwes/videojs-video-element) A web component for Video.js.
-- [`<wistia-video>`](https://github.com/luwes/wistia-video-element) A web component for the Wistia player.
-- [`<jwplayer-video>`](https://github.com/luwes/jwplayer-video-element) A web component for the JW player.
-- [`<hls-video>`](https://github.com/muxinc/hls-video-element) A web component for playing HTTP Live Streaming (HLS) videos.
-- [`castable-video`](https://github.com/muxinc/castable-video) Cast your video element to the big screen with ease!
+- [`<vimeo-video>`](https://github.com/muxinc/media-elements/tree/main/packages/vimeo-video-element) A web component for the Vimeo player.
+- [`<videojs-video>`](https://github.com/muxinc/media-elements/tree/main/packages/videojs-video-element) A web component for Video.js.
+- [`<wistia-video>`](https://github.com/muxinc/media-elements/tree/main/packages/wistia-video-element) A web component for the Wistia player.
+- [`<jwplayer-video>`](https://github.com/muxinc/media-elements/tree/main/packages/jwplayer-video-element) A web component for the JW player.
+- [`<hls-video>`](https://github.com/muxinc/media-elements/tree/main/packages/hls-video-element) A web component for playing HTTP Live Streaming (HLS) videos.
+- [`castable-video`](https://github.com/muxinc/media-elements/tree/main/packages/castable-video) Cast your video element to the big screen with ease!
