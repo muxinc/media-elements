@@ -1,10 +1,8 @@
-## [1.2.2](https://github.com/muxinc/custom-media-element/compare/v1.2.1...v1.2.2) (2023-12-21)
+# Changelog
 
+[npm history][1]
 
-### Bug Fixes
-
-* add type alias, easier on consumers ([#17](https://github.com/muxinc/custom-media-element/issues/17)) ([076dbfc](https://github.com/muxinc/custom-media-element/commit/076dbfc25aad177d005799b054a8aac8c539df1f))
-
+[1]: https://www.npmjs.com/package/custom-media-element?activeTab=versions
 
 
 ## [1.3.0](https://github.com/muxinc/media-elements/compare/custom-media-element-v1.2.3...custom-media-element@1.3.0) (2024-05-08)
@@ -19,6 +17,15 @@
 ### Bug Fixes
 
 * custom element attribute constructor bug ([82fe3a0](https://github.com/muxinc/media-elements/commit/82fe3a02d4ddcba5e81da6211a8220da00b245fe))
+
+
+## [1.2.2](https://github.com/muxinc/custom-media-element/compare/v1.2.1...v1.2.2) (2023-12-21)
+
+
+### Bug Fixes
+
+* add type alias, easier on consumers ([#17](https://github.com/muxinc/custom-media-element/issues/17)) ([076dbfc](https://github.com/muxinc/custom-media-element/commit/076dbfc25aad177d005799b054a8aac8c539df1f))
+
 
 ## [1.2.1](https://github.com/muxinc/custom-media-element/compare/v1.2.0...v1.2.1) (2023-12-21)
 

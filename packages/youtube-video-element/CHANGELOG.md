@@ -1,5 +1,8 @@
-# [1.0.0](https://github.com/muxinc/youtube-video-element/compare/v0.2.2...v1.0.0) (2023-09-15)
+# Changelog
 
+[npm history][1]
+
+[1]: https://www.npmjs.com/package/youtube-video-element?activeTab=versions
 
 
 ## [1.1.0](https://github.com/muxinc/media-elements/compare/youtube-video-element-v1.0.1...youtube-video-element@1.1.0) (2024-05-08)
@@ -17,6 +20,9 @@
 * add React SSR to youtube-video-element ([cd2e574](https://github.com/muxinc/media-elements/commit/cd2e57455a1401850db2a2a5c26bc6190af4191b))
 * duplicate iframe load ([8a532f2](https://github.com/muxinc/media-elements/commit/8a532f2f23d9d5dd5d80773c9cfc88a8cab1d69c))
 * state issues ([dbc5de7](https://github.com/muxinc/media-elements/commit/dbc5de783596dec7b816b7cd09790e363a5a682f))
+
+# [1.0.0](https://github.com/muxinc/youtube-video-element/compare/v0.2.2...v1.0.0) (2023-09-15)
+
 
 ## [0.2.2](https://github.com/muxinc/youtube-video-element/compare/v0.2.1...v0.2.2) (2023-09-15)
 

@@ -1,10 +1,8 @@
-# [0.3.0](https://github.com/muxinc/media-tracks/compare/v0.2.4...v0.3.0) (2023-12-18)
+# Changelog
 
+[npm history][1]
 
-### Features
-
-* improve types, mixin vs global + increase coverage ([#12](https://github.com/muxinc/media-tracks/issues/12)) ([4ead594](https://github.com/muxinc/media-tracks/commit/4ead594241f90058da4841866535e31637b4f775))
-
+[1]: https://www.npmjs.com/package/media-tracks?activeTab=versions
 
 
 ## [0.3.1](https://github.com/muxinc/media-elements/compare/media-tracks-v0.3.0...media-tracks@0.3.1) (2024-05-08)
@@ -13,6 +11,15 @@
 ### Bug Fixes
 
 * add media-tracks package ([9042141](https://github.com/muxinc/media-elements/commit/9042141b3403d6bd20a81d0d4fb803a2eb6b1cbe))
+
+
+# [0.3.0](https://github.com/muxinc/media-tracks/compare/v0.2.4...v0.3.0) (2023-12-18)
+
+
+### Features
+
+* improve types, mixin vs global + increase coverage ([#12](https://github.com/muxinc/media-tracks/issues/12)) ([4ead594](https://github.com/muxinc/media-tracks/commit/4ead594241f90058da4841866535e31637b4f775))
+
 
 ## [0.2.4](https://github.com/muxinc/media-tracks/compare/v0.2.3...v0.2.4) (2023-09-14)
 

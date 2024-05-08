@@ -1,10 +1,8 @@
-## [1.0.3](https://github.com/luwes/vimeo-video-element/compare/v1.0.2...v1.0.3) (2024-04-21)
+# Changelog
 
+[npm history][1]
 
-### Bug Fixes
-
-* upgrade dependencies ([1b7f3c7](https://github.com/luwes/vimeo-video-element/commit/1b7f3c796f67eddbb0504f9616b0502f8259f489))
-
+[1]: https://www.npmjs.com/package/vimeo-video-element?activeTab=versions
 
 
 ## [1.1.0](https://github.com/muxinc/media-elements/compare/vimeo-video-element-v1.0.3...vimeo-video-element@1.1.0) (2024-05-08)
@@ -20,6 +18,15 @@
 
 * add React SSR in cloudflare-video-element ([e7d3651](https://github.com/muxinc/media-elements/commit/e7d36517ce2682a6642e3dbcb2e48875678d53bd))
 * state issues ([dbc5de7](https://github.com/muxinc/media-elements/commit/dbc5de783596dec7b816b7cd09790e363a5a682f))
+
+
+## [1.0.3](https://github.com/luwes/vimeo-video-element/compare/v1.0.2...v1.0.3) (2024-04-21)
+
+
+### Bug Fixes
+
+* upgrade dependencies ([1b7f3c7](https://github.com/luwes/vimeo-video-element/commit/1b7f3c796f67eddbb0504f9616b0502f8259f489))
+
 
 ## [1.0.2](https://github.com/luwes/vimeo-video-element/compare/v1.0.1...v1.0.2) (2023-08-06)
 

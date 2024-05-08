@@ -1,9 +1,8 @@
-## [1.0.6](https://github.com/luwes/jwplayer-video-element/compare/v1.0.5...v1.0.6) (2024-04-21)
+# Changelog
 
+[npm history][1]
 
-### Bug Fixes
-
-* upgrade deps & fix readme badges ([b08b737](https://github.com/luwes/jwplayer-video-element/commit/b08b7375c1953ec0c2d7ccac24511bba85079fd0))
+[1]: https://www.npmjs.com/package/jwplayer-video-element?activeTab=versions
 
 
 
@@ -25,6 +24,14 @@
 * The following workspace dependencies were updated
   * dependencies
     * super-media-element bumped from ~1.3.0 to ~1.4.0
+
+## [1.0.6](https://github.com/luwes/jwplayer-video-element/compare/v1.0.5...v1.0.6) (2024-04-21)
+
+
+### Bug Fixes
+
+* upgrade deps & fix readme badges ([b08b737](https://github.com/luwes/jwplayer-video-element/commit/b08b7375c1953ec0c2d7ccac24511bba85079fd0))
+
 
 ## [1.0.5](https://github.com/luwes/jwplayer-video-element/compare/v1.0.4...v1.0.5) (2023-04-18)
 
