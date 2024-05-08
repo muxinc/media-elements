@@ -17,7 +17,7 @@
       "dependsOn": ["^build"]
     },
     "build": {
-      "outputs": ["dist/**/*"],
+      "outputs": ["dist/**/*", ".next/**/*"],
       "dependsOn": ["^build"]
     }
   }
