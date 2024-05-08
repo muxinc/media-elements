@@ -1,15 +1,15 @@
 {
-  "castable-video": "1.0.6",
-  "cloudflare-video-element": "1.0.3",
-  "custom-media-element": "1.2.3",
-  "dash-video-element": "0.0.3",
-  "hls-video-element": "1.1.4",
-  "jwplayer-video-element": "1.0.6",
-  "media-tracks": "0.3.0",
-  "spotify-audio-element": "0.1.2",
-  "super-media-element": "1.3.0",
-  "videojs-video-element": "1.1.1",
-  "vimeo-video-element": "1.0.3",
-  "wistia-video-element": "1.0.8",
-  "youtube-video-element": "1.0.0"
+  "packages/castable-video": "1.0.6",
+  "packages/cloudflare-video-element": "1.0.3",
+  "packages/custom-media-element": "1.2.3",
+  "packages/dash-video-element": "0.0.3",
+  "packages/hls-video-element": "1.1.4",
+  "packages/jwplayer-video-element": "1.0.6",
+  "packages/media-tracks": "0.3.0",
+  "packages/spotify-audio-element": "0.1.2",
+  "packages/super-media-element": "1.3.0",
+  "packages/videojs-video-element": "1.1.1",
+  "packages/vimeo-video-element": "1.0.3",
+  "packages/wistia-video-element": "1.0.8",
+  "packages/youtube-video-element": "1.0.0"
 }
