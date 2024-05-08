@@ -1,0 +1,23 @@
+{
+  "bump-minor-pre-major": true,
+  "bump-patch-for-minor-pre-major": true,
+  "tag-separator": "@",
+  "include-component-in-tag": true,
+  "include-v-in-tag": false,
+  "plugins": ["node-workspace"],
+  "packages": {
+    "packages/castable-video": {},
+    "packages/cloudflare-video-element": {},
+    "packages/custom-media-element": {},
+    "packages/dash-video-element": {},
+    "packages/hls-video-element": {},
+    "packages/jwplayer-video-element": {},
+    "packages/media-tracks": {},
+    "packages/spotify-audio-element": {},
+    "packages/super-media-element": {},
+    "packages/videojs-video-element": {},
+    "packages/vimeo-video-element": {},
+    "packages/wistia-video-element": {},
+    "packages/youtube-video-element": {}
+  }
+}
