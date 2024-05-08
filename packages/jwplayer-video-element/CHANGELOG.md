@@ -7,6 +7,25 @@
 
 
 
+## [1.1.0](https://github.com/muxinc/media-elements/compare/jwplayer-video-element-v1.0.6...jwplayer-video-element@1.1.0) (2024-05-08)
+
+
+### Features
+
+* media elements arise 🌱 ([5303770](https://github.com/muxinc/media-elements/commit/530377067b9d87b464b3c4eadc93c6b210deac56))
+
+
+### Bug Fixes
+
+* add React SSR in cloudflare-video-element ([e7d3651](https://github.com/muxinc/media-elements/commit/e7d36517ce2682a6642e3dbcb2e48875678d53bd))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * super-media-element bumped from ~1.3.0 to ~1.4.0
+
 ## [1.0.5](https://github.com/luwes/jwplayer-video-element/compare/v1.0.4...v1.0.5) (2023-04-18)
 
 
@@ -149,6 +168,3 @@
 
 
 ## 0.0.2 (2022-03-06)
-
-
-

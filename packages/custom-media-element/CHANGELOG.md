@@ -7,6 +7,19 @@
 
 
 
+## [1.3.0](https://github.com/muxinc/media-elements/compare/custom-media-element-v1.2.3...custom-media-element@1.3.0) (2024-05-08)
+
+
+### Features
+
+* add SSR to hls and dash video element ([08a4d09](https://github.com/muxinc/media-elements/commit/08a4d09c7a514e9d22a74a9b21abf7df2c27298d))
+* media elements arise 🌱 ([5303770](https://github.com/muxinc/media-elements/commit/530377067b9d87b464b3c4eadc93c6b210deac56))
+
+
+### Bug Fixes
+
+* custom element attribute constructor bug ([82fe3a0](https://github.com/muxinc/media-elements/commit/82fe3a02d4ddcba5e81da6211a8220da00b245fe))
+
 ## [1.2.1](https://github.com/muxinc/custom-media-element/compare/v1.2.0...v1.2.1) (2023-12-21)
 
 
@@ -176,6 +189,3 @@
 
 
 ## 0.1.1 (2023-05-22)
-
-
-

@@ -1,6 +1,6 @@
 {
   "name": "media-tracks",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Polyfill audio and video tracks with renditions.",
   "author": "@muxinc",
   "license": "MIT",

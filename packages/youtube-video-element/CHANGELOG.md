@@ -2,6 +2,22 @@
 
 
 
+## [1.1.0](https://github.com/muxinc/media-elements/compare/youtube-video-element-v1.0.0...youtube-video-element@1.1.0) (2024-05-08)
+
+
+### Features
+
+* add SSR to vimeo-video-element ([c44e755](https://github.com/muxinc/media-elements/commit/c44e755a57c252631971b17b0f3b1607ac0ec70f))
+* media elements arise 🌱 ([5303770](https://github.com/muxinc/media-elements/commit/530377067b9d87b464b3c4eadc93c6b210deac56))
+
+
+### Bug Fixes
+
+* add React SSR in cloudflare-video-element ([e7d3651](https://github.com/muxinc/media-elements/commit/e7d36517ce2682a6642e3dbcb2e48875678d53bd))
+* add React SSR to youtube-video-element ([cd2e574](https://github.com/muxinc/media-elements/commit/cd2e57455a1401850db2a2a5c26bc6190af4191b))
+* duplicate iframe load ([8a532f2](https://github.com/muxinc/media-elements/commit/8a532f2f23d9d5dd5d80773c9cfc88a8cab1d69c))
+* state issues ([dbc5de7](https://github.com/muxinc/media-elements/commit/dbc5de783596dec7b816b7cd09790e363a5a682f))
+
 ## [0.2.2](https://github.com/muxinc/youtube-video-element/compare/v0.2.1...v0.2.2) (2023-09-15)
 
 
@@ -51,6 +67,3 @@
 ### Features
 
 * add refactor + tests ([#19](https://github.com/muxinc/youtube-video-element/issues/19)) ([61fd549](https://github.com/muxinc/youtube-video-element/commit/61fd549bbcda7100d26319db8c4a294213309aac))
-
-
-
