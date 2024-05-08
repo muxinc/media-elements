@@ -36,7 +36,7 @@ jobs:
       - run: npm ci
         if: ${{ steps.release.outputs.releases_created }}
 
-      - run: npm publish -w packages
+      - run: npm exec -c publish-packages
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
         if: ${{ steps.release.outputs.releases_created }}

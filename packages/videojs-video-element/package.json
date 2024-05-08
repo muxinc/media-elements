@@ -1,6 +1,6 @@
 {
   "name": "videojs-video-element",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "A custom element for Video.js with an API that matches the `<video>` API",
   "author": "@muxinc",
   "license": "MIT",
