@@ -28,7 +28,7 @@
     "pretest": "npm run build -- --sourcemap=inline",
     "test": "npm run test:types && wet test --coverage",
     "test:types": "tsc test/test.js --module nodenext --moduleResolution nodenext --target esnext --noEmit --allowJs",
-    "dev": "tsc -w & esbuild src/*.ts --format=esm --outdir=dist --servedir=. --watch=forever",
+    "dev": "tsc -w & esbuild src/*.ts --format=esm --outdir=dist --watch=forever",
     "build": "rm -rf dist && esbuild src/*.ts --format=esm --outdir=dist",
     "postbuild": "tsc"
   },
