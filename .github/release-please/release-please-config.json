@@ -6,18 +6,44 @@
   "include-v-in-tag": false,
   "plugins": ["node-workspace"],
   "packages": {
-    "packages/castable-video": {},
-    "packages/cloudflare-video-element": {},
-    "packages/custom-media-element": {},
-    "packages/dash-video-element": {},
-    "packages/hls-video-element": {},
-    "packages/jwplayer-video-element": {},
-    "packages/media-tracks": {},
-    "packages/spotify-audio-element": {},
-    "packages/super-media-element": {},
-    "packages/videojs-video-element": {},
-    "packages/vimeo-video-element": {},
-    "packages/wistia-video-element": {},
-    "packages/youtube-video-element": {}
+    "packages/castable-video": {
+      "component": "castable-video"
+    },
+    "packages/cloudflare-video-element": {
+      "component": "cloudflare-video-element"
+    },
+    "packages/custom-media-element": {
+      "component": "custom-media-element"
+    },
+    "packages/dash-video-element": {
+      "component": "dash-video-element"
+    },
+    "packages/hls-video-element": {
+      "component": "hls-video-element"
+    },
+    "packages/jwplayer-video-element": {
+      "component": "jwplayer-video-element"
+    },
+    "packages/media-tracks": {
+      "component": "media-tracks"
+    },
+    "packages/spotify-audio-element": {
+      "component": "spotify-audio-element"
+    },
+    "packages/super-media-element": {
+      "component": "super-media-element"
+    },
+    "packages/videojs-video-element": {
+      "component": "videojs-video-element"
+    },
+    "packages/vimeo-video-element": {
+      "component": "vimeo-video-element"
+    },
+    "packages/wistia-video-element": {
+      "component": "wistia-video-element"
+    },
+    "packages/youtube-video-element": {
+      "component": "youtube-video-element"
+    }
   }
 }
