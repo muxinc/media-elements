@@ -5,6 +5,13 @@
 [1]: https://www.npmjs.com/package/super-media-element?activeTab=versions
 
 
+## [1.4.1](https://github.com/muxinc/media-elements/compare/super-media-element@1.4.0...super-media-element@1.4.1) (2024-05-09)
+
+
+### Bug Fixes
+
+* update build-react-wrapper script ([5b42462](https://github.com/muxinc/media-elements/commit/5b42462794192a19b730e7aaabba5646300f0a05))
+
 ## [1.4.0](https://github.com/muxinc/media-elements/compare/super-media-element-v1.3.0...super-media-element@1.4.0) (2024-05-08)
 
 
