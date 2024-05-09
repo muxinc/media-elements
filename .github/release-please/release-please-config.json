@@ -9,6 +9,9 @@
     "examples/nextjs": {
       "skip-github-release": true
     },
+    "scripts/build-react": {
+      "skip-github-release": true
+    },
     "packages/castable-video": {},
     "packages/cloudflare-video-element": {},
     "packages/custom-media-element": {},
