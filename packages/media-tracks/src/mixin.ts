@@ -162,7 +162,7 @@ function getVideoTracks(media: any) {
     tracks = new VideoTrackList();
     getPrivate(media).videoTracks = tracks;
 
-    // Sync native tracks to shim track list
+    // Sync native tracks to shim track list.
     if (nativeVideoTracksFn) {
       // If media is not a native media element, make it accessible via media.nativeEl.
       const nativeTracks = nativeVideoTracksFn.call(media.nativeEl ?? media);
