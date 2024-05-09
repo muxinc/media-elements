@@ -14,13 +14,13 @@ const isCLI = nodePath === modulePath;
 if (isCLI) cliBuild();
 
 export async function cliBuild() {
-  const { values: args, positionals } = parseArgs({
+  const { values, positionals } = parseArgs({
     options: {},
     strict: false,
     allowPositionals: true,
   });
 
-  await build(positionals, args);
+  await build(positionals, values);
 }
 
 export async function build() {
