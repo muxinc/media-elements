@@ -8,7 +8,30 @@ on:
       - main
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run lint
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+      - run: npm ci
+      - run: npm test
+
   release:
+    needs: [lint, test]
     runs-on: ubuntu-latest
     environment: production
     permissions:
@@ -35,6 +58,9 @@ jobs:
         if: ${{ steps.release.outputs.releases_created }}
 
       - run: npm ci
+        if: ${{ steps.release.outputs.releases_created }}
+
+      - run: npm run build
         if: ${{ steps.release.outputs.releases_created }}
 
       - run: npm exec -c publish-packages
