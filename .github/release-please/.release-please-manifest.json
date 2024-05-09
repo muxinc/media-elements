@@ -1,6 +1,6 @@
 {
   "examples/nextjs": "0.1.2",
-  "scripts/build-react-wrapper": "0.1.1",
+  "scripts/build-react-wrapper": "0.1.0",
   "packages/castable-video": "1.0.7",
   "packages/cloudflare-video-element": "1.1.0",
   "packages/custom-media-element": "1.3.0",

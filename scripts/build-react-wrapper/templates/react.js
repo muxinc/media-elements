@@ -24,7 +24,7 @@ export default React.forwardRef(({ children, ...props }, ref) => {
     }
   }
 
-  // Only render the custom element template HTML on the server.
+  // Only render the custom element template HTML on the server..
   // The custom element will render itself on the client.
   if (typeof window === 'undefined' && Element?.getTemplateHTML && Element?.shadowRootOptions) {
     const { mode, delegatesFocus } = Element.shadowRootOptions;
