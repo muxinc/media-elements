@@ -1,6 +1,6 @@
 {
   "name": "videojs-video-element",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "A custom element for Video.js with an API that matches the `<video>` API",
   "author": "@muxinc",
   "license": "MIT",
@@ -30,11 +30,11 @@
     "build": "run-s build:*"
   },
   "dependencies": {
-    "media-tracks": "^0.3.1",
-    "super-media-element": "~1.4.0"
+    "media-tracks": "^0.3.2",
+    "super-media-element": "~1.4.1"
   },
   "devDependencies": {
-    "build-react-wrapper": "^0.1.0",
+    "build-react-wrapper": "^0.1.1",
     "npm-run-all": "^4.1.5",
     "wet-run": "^1.2.2"
   },

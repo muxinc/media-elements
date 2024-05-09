@@ -5,6 +5,13 @@
 [1]: https://www.npmjs.com/package/media-tracks?activeTab=versions
 
 
+## [0.3.2](https://github.com/muxinc/media-elements/compare/media-tracks@0.3.1...media-tracks@0.3.2) (2024-05-09)
+
+
+### Bug Fixes
+
+* release media-tracks patch, fix missing dist ([e12b560](https://github.com/muxinc/media-elements/commit/e12b5607911bb802296e2a0332f073f48cb1a4b7))
+
 ## [0.3.1](https://github.com/muxinc/media-elements/compare/media-tracks-v0.3.0...media-tracks@0.3.1) (2024-05-08)
 
 

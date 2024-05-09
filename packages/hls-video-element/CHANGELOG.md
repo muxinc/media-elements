@@ -6,6 +6,22 @@
 
 
 
+## [1.2.1](https://github.com/muxinc/media-elements/compare/hls-video-element@1.2.0...hls-video-element@1.2.1) (2024-05-09)
+
+
+### Bug Fixes
+
+* update build-react-wrapper script ([5b42462](https://github.com/muxinc/media-elements/commit/5b42462794192a19b730e7aaabba5646300f0a05))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * media-tracks bumped from ^0.3.1 to ^0.3.2
+  * devDependencies
+    * build-react-wrapper bumped from ^0.1.0 to ^0.1.1
+
 ## [1.2.0](https://github.com/muxinc/media-elements/compare/hls-video-element-v1.1.4...hls-video-element@1.2.0) (2024-05-08)
 
 
