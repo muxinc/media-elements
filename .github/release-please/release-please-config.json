@@ -9,7 +9,7 @@
     "examples/nextjs": {
       "skip-github-release": true
     },
-    "scripts/build-react": {
+    "scripts/build-react-wrapper": {
       "skip-github-release": true
     },
     "packages/castable-video": {},
