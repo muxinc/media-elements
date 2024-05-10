@@ -11,6 +11,7 @@
   --font-sans: var(--sans);
   --font-mono: var(--mono);
   --mux-pink: #fa50b5;
+  --mux-yellow: #FFB200;
 }
 
 [data-theme='light'] {
@@ -118,8 +119,8 @@ aside h1 {
 
 aside h1 code {
   color: var(--surface-1);
-  background-color: var(--mux-pink);
-  padding: 0 var(--size-2);
+  background-color: var(--mux-yellow);
+  padding: .1rem var(--size-2);
   margin-right: var(--size-2);
 }
 
