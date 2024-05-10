@@ -8,17 +8,20 @@ export default React.forwardRef(({ children, ...props }, ref) => {
 
   const attrs = propsToAttrs({ ...props, ref });
 
-  for (let propName in props) {
-    if (/^on[A-Z]/.test(propName)) {
-      const type = propName.slice(2).toLowerCase();
-      const callback = props[propName];
+  for (let name in props) {
+    if (name[0] === 'o' && name[1] === 'n') {
+      const useCapture = name.endsWith('Capture');
+      const eventName = name.slice(2, useCapture ? name.length - 7 : undefined);
+      const callback = props[name];
 
       useEffect(() => {
         const eventTarget = ref?.current;
-        if (!eventTarget || !callback) return;
-        eventTarget.addEventListener(type, callback);
+        if (!eventTarget || typeof callback !== 'function') return;
+
+        eventTarget.addEventListener(eventName, callback, useCapture);
+
         return () => {
-          eventTarget.removeEventListener(type, callback);
+          eventTarget.removeEventListener(eventName, callback, useCapture);
         };
       }, [ref?.current, callback]);
     }
