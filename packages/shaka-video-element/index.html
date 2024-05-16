@@ -1,0 +1,190 @@
+<!doctype html>
+<html>
+<head>
+  <title>&lt;shaka-video&gt;</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css" />
+  <style>
+    body {
+      text-align: center;
+    }
+    media-controller {
+      display: block;
+      aspect-ratio: 16 / 9;
+      background: transparent;
+    }
+    shaka-video[slot] {
+      /* Fix Safari aspect-ratio overflow glitch */
+      height: fit-content;
+    }
+    shaka-video:not([slot]) {
+      aspect-ratio: 16 / 9;
+      width: 100%;
+    }
+    nav {
+      display: flex;
+      justify-content: space-between;
+    }
+  </style>
+
+  <script async src="https://cdn.jsdelivr.net/npm/es-module-shims"></script>
+  <script type="importmap">
+    {
+      "imports": {
+        "custom-media-element": "https://cdn.jsdelivr.net/npm/custom-media-element@1.2/+esm",
+        "media-tracks": "https://cdn.jsdelivr.net/npm/media-tracks@0.3/+esm"
+      }
+    }
+  </script>
+  <script type="module" src="https://cdn.jsdelivr.net/npm/media-chrome/+esm"></script>
+</head>
+<body>
+  <h1>&lt;shaka-video&gt;</h1>
+  <br>
+
+  <h2>On-demand</h2>
+  <shaka-video
+    id="myVideo"
+    controls
+    src="https://stream.mux.com/Sc89iWAyNkhJ3P1rQ02nrEdCFTnfT01CZ2KmaEcxXfB008.m3u8"
+    poster="https://image.mux.com/Sc89iWAyNkhJ3P1rQ02nrEdCFTnfT01CZ2KmaEcxXfB008/thumbnail.webp"
+    crossorigin
+    playsinline
+  ></shaka-video>
+
+  <br>
+
+  <nav>
+    <nav>
+      <button id="loadbtn">Load new clip</button>
+    </nav>
+    <nav>
+      <input id="qualityselected" value="N/A" readonly size="5">
+    </nav>
+  </nav>
+
+  <script type="module">
+    import './dist/shaka-video-element.js';
+
+    myVideo.addEventListener('resize', () => {
+      qualityselected.value = `${Math.min(myVideo.videoWidth, myVideo.videoHeight)}p`;
+    });
+
+    loadbtn.onclick = () => {
+      myVideo.poster = 'https://image.mux.com/1EFcsL5JET00t00mBv01t00xt00T4QeNQtsXx2cKY6DLd7RM/thumbnail.jpg?time=1';
+      myVideo.src = 'https://stream.mux.com/1EFcsL5JET00t00mBv01t00xt00T4QeNQtsXx2cKY6DLd7RM.m3u8';
+    };
+  </script>
+
+  <h2>Live</h2>
+  <shaka-video
+    id="live-video"
+    controls
+    crossorigin
+    playsinline
+  ></shaka-video>
+
+  <script type="module">
+    import './dist/shaka-video-element.js';
+
+    const video = document.querySelector('#live-video');
+
+    video.api.configure({
+      streaming: {
+        lowLatencyMode: true,
+      }
+    });
+
+    video.src = 'https://stream.mux.com/v69RSHhFelSm4701snP22dYz2jICy4E4FUyk02rW4gxRM.m3u8';
+
+    video.addEventListener('emptied', (e) => {
+      console.log(e.type);
+    });
+
+    video.addEventListener('loadstart', (e) => {
+      console.log(e.type);
+    });
+
+    video.addEventListener('loadedmetadata', (e) => {
+      console.log(e.type);
+    });
+
+    video.addEventListener('loadeddata', (e) => {
+      console.log(e.type);
+    });
+
+    video.addEventListener('play', (e) => {
+      console.log(e.type);
+    });
+
+    video.addEventListener('waiting', (e) => {
+      console.log(e.type);
+    });
+
+    video.addEventListener('playing', (e) => {
+      console.log(e.type);
+    });
+
+    video.addEventListener('pause', (e) => {
+      console.log(e.type);
+    });
+
+    video.addEventListener('seeking', (e) => {
+      console.log(e.type);
+    });
+
+    video.addEventListener('seeked', (e) => {
+      console.log(e.type);
+    });
+
+    video.addEventListener('ended', (e) => {
+      console.log(e.type);
+    });
+
+    video.addEventListener('durationchange', (e) => {
+      console.log(e.type, video.duration);
+    });
+
+    video.addEventListener('volumechange', (e) => {
+      console.log(e.type, video.volume);
+    });
+
+    video.addEventListener('resize', (e) => {
+      console.log(e.type, video.videoWidth, video.videoHeight);
+    });
+  </script>
+
+  <br>
+
+  <h2>With <a href="https://github.com/muxinc/media-chrome" target="_blank">Media Chrome</a></h2>
+
+  <media-controller>
+    <shaka-video
+      src="https://stream.mux.com/O6LdRc0112FEJXH00bGsN9Q31yu5EIVHTgjTKRkKtEq1k.m3u8"
+      poster="https://image.mux.com/O6LdRc0112FEJXH00bGsN9Q31yu5EIVHTgjTKRkKtEq1k/thumbnail.jpg?time=56"
+      crossorigin
+      playsinline
+      slot="media"
+      muted
+    >
+      <track default kind="metadata" label="thumbnails" src="https://image.mux.com/O6LdRc0112FEJXH00bGsN9Q31yu5EIVHTgjTKRkKtEq1k/storyboard.vtt">
+    </shaka-video>
+    <media-loading-indicator slot="centered-chrome" no-auto-hide></media-loading-indicator>
+    <media-control-bar>
+      <media-play-button></media-play-button>
+      <media-seek-backward-button seek-offset="15"></media-seek-backward-button>
+      <media-seek-forward-button seek-offset="15"></media-seek-forward-button>
+      <media-mute-button></media-mute-button>
+      <media-volume-range></media-volume-range>
+      <media-time-range></media-time-range>
+      <media-time-display show-duration remaining></media-time-display>
+      <media-playback-rate-button></media-playback-rate-button>
+      <media-pip-button></media-pip-button>
+      <media-fullscreen-button></media-fullscreen-button>
+    </media-control-bar>
+  </media-controller>
+
+  <br>
+  <br>
+</body>
+</html>
