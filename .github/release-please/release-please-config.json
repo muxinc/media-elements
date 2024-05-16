@@ -15,6 +15,7 @@
     "packages/hls-video-element": {},
     "packages/jwplayer-video-element": {},
     "packages/media-tracks": {},
+    "packages/shaka-video-element": {},
     "packages/spotify-audio-element": {},
     "packages/super-media-element": {},
     "packages/videojs-video-element": {},

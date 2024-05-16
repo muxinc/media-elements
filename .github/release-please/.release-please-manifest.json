@@ -8,6 +8,7 @@
   "packages/hls-video-element": "1.2.1",
   "packages/jwplayer-video-element": "1.1.1",
   "packages/media-tracks": "0.3.2",
+  "packages/shaka-video-element": "0.6.0",
   "packages/spotify-audio-element": "0.1.5",
   "packages/super-media-element": "1.4.1",
   "packages/videojs-video-element": "1.2.1",
