@@ -1,5 +1,33 @@
 # Changelog
 
+## [0.1.4](https://github.com/muxinc/media-elements/compare/nextjs@0.1.3...nextjs@0.1.4) (2024-05-16)
+
+
+### Features
+
+* add shaka-video ([#14](https://github.com/muxinc/media-elements/issues/14)) ([b56fe74](https://github.com/muxinc/media-elements/commit/b56fe743516663d35741b771a03ae12879f84296))
+
+
+### Bug Fixes
+
+* **example:** update colors / favicon ([b9fce07](https://github.com/muxinc/media-elements/commit/b9fce077e6ebbfbb124c8c52f83375b3a843953d))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * cloudflare-video-element bumped from ^1.1.1 to ^1.1.2
+    * dash-video-element bumped from ^0.0.5 to ^0.0.6
+    * hls-video-element bumped from ^1.2.1 to ^1.2.2
+    * jwplayer-video-element bumped from ^1.1.1 to ^1.1.2
+    * shaka-video-element bumped from ^0.6.0 to ^0.6.1
+    * spotify-audio-element bumped from ^0.1.5 to ^0.1.6
+    * videojs-video-element bumped from ^1.2.1 to ^1.2.2
+    * vimeo-video-element bumped from ^1.1.1 to ^1.1.2
+    * wistia-video-element bumped from ^1.1.1 to ^1.1.2
+    * youtube-video-element bumped from ^1.1.1 to ^1.1.2
+
 ## [0.1.3](https://github.com/muxinc/media-elements/compare/nextjs-v0.1.2...nextjs@0.1.3) (2024-05-09)
 
 
