@@ -25,7 +25,7 @@ export default function Nav() {
          </g>
       </svg>
     </button>
-    <a href="https://github.com/muxinc/next-video" title="Source on Github">
+    <a href="https://github.com/muxinc/media-elements" title="Source on Github">
       GitHub
     </a>
   </nav>
