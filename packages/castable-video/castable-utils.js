@@ -1,4 +1,4 @@
-/* global chrome, cast, WeakRef */
+/* global WeakRef */
 
 export const privateProps = new WeakMap();
 
@@ -21,7 +21,7 @@ export const IterableWeakSet = globalThis.WeakRef ?
   } : Set;
 
 export function onCastApiAvailable(callback) {
-  if (!isChromeCastAvailable()) {
+  if (!globalThis.chrome?.cast?.isAvailable) {
     globalThis.__onGCastApiAvailable = () => {
       // The globalThis.__onGCastApiAvailable callback alone is not reliable for
       // the added cast.framework. It's loaded in a separate JS file.
@@ -29,14 +29,14 @@ export function onCastApiAvailable(callback) {
       // https://www.gstatic.com/cast/sdk/libs/sender/1.0/cast_framework.js
       customElements
         .whenDefined('google-cast-button')
-        .then(() => callback(isChromeCastAvailable()));
+        .then(callback);
     };
-  } else if (!isCastFrameworkAvailable()) {
+  } else if (!globalThis.cast?.framework) {
     customElements
       .whenDefined('google-cast-button')
-      .then(() => callback(isChromeCastAvailable()));
+      .then(callback);
   } else {
-    callback(isChromeCastAvailable());
+    callback();
   }
 }
 
@@ -47,26 +47,15 @@ export function requiresCastFramework() {
 
 export function loadCastFramework() {
   const sdkUrl = 'https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1';
-  if (globalThis.chrome.cast || document.querySelector(`script[src="${sdkUrl}"]`)) return;
+  if (globalThis.chrome?.cast || document.querySelector(`script[src="${sdkUrl}"]`)) return;
 
   const script = document.createElement('script');
   script.src = sdkUrl;
   document.head.append(script);
 }
 
-export function isChromeCastAvailable() {
-  return typeof chrome !== 'undefined' && chrome.cast && chrome.cast.isAvailable;
-}
-
-export function isCastFrameworkAvailable() {
-  return typeof cast !== 'undefined' && cast.framework;
-}
-
 export function castContext() {
-  if (isCastFrameworkAvailable()) {
-    return cast.framework.CastContext.getInstance();
-  }
-  return undefined;
+  return globalThis.cast?.framework?.CastContext.getInstance();
 }
 
 export function currentSession() {

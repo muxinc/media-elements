@@ -5,7 +5,6 @@ import {
   InvalidStateError,
   NotSupportedError,
   onCastApiAvailable,
-  isChromeCastAvailable,
   castContext,
   currentSession,
   currentMedia,
@@ -19,9 +18,10 @@ const castElementRef = new WeakSet();
 
 let cf;
 
-onCastApiAvailable((isAvailable) => {
-  if (!isAvailable) {
-    console.warn('Cast API is not available.');
+onCastApiAvailable(() => {
+  if (!globalThis.chrome?.cast?.isAvailable) {
+    // Useful to see in verbose logs if this shows undefined or false.
+    console.debug('chrome.cast.isAvailable', globalThis.chrome?.cast?.isAvailable);
     return;
   }
 
@@ -114,7 +114,7 @@ export class RemotePlayback extends EventTarget {
       throw new InvalidStateError('disableRemotePlayback attribute is present.');
     }
 
-    if (!isChromeCastAvailable()) {
+    if (!globalThis.chrome?.cast?.isAvailable) {
       throw new NotSupportedError('The RemotePlayback API is disabled on this platform.');
     }
 
