@@ -5,6 +5,13 @@
 [1]: https://www.npmjs.com/package/castable-video?activeTab=versions
 
 
+## [1.0.8](https://github.com/muxinc/media-elements/compare/castable-video@1.0.7...castable-video@1.0.8) (2024-05-17)
+
+
+### Bug Fixes
+
+* chrome.cast.isAvailable fatal typeerror ([#15](https://github.com/muxinc/media-elements/issues/15)) ([8a7862f](https://github.com/muxinc/media-elements/commit/8a7862fbc83a47f52e03d0a81af82ca76c473038))
+
 ## [1.0.7](https://github.com/muxinc/media-elements/compare/castable-video-v1.0.6...castable-video@1.0.7) (2024-05-08)
 
 
