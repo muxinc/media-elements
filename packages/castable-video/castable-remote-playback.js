@@ -20,7 +20,12 @@ const castElementRef = new WeakSet();
 let cf;
 
 onCastApiAvailable((isAvailable) => {
-  if (isAvailable && !cf) {
+  if (!isAvailable) {
+    console.warn('Cast API is not available.');
+    return;
+  }
+
+  if (!cf) {
     cf = cast.framework;
 
     castContext().addEventListener(cf.CastContextEventType.CAST_STATE_CHANGED, (e) => {

@@ -29,14 +29,14 @@ export function onCastApiAvailable(callback) {
       // https://www.gstatic.com/cast/sdk/libs/sender/1.0/cast_framework.js
       customElements
         .whenDefined('google-cast-button')
-        .then(() => callback(chrome.cast.isAvailable));
+        .then(() => callback(isChromeCastAvailable()));
     };
   } else if (!isCastFrameworkAvailable()) {
     customElements
       .whenDefined('google-cast-button')
-      .then(() => callback(chrome.cast.isAvailable));
+      .then(() => callback(isChromeCastAvailable()));
   } else {
-    callback(chrome.cast.isAvailable);
+    callback(isChromeCastAvailable());
   }
 }
 
