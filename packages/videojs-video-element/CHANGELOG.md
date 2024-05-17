@@ -5,6 +5,15 @@
 [1]: https://www.npmjs.com/package/videojs-video-element?activeTab=versions
 
 
+## [1.2.2](https://github.com/muxinc/media-elements/compare/videojs-video-element@1.2.1...videojs-video-element@1.2.2) (2024-05-16)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * build-react-wrapper bumped from ^0.1.1 to ^0.1.2
+
 ## [1.2.1](https://github.com/muxinc/media-elements/compare/videojs-video-element@1.2.0...videojs-video-element@1.2.1) (2024-05-09)
 
 
