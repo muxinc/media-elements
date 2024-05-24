@@ -18,7 +18,15 @@ export default function Page() {
           controls
           crossOrigin=""
           playsInline
-        ></Player>
+          suppressHydrationWarning
+        >
+          <track
+            label="thumbnails"
+            default
+            kind="metadata"
+            src="https://image.mux.com/jtWZbHQ013SLyISc9LbIGn8f4c3lWan00qOkoPMZEXmcU/storyboard.vtt"
+          />
+        </Player>
       </section>
     </>
   );
