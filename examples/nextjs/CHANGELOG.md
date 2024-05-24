@@ -1,5 +1,30 @@
 # Changelog
 
+## [0.1.5](https://github.com/muxinc/media-elements/compare/nextjs@0.1.4...nextjs@0.1.5) (2024-05-24)
+
+
+### Bug Fixes
+
+* **build-react-wrapper:** fix suppressHydrationWarning ([586d221](https://github.com/muxinc/media-elements/commit/586d22106c3618769c753914f84b933b6b92c70f))
+* **custom-media-element:** fix track/source sync ([586d221](https://github.com/muxinc/media-elements/commit/586d22106c3618769c753914f84b933b6b92c70f))
+* fix suppressHydrationWarning & track/source sync ([#19](https://github.com/muxinc/media-elements/issues/19)) ([586d221](https://github.com/muxinc/media-elements/commit/586d22106c3618769c753914f84b933b6b92c70f))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * cloudflare-video-element bumped from ^1.1.2 to ^1.1.3
+    * dash-video-element bumped from ^0.0.6 to ^0.0.7
+    * hls-video-element bumped from ^1.2.2 to ^1.2.3
+    * jwplayer-video-element bumped from ^1.1.2 to ^1.1.3
+    * shaka-video-element bumped from ^0.6.1 to ^0.6.2
+    * spotify-audio-element bumped from ^0.1.6 to ^0.1.7
+    * videojs-video-element bumped from ^1.2.2 to ^1.2.3
+    * vimeo-video-element bumped from ^1.1.2 to ^1.1.3
+    * wistia-video-element bumped from ^1.1.2 to ^1.1.3
+    * youtube-video-element bumped from ^1.1.2 to ^1.1.3
+
 ## [0.1.4](https://github.com/muxinc/media-elements/compare/nextjs@0.1.3...nextjs@0.1.4) (2024-05-16)
 
 

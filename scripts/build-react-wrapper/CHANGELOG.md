@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.1.3](https://github.com/muxinc/media-elements/compare/build-react-wrapper@0.1.2...build-react-wrapper@0.1.3) (2024-05-24)
+
+
+### Bug Fixes
+
+* **build-react-wrapper:** fix suppressHydrationWarning ([586d221](https://github.com/muxinc/media-elements/commit/586d22106c3618769c753914f84b933b6b92c70f))
+* **custom-media-element:** fix track/source sync ([586d221](https://github.com/muxinc/media-elements/commit/586d22106c3618769c753914f84b933b6b92c70f))
+* fix suppressHydrationWarning & track/source sync ([#19](https://github.com/muxinc/media-elements/issues/19)) ([586d221](https://github.com/muxinc/media-elements/commit/586d22106c3618769c753914f84b933b6b92c70f))
+
 ## [0.1.2](https://github.com/muxinc/media-elements/compare/build-react-wrapper@0.1.1...build-react-wrapper@0.1.2) (2024-05-16)
 
 
