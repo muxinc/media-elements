@@ -19,7 +19,14 @@ export default function Page() {
           crossOrigin=""
           playsInline
           suppressHydrationWarning
-        ></Player>
+        >
+          <track
+            label="thumbnails"
+            default
+            kind="metadata"
+            src="https://image.mux.com/jtWZbHQ013SLyISc9LbIGn8f4c3lWan00qOkoPMZEXmcU/storyboard.vtt"
+          />
+        </Player>
       </section>
     </>
   );

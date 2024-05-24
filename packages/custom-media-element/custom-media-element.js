@@ -220,6 +220,7 @@ export const CustomMediaMixin = (superclass, { tag, is }) => {
     }
 
     get nativeEl() {
+      this.#init();
       return this.#nativeEl
         ?? this.shadowRoot.querySelector(tag)
         ?? this.querySelector(':scope > [slot=media]')
@@ -280,6 +281,7 @@ export const CustomMediaMixin = (superclass, { tag, is }) => {
       }
 
       this.shadowRoot.addEventListener('slotchange', this);
+      this.#syncMediaChildren();
 
       for (let type of this.constructor.Events) {
         this.shadowRoot.addEventListener?.(type, this, true);
@@ -309,7 +311,7 @@ export const CustomMediaMixin = (superclass, { tag, is }) => {
       const removeNativeChildren = new Map(this.#childMap);
 
       this.shadowRoot.querySelector('slot:not([name])')
-        .assignedElements()
+        .assignedElements({ flatten: true })
         .filter((el) => ['track', 'source'].includes(el.localName))
         .forEach((el) => {
           // If the source or track is still in the assigned elements keep it.
