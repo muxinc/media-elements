@@ -3,10 +3,9 @@
 import React, { useRef, useEffect } from 'react';
 import Element from '../{{{file_name}}}.js';
 
-export default React.forwardRef(({ children, ...props }, ref) => {
+export default React.forwardRef((allProps, ref) => {
+  let { children, suppressHydrationWarning, ...props } = allProps;
   ref ??= useRef();
-
-  const attrs = propsToAttrs({ ...props, ref });
 
   for (let name in props) {
     if (name[0] === 'o' && name[1] === 'n') {
@@ -27,6 +26,8 @@ export default React.forwardRef(({ children, ...props }, ref) => {
     }
   }
 
+  const attrs = propsToAttrs(props);
+
   // Only render the custom element template HTML on the server..
   // The custom element will render itself on the client.
   if (typeof window === 'undefined' && Element?.getTemplateHTML && Element?.shadowRootOptions) {
@@ -43,7 +44,12 @@ export default React.forwardRef(({ children, ...props }, ref) => {
     children = [templateShadowRoot, children];
   }
 
-  return React.createElement('{{{element_name}}}', attrs, ...[].concat(children));
+  return React.createElement('{{{element_name}}}', {
+    ...attrs,
+    ref,
+    children,
+    suppressHydrationWarning,
+  });
 });
 
 const ReactPropToAttrNameMap = {
@@ -66,7 +72,7 @@ function toAttrName(propName, propValue) {
   if (ReactPropToAttrNameMap[propName]) return ReactPropToAttrNameMap[propName];
   if (typeof propValue == 'undefined') return undefined;
   if (typeof propValue === 'boolean' && !propValue) return undefined;
-  if (/^on[A-Z]/.test(propName)) return undefined;
+  if (propName.startsWith('on') && typeof propValue === 'function') return undefined;
   if (/[A-Z]/.test(propName)) return propName.toLowerCase();
   return propName;
 }

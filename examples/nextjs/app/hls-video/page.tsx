@@ -18,6 +18,7 @@ export default function Page() {
           controls
           crossOrigin=""
           playsInline
+          suppressHydrationWarning
         ></Player>
       </section>
     </>
