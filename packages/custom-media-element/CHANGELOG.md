@@ -5,6 +5,15 @@
 [1]: https://www.npmjs.com/package/custom-media-element?activeTab=versions
 
 
+## [1.3.1](https://github.com/muxinc/media-elements/compare/custom-media-element@1.3.0...custom-media-element@1.3.1) (2024-05-24)
+
+
+### Bug Fixes
+
+* **build-react-wrapper:** fix suppressHydrationWarning ([586d221](https://github.com/muxinc/media-elements/commit/586d22106c3618769c753914f84b933b6b92c70f))
+* **custom-media-element:** fix track/source sync ([586d221](https://github.com/muxinc/media-elements/commit/586d22106c3618769c753914f84b933b6b92c70f))
+* fix suppressHydrationWarning & track/source sync ([#19](https://github.com/muxinc/media-elements/issues/19)) ([586d221](https://github.com/muxinc/media-elements/commit/586d22106c3618769c753914f84b933b6b92c70f))
+
 ## [1.3.0](https://github.com/muxinc/media-elements/compare/custom-media-element-v1.2.3...custom-media-element@1.3.0) (2024-05-08)
 
 

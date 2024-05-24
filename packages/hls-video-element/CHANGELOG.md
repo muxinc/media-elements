@@ -6,6 +6,17 @@
 
 
 
+## [1.2.3](https://github.com/muxinc/media-elements/compare/hls-video-element@1.2.2...hls-video-element@1.2.3) (2024-05-24)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * custom-media-element bumped from ^1.3.0 to ^1.3.1
+  * devDependencies
+    * build-react-wrapper bumped from ^0.1.2 to ^0.1.3
+
 ## [1.2.2](https://github.com/muxinc/media-elements/compare/hls-video-element@1.2.1...hls-video-element@1.2.2) (2024-05-16)
 
 
