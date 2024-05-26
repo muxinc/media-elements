@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.4](https://github.com/muxinc/media-elements/compare/build-react-wrapper@0.1.3...build-react-wrapper@0.1.4) (2024-05-26)
+
+
+### Bug Fixes
+
+* media element has lowercase event names ([edf28e1](https://github.com/muxinc/media-elements/commit/edf28e1a82ca19f961c5138d2302300ae3e0a6dc))
+
 ## [0.1.3](https://github.com/muxinc/media-elements/compare/build-react-wrapper@0.1.2...build-react-wrapper@0.1.3) (2024-05-24)
 
 
