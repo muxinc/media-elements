@@ -10,7 +10,7 @@ export default React.forwardRef((allProps, ref) => {
   for (let name in props) {
     if (name[0] === 'o' && name[1] === 'n') {
       const useCapture = name.endsWith('Capture');
-      const eventName = name.slice(2, useCapture ? name.length - 7 : undefined);
+      const eventName = name.slice(2, useCapture ? name.length - 7 : undefined).toLowerCase();
       const callback = props[name];
 
       useEffect(() => {
