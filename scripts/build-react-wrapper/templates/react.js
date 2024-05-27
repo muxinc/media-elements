@@ -1,11 +1,11 @@
 'use client';
 
-import React, { useRef, useEffect } from 'react';
+import React from 'react';
 import Element from '../{{{file_name}}}.js';
 
 export default React.forwardRef((allProps, ref) => {
   let { children, suppressHydrationWarning, ...props } = allProps;
-  ref ??= useRef();
+  const elementRef = React.useRef(null);
 
   for (let name in props) {
     if (name[0] === 'o' && name[1] === 'n') {
@@ -13,8 +13,8 @@ export default React.forwardRef((allProps, ref) => {
       const eventName = name.slice(2, useCapture ? name.length - 7 : undefined).toLowerCase();
       const callback = props[name];
 
-      useEffect(() => {
-        const eventTarget = ref?.current;
+      React.useEffect(() => {
+        const eventTarget = elementRef?.current;
         if (!eventTarget || typeof callback !== 'function') return;
 
         eventTarget.addEventListener(eventName, callback, useCapture);
@@ -22,7 +22,7 @@ export default React.forwardRef((allProps, ref) => {
         return () => {
           eventTarget.removeEventListener(eventName, callback, useCapture);
         };
-      }, [ref?.current, callback]);
+      }, [elementRef?.current, callback]);
     }
   }
 
@@ -46,7 +46,17 @@ export default React.forwardRef((allProps, ref) => {
 
   return React.createElement('{{{element_name}}}', {
     ...attrs,
-    ref,
+    ref: React.useCallback(
+      (node) => {
+        elementRef.current = node;
+        if (typeof ref === 'function') {
+          ref(node);
+        } else if (ref !== null) {
+          ref.current = node;
+        }
+      },
+      [ref]
+    ),
     children,
     suppressHydrationWarning,
   });
