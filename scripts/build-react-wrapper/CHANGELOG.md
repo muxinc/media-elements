@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.5](https://github.com/muxinc/media-elements/compare/build-react-wrapper@0.1.4...build-react-wrapper@0.1.5) (2024-05-27)
+
+
+### Bug Fixes
+
+* React ref forwarding ([#22](https://github.com/muxinc/media-elements/issues/22)) ([9e01cd0](https://github.com/muxinc/media-elements/commit/9e01cd04f9e914d6a59c84abbebbac7296418d1e))
+
 ## [0.1.4](https://github.com/muxinc/media-elements/compare/build-react-wrapper@0.1.3...build-react-wrapper@0.1.4) (2024-05-26)
 
 

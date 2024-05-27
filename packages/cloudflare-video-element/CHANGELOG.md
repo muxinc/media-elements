@@ -4,6 +4,15 @@
 
 [1]: https://www.npmjs.com/package/cloudflare-video-element?activeTab=versions
 
+## [1.1.5](https://github.com/muxinc/media-elements/compare/cloudflare-video-element@1.1.4...cloudflare-video-element@1.1.5) (2024-05-27)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * build-react-wrapper bumped from ^0.1.4 to ^0.1.5
+
 ## [1.1.4](https://github.com/muxinc/media-elements/compare/cloudflare-video-element@1.1.3...cloudflare-video-element@1.1.4) (2024-05-26)
 
 
