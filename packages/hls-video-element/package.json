@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "custom-media-element": "^1.3.1",
-    "hls.js": "^1.5.8",
+    "hls.js": "^1.5.11",
     "media-tracks": "^0.3.2"
   },
   "devDependencies": {
