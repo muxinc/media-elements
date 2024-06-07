@@ -6,6 +6,21 @@
 
 
 
+## [1.2.6](https://github.com/muxinc/media-elements/compare/hls-video-element@1.2.5...hls-video-element@1.2.6) (2024-06-07)
+
+
+### Bug Fixes
+
+* upgrade dependencies ([#24](https://github.com/muxinc/media-elements/issues/24)) ([f5abdcf](https://github.com/muxinc/media-elements/commit/f5abdcff0637e7d1f6b82f4684d94fccaceb8484))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * custom-media-element bumped from ^1.3.1 to ^1.3.2
+    * media-tracks bumped from ^0.3.2 to ^0.3.3
+
 ## [1.2.5](https://github.com/muxinc/media-elements/compare/hls-video-element@1.2.4...hls-video-element@1.2.5) (2024-05-27)
 
 

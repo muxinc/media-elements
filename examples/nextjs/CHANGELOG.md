@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.1.8](https://github.com/muxinc/media-elements/compare/nextjs@0.1.7...nextjs@0.1.8) (2024-06-07)
+
+
+### Bug Fixes
+
+* upgrade dependencies ([#24](https://github.com/muxinc/media-elements/issues/24)) ([f5abdcf](https://github.com/muxinc/media-elements/commit/f5abdcff0637e7d1f6b82f4684d94fccaceb8484))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * dash-video-element bumped from ^0.0.9 to ^0.0.10
+    * hls-video-element bumped from ^1.2.5 to ^1.2.6
+    * jwplayer-video-element bumped from ^1.1.5 to ^1.1.6
+    * shaka-video-element bumped from ^0.6.4 to ^0.6.5
+    * videojs-video-element bumped from ^1.2.5 to ^1.2.6
+    * wistia-video-element bumped from ^1.1.5 to ^1.1.6
+
 ## [0.1.7](https://github.com/muxinc/media-elements/compare/nextjs@0.1.6...nextjs@0.1.7) (2024-05-27)
 
 

@@ -6,6 +6,15 @@
 
 
 
+## [1.1.6](https://github.com/muxinc/media-elements/compare/jwplayer-video-element@1.1.5...jwplayer-video-element@1.1.6) (2024-06-07)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * super-media-element bumped from ~1.4.1 to ~1.4.2
+
 ## [1.1.5](https://github.com/muxinc/media-elements/compare/jwplayer-video-element@1.1.4...jwplayer-video-element@1.1.5) (2024-05-27)
 
 

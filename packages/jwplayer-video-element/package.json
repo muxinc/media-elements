@@ -1,6 +1,6 @@
 {
   "name": "jwplayer-video-element",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "description": "A custom element for the JW player with an API that matches the `<video>` API",
   "author": "@muxinc",
   "license": "MIT",
@@ -30,7 +30,7 @@
     "build": "run-s build:*"
   },
   "dependencies": {
-    "super-media-element": "~1.4.1"
+    "super-media-element": "~1.4.2"
   },
   "devDependencies": {
     "build-react-wrapper": "^0.1.5",
