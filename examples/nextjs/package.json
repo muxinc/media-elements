@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@mux/mux-video-react": "^0.10.0",
+    "@mux/mux-video-react": "^0.11.0",
     "cloudflare-video-element": "^1.1.5",
     "dash-video-element": "^0.0.9",
     "hls-video-element": "^1.2.5",
