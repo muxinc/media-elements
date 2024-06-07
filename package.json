@@ -31,7 +31,8 @@
   },
   "devDependencies": {
     "eslint": "^8.57.0",
-    "turbo": "^1.13.3",
+    "turbo": "^2.0.3",
     "typescript": "^5.4.5"
-  }
+  },
+  "packageManager": "npm@10.8.1"
 }
