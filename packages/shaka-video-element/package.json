@@ -1,6 +1,6 @@
 {
   "name": "shaka-video-element",
-  "version": "0.6.5",
+  "version": "0.6.6",
   "description": "Custom element (web component) for Shaka Player",
   "author": "@muxinc",
   "license": "MIT",
@@ -34,7 +34,7 @@
     "shaka-player": "~4.8.4"
   },
   "devDependencies": {
-    "build-react-wrapper": "^0.1.5",
+    "build-react-wrapper": "^0.1.6",
     "npm-run-all": "^4.1.5",
     "wet-run": "^1.2.2"
   },
