@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.6](https://github.com/muxinc/media-elements/compare/build-react-wrapper@0.1.5...build-react-wrapper@0.1.6) (2024-06-14)
+
+
+### Bug Fixes
+
+* React wrapper types ([#26](https://github.com/muxinc/media-elements/issues/26)) ([fe1d089](https://github.com/muxinc/media-elements/commit/fe1d089816fcc49e9d37f37a2fa030b5fa2e4bef))
+
 ## [0.1.5](https://github.com/muxinc/media-elements/compare/build-react-wrapper@0.1.4...build-react-wrapper@0.1.5) (2024-05-27)
 
 

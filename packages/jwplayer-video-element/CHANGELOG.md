@@ -6,6 +6,15 @@
 
 
 
+## [1.1.7](https://github.com/muxinc/media-elements/compare/jwplayer-video-element@1.1.6...jwplayer-video-element@1.1.7) (2024-06-14)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * build-react-wrapper bumped from ^0.1.5 to ^0.1.6
+
 ## [1.1.6](https://github.com/muxinc/media-elements/compare/jwplayer-video-element@1.1.5...jwplayer-video-element@1.1.6) (2024-06-07)
 
 
