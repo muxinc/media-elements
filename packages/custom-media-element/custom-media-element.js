@@ -43,7 +43,7 @@ export const Events = [
 ];
 
 function getAudioTemplateHTML(attrs) {
-  return /*html*/`
+  return /*html*/ `
     <style>
       :host {
         display: inline-flex;
@@ -57,7 +57,9 @@ function getAudioTemplateHTML(attrs) {
       }
     </style>
     <slot name="media">
-      <audio${serializeAttributes(attrs)}></audio>
+      <audio${serializeAttributes(attrs)}>
+        Audio player not working? Get <a href="https://media-chrome.org/html5-media-fallback">support for HTML5 audio</a>.
+      </audio>
     </slot>
     <slot></slot>
   `;
@@ -67,7 +69,7 @@ function getAudioTemplateHTML(attrs) {
 // It's a more consistent behavior pre and post custom element upgrade.
 
 function getVideoTemplateHTML(attrs) {
-  return /*html*/`
+  return /*html*/ `
     <style>
       :host {
         display: inline-block;
@@ -89,7 +91,9 @@ function getVideoTemplateHTML(attrs) {
       }
     </style>
     <slot name="media">
-      <video${serializeAttributes(attrs)}></video>
+      <video${serializeAttributes(attrs)}>
+        Video player not working? Get <a href="https://media-chrome.org/html5-media-fallback">support for HTML5 audio</a>.
+      </video>
     </slot>
     <slot></slot>
   `;
@@ -99,7 +103,6 @@ function getVideoTemplateHTML(attrs) {
  * @see https://justinfagnani.com/2015/12/21/real-mixins-with-javascript-classes/
  */
 export const CustomMediaMixin = (superclass, { tag, is }) => {
-
   // `is` makes it possible to extend a custom built-in. e.g. castable-video
   const nativeElTest = globalThis.document?.createElement?.(tag, { is });
   const nativeElProps = nativeElTest ? getNativeElProps(nativeElTest) : [];
@@ -221,10 +224,12 @@ export const CustomMediaMixin = (superclass, { tag, is }) => {
 
     get nativeEl() {
       this.#init();
-      return this.#nativeEl
-        ?? this.shadowRoot.querySelector(tag)
-        ?? this.querySelector(':scope > [slot=media]')
-        ?? this.querySelector(tag);
+      return (
+        this.#nativeEl ??
+        this.shadowRoot.querySelector(tag) ??
+        this.querySelector(':scope > [slot=media]') ??
+        this.querySelector(tag)
+      );
     }
 
     set nativeEl(val) {
@@ -289,7 +294,6 @@ export const CustomMediaMixin = (superclass, { tag, is }) => {
     }
 
     handleEvent(event) {
-
       if (event.type === 'slotchange') {
         this.#syncMediaChildren();
         return;
@@ -310,7 +314,8 @@ export const CustomMediaMixin = (superclass, { tag, is }) => {
     #syncMediaChildren() {
       const removeNativeChildren = new Map(this.#childMap);
 
-      this.shadowRoot.querySelector('slot:not([name])')
+      this.shadowRoot
+        .querySelector('slot:not([name])')
         .assignedElements({ flatten: true })
         .filter((el) => ['track', 'source'].includes(el.localName))
         .forEach((el) => {
@@ -369,8 +374,9 @@ export const CustomMediaMixin = (superclass, { tag, is }) => {
 
       // Ignore setting custom attributes from the child class.
       // They should not have any effect on the native element, it adds noise in the DOM.
-      if (!CustomMedia.observedAttributes.includes(attrName)
-        && this.constructor.observedAttributes.includes(attrName)
+      if (
+        !CustomMedia.observedAttributes.includes(attrName) &&
+        this.constructor.observedAttributes.includes(attrName)
       ) {
         return;
       }
