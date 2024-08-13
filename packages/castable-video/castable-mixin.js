@@ -228,7 +228,6 @@ export const CastableMediaMixin = (superclass) =>
     }
 
     set castCustomData(val) {
-      console.log('setting castCustomData', val);
       const valType = typeof val;
       if (!['object', 'undefined'].includes(valType)) {
         console.error(`castCustomData must be nullish or an object but value was of type ${valType}`);
