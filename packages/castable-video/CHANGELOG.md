@@ -5,6 +5,13 @@
 [1]: https://www.npmjs.com/package/castable-video?activeTab=versions
 
 
+## [1.1.0](https://github.com/muxinc/media-elements/compare/castable-video@1.0.10...castable-video@1.1.0) (2024-08-13)
+
+
+### Features
+
+* **castable-video:** Add castCustomData to send arbitrary custom data to receiver app on load. ([dcc50be](https://github.com/muxinc/media-elements/commit/dcc50be4d1bef4cf91978f8ffd97bd5f5ea908d0))
+
 ## [1.0.10](https://github.com/muxinc/media-elements/compare/castable-video@1.0.9...castable-video@1.0.10) (2024-06-07)
 
 
