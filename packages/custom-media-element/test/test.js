@@ -208,16 +208,14 @@ test('has HTMLVideoElement like properties', async function (t) {
     'videoHeight',
     'videoWidth',
     'volume',
-    // Commenting browser-prefixed properties out as we should not
-    // *assume* they will exist, even for the browser in question (CJP)
-    // 'webkitAudioDecodedByteCount',
-    // 'webkitDecodedFrameCount',
-    // 'webkitDroppedFrameCount',
-    // 'webkitEnterFullScreen',
-    // 'webkitEnterFullscreen',
-    // 'webkitExitFullScreen',
-    // 'webkitExitFullscreen',
-    // 'webkitVideoDecodedByteCount',
+    'webkitAudioDecodedByteCount',
+    'webkitDecodedFrameCount',
+    'webkitDroppedFrameCount',
+    'webkitEnterFullScreen',
+    'webkitEnterFullscreen',
+    'webkitExitFullScreen',
+    'webkitExitFullscreen',
+    'webkitVideoDecodedByteCount',
     'width',
   ];
 
