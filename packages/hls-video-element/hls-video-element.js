@@ -50,16 +50,21 @@ const HlsVideoMixin = (superclass) => {
         this.api = new Hls({
           // Mimic the media element with an Infinity duration for live streams.
           liveDurationInfinity: true,
+          // Disable auto quality level/fragment loading.
+          autoStartLoad: false,
         });
 
         // Wait 1 tick to allow other attributes to be set.
         await Promise.resolve();
 
+        this.api.loadSource(this.src);
+        this.api.attachMedia(this.nativeEl);
+
         // Set up preload
         switch (this.nativeEl.preload) {
           case 'none': {
             // when preload is none, load the source on first play
-            const loadSourceOnPlay = () => this.api.loadSource(this.src);
+            const loadSourceOnPlay = () => this.api.startLoad();
             this.nativeEl.addEventListener('play', loadSourceOnPlay, {
               once: true,
             });
@@ -85,26 +90,30 @@ const HlsVideoMixin = (superclass) => {
             this.api.on(Hls.Events.DESTROYING, () => {
               this.nativeEl.removeEventListener('play', increaseBufferOnPlay);
             });
-            this.api.loadSource(this.src);
+            this.api.startLoad();
             break;
           }
           default:
             // load source immediately for any other preload value
-            this.api.loadSource(this.src);
+            this.api.startLoad();
         }
 
-        this.api.attachMedia(this.nativeEl);
+        // Stop loading the HLS stream when AirPlay is active.
+        // https://github.com/video-dev/hls.js/issues/6482#issuecomment-2159399478
+        if (this.nativeEl.webkitCurrentPlaybackTargetIsWireless) {
+          this.api.stopLoad();
+        }
+
+        this.nativeEl.addEventListener(
+          'webkitcurrentplaybacktargetiswirelesschanged',
+          this.#toggleHlsLoad
+        );
 
         this.#airplaySourceEl = document.createElement('source');
         this.#airplaySourceEl.setAttribute('type', 'application/x-mpegURL');
         this.#airplaySourceEl.setAttribute('src', this.src);
         this.nativeEl.disableRemotePlayback = false;
         this.nativeEl.append(this.#airplaySourceEl);
-
-        this.nativeEl.addEventListener(
-          'webkitcurrentplaybacktargetiswirelesschanged',
-          this.#toggleHlsLoad
-        );
 
         // Set up tracks & renditions
 
