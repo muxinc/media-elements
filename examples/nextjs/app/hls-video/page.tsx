@@ -6,7 +6,15 @@ export const metadata: Metadata = {
   title: 'HLS Video - Media Elements',
 };
 
-export default function Page() {
+type PageProps = {
+  searchParams: {
+    autoplay: string;
+    muted: string;
+    preload: string;
+  };
+};
+
+export default function Page(props: PageProps) {
   return (
     <>
       <section>
@@ -18,6 +26,9 @@ export default function Page() {
           controls
           crossOrigin=""
           playsInline
+          autoPlay={props.searchParams?.autoplay}
+          muted={props.searchParams?.muted}
+          preload={props.searchParams?.preload}
           suppressHydrationWarning
         >
           <track
