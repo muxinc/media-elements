@@ -3,7 +3,6 @@ import { MediaTracksMixin } from 'media-tracks';
 import Hls from 'hls.js/dist/hls.mjs';
 
 const HlsVideoMixin = (superclass) => {
-
   return class HlsVideo extends superclass {
     static shadowRootOptions = { ...superclass.shadowRootOptions };
 
@@ -11,6 +10,8 @@ const HlsVideoMixin = (superclass) => {
       const { src, ...rest } = attrs; // eslint-disable-line no-unused-vars
       return superclass.getTemplateHTML(rest);
     };
+
+    #airplaySourceEl = null;
 
     attributeChangedCallback(attrName, oldValue, newValue) {
       if (attrName !== 'src') {
@@ -23,6 +24,13 @@ const HlsVideoMixin = (superclass) => {
     }
 
     #destroy() {
+      this.#airplaySourceEl?.remove();
+
+      this.nativeEl?.removeEventListener(
+        'webkitcurrentplaybacktargetiswirelesschanged',
+        this.#toggleHlsLoad
+      );
+
       if (this.api) {
         this.api.detachMedia();
         this.api.destroy();
@@ -39,20 +47,24 @@ const HlsVideoMixin = (superclass) => {
 
       // Prefer using hls.js over native if it is supported.
       if (Hls.isSupported()) {
-
         this.api = new Hls({
           // Mimic the media element with an Infinity duration for live streams.
-          liveDurationInfinity: true
+          liveDurationInfinity: true,
+          // Disable auto quality level/fragment loading.
+          autoStartLoad: false,
         });
 
         // Wait 1 tick to allow other attributes to be set.
         await Promise.resolve();
 
+        this.api.loadSource(this.src);
+        this.api.attachMedia(this.nativeEl);
+
         // Set up preload
         switch (this.nativeEl.preload) {
           case 'none': {
             // when preload is none, load the source on first play
-            const loadSourceOnPlay = () => this.api.loadSource(this.src);
+            const loadSourceOnPlay = () => this.api.startLoad();
             this.nativeEl.addEventListener('play', loadSourceOnPlay, {
               once: true,
             });
@@ -78,15 +90,30 @@ const HlsVideoMixin = (superclass) => {
             this.api.on(Hls.Events.DESTROYING, () => {
               this.nativeEl.removeEventListener('play', increaseBufferOnPlay);
             });
-            this.api.loadSource(this.src);
+            this.api.startLoad();
             break;
           }
           default:
             // load source immediately for any other preload value
-            this.api.loadSource(this.src);
+            this.api.startLoad();
         }
 
-        this.api.attachMedia(this.nativeEl);
+        // Stop loading the HLS stream when AirPlay is active.
+        // https://github.com/video-dev/hls.js/issues/6482#issuecomment-2159399478
+        if (this.nativeEl.webkitCurrentPlaybackTargetIsWireless) {
+          this.api.stopLoad();
+        }
+
+        this.nativeEl.addEventListener(
+          'webkitcurrentplaybacktargetiswirelesschanged',
+          this.#toggleHlsLoad
+        );
+
+        this.#airplaySourceEl = document.createElement('source');
+        this.#airplaySourceEl.setAttribute('type', 'application/x-mpegURL');
+        this.#airplaySourceEl.setAttribute('src', this.src);
+        this.nativeEl.disableRemotePlayback = false;
+        this.nativeEl.append(this.#airplaySourceEl);
 
         // Set up tracks & renditions
 
@@ -134,8 +161,8 @@ const HlsVideoMixin = (superclass) => {
 
         this.audioTracks.addEventListener('change', () => {
           // Cast to number, hls.js uses numeric id's.
-          const audioTrackId = +[...this.audioTracks].find(t => t.enabled)?.id;
-          const availableIds = this.api.audioTracks.map(t => t.id);
+          const audioTrackId = +[...this.audioTracks].find((t) => t.enabled)?.id;
+          const availableIds = this.api.audioTracks.map((t) => t.id);
           if (audioTrackId != this.api.audioTrack && availableIds.includes(audioTrackId)) {
             this.api.audioTrack = audioTrackId;
           }
@@ -211,10 +238,17 @@ const HlsVideoMixin = (superclass) => {
 
       // Use native HLS. e.g. iOS Safari.
       if (this.nativeEl.canPlayType('application/vnd.apple.mpegurl')) {
-
         this.nativeEl.src = this.src;
       }
     }
+
+    #toggleHlsLoad = () => {
+      if (this.nativeEl?.webkitCurrentPlaybackTargetIsWireless) {
+        this.api?.stopLoad();
+      } else {
+        this.api?.startLoad();
+      }
+    };
   };
 };
 
@@ -226,8 +260,4 @@ if (globalThis.customElements && !globalThis.customElements.get('hls-video')) {
 
 export default HlsVideoElement;
 
-export {
-  Hls,
-  HlsVideoMixin,
-  HlsVideoElement,
-};
+export { Hls, HlsVideoMixin, HlsVideoElement };

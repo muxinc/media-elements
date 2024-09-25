@@ -1,4 +1,4 @@
-import { dirname } from 'node:path';
+import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import * as fs from 'node:fs/promises';
 import type React from 'react';
@@ -17,8 +17,19 @@ export const metadata: Metadata = {
   description: 'A collection of custom media elements for the web.',
 };
 
-const fileDir = dirname(fileURLToPath(import.meta.url));
-const themeScript = await fs.readFile(`${fileDir}/theme-toggle.js`, 'utf-8');
+// https://francoisbest.com/posts/2023/reading-files-on-vercel-during-nextjs-isr
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+const nextJsRootDir = path.resolve(__dirname, '../')
+
+function resolve(...paths: string[]) {
+  const dirname = path.dirname(fileURLToPath(import.meta.url))
+  const absPath = path.resolve(dirname, ...paths)
+  // Required for ISR serverless functions to pick up the file path
+  // as a dependency to bundle.
+  return path.resolve(process.cwd(), absPath.replace(nextJsRootDir, '.'))
+}
+
+const themeScript = await fs.readFile(resolve('theme-toggle.js'), 'utf-8');
 
 export default async function RootLayout({
   children,
