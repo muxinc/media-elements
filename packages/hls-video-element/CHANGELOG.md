@@ -6,6 +6,13 @@
 
 
 
+## [1.2.8](https://github.com/muxinc/media-elements/compare/hls-video-element@1.2.7...hls-video-element@1.2.8) (2024-09-25)
+
+
+### Bug Fixes
+
+* add Airplay support to hls-video ([#40](https://github.com/muxinc/media-elements/issues/40)) ([e4ce158](https://github.com/muxinc/media-elements/commit/e4ce1584d16486fc5d445b130292e92a771fe0b6))
+
 ## [1.2.7](https://github.com/muxinc/media-elements/compare/hls-video-element@1.2.6...hls-video-element@1.2.7) (2024-06-14)
 
 
