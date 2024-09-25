@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.1.10](https://github.com/muxinc/media-elements/compare/nextjs@0.1.9...nextjs@0.1.10) (2024-09-25)
+
+
+### Bug Fixes
+
+* add Airplay support to hls-video ([#40](https://github.com/muxinc/media-elements/issues/40)) ([e4ce158](https://github.com/muxinc/media-elements/commit/e4ce1584d16486fc5d445b130292e92a771fe0b6))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * hls-video-element bumped from ^1.2.7 to ^1.2.8
+
 ## [0.1.9](https://github.com/muxinc/media-elements/compare/nextjs@0.1.8...nextjs@0.1.9) (2024-06-14)
 
 
