@@ -2,7 +2,7 @@
 import VimeoPlayerAPI from '@vimeo/player/dist/player.es.js';
 
 const EMBED_BASE = 'https://player.vimeo.com/video';
-const MATCH_SRC = /vimeo\.com\/(?:video\/)?(\d+)/;
+const MATCH_SRC = /vimeo\.com\/(?:video\/)?(\d+)(?:\/([\w-]+))?/;
 
 function getTemplateHTML(attrs) {
   const iframeAttrs = {
@@ -39,6 +39,7 @@ function serializeIframeUrl(attrs) {
 
   const matches = attrs.src.match(MATCH_SRC);
   const srcId = matches && matches[1];
+  const hParam = matches && matches[2];
 
   const params = {
     // ?controls=true is enabled by default in the iframe
@@ -50,6 +51,7 @@ function serializeIframeUrl(attrs) {
     preload: attrs.preload ?? 'metadata',
     transparent: false,
     autopause: attrs.autopause,
+    h: hParam, // This param is required when the video is Unlisted.
   };
 
   return `${EMBED_BASE}/${srcId}?${serialize(params)}`;
