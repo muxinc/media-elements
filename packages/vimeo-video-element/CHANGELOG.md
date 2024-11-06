@@ -5,6 +5,13 @@
 [1]: https://www.npmjs.com/package/vimeo-video-element?activeTab=versions
 
 
+## [1.1.7](https://github.com/muxinc/media-elements/compare/vimeo-video-element@1.1.6...vimeo-video-element@1.1.7) (2024-11-06)
+
+
+### Bug Fixes
+
+* Match params for unlisted videos ([#43](https://github.com/muxinc/media-elements/issues/43)) ([d2abefc](https://github.com/muxinc/media-elements/commit/d2abefcfff370bf26232331abbb009aaf02108fb))
+
 ## [1.1.6](https://github.com/muxinc/media-elements/compare/vimeo-video-element@1.1.5...vimeo-video-element@1.1.6) (2024-06-14)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "nextjs",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -21,7 +21,7 @@
     "shaka-video-element": "^0.6.6",
     "spotify-audio-element": "^0.1.10",
     "videojs-video-element": "^1.2.7",
-    "vimeo-video-element": "^1.1.6",
+    "vimeo-video-element": "^1.1.7",
     "wistia-video-element": "^1.1.7",
     "youtube-video-element": "^1.1.6"
   },

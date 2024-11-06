@@ -1,5 +1,5 @@
 {
-  "examples/nextjs": "0.1.10",
+  "examples/nextjs": "0.1.11",
   "scripts/build-react-wrapper": "0.1.6",
   "packages/castable-video": "1.1.0",
   "packages/cloudflare-video-element": "1.1.6",
@@ -12,7 +12,7 @@
   "packages/spotify-audio-element": "0.1.10",
   "packages/super-media-element": "1.4.2",
   "packages/videojs-video-element": "1.2.7",
-  "packages/vimeo-video-element": "1.1.6",
+  "packages/vimeo-video-element": "1.1.7",
   "packages/wistia-video-element": "1.1.7",
   "packages/youtube-video-element": "1.1.6"
 }
