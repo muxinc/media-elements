@@ -14,20 +14,56 @@
     "directory": "packages/custom-media-element"
   },
   "files": [
-    "custom-media-element.d.ts"
+    "dist"
   ],
   "type": "module",
-  "main": "custom-media-element.js",
-  "types": "custom-media-element.d.ts",
+  "main": "dist/custom-media-element.js",
+  "types": "dist/custom-media-element.d.ts",
   "scripts": {
-    "lint": "eslint *.js",
-    "pretest": "esbuild custom-media-element.js --target=es2019 --bundle --outdir=dist --global-name=CustomMediaElement",
+    "lint": "eslint *.ts",
+    "pretest": "npm run build",
     "test": "wet test test/eager-upgrade.html test/lazy-upgrade.html --coverage",
+    "dev": "tsc -w & esbuild custom-media-element.ts --format=esm --outdir=dist --watch=forever",
+    "build:esm": "esbuild custom-media-element.ts --format=esm --outdir=dist",
+    "build:iife": "esbuild custom-media-element.ts --bundle --outfile=dist/custom-media-element.iife.js --global-name=CustomMediaElement",
+    "build": "rm -rf dist && npm run build:esm && npm run build:iife",
+    "postbuild": "tsc",
     "serve": "wet serve --redirect :examples/ --cors"
   },
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^7.12.0",
+    "@typescript-eslint/parser": "^7.12.0",
     "esbuild": "^0.21.4",
+    "typescript": "5.4.5",
     "wet-run": "^1.2.2"
+  },
+  "eslintConfig": {
+    "root": true,
+    "extends": [
+      "eslint:recommended",
+      "plugin:@typescript-eslint/recommended"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+      "@typescript-eslint"
+    ],
+    "globals": {
+      "globalThis": "writable"
+    },
+    "env": {
+      "browser": true,
+      "es6": true,
+      "node": true,
+      "mocha": true
+    },
+    "parserOptions": {
+      "ecmaVersion": 2022,
+      "sourceType": "module"
+    },
+    "rules": {
+      "@typescript-eslint/ban-ts-comment": 0,
+      "@typescript-eslint/no-explicit-any": 0
+    }
   },
   "keywords": [
     "custom",

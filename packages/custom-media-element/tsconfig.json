@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "preserveWatchOutput": true,
+    "rootDir": ".",
+    "outDir": "dist",
+  },
+  "include": ["custom-media-element.ts"],
+  "exclude": ["node_modules"]
+}

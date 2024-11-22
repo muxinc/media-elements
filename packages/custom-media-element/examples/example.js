@@ -1,4 +1,4 @@
-import { CustomVideoElement, CustomAudioElement } from '../custom-media-element.js';
+import { CustomVideoElement, CustomAudioElement } from '../dist/custom-media-element.js';
 
 export class MyVideoElement extends CustomVideoElement {}
 
