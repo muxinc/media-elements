@@ -115,7 +115,7 @@ test('has a working muted attribute', async function (t) {
   t.ok(!customVideo.paused, 'paused prop is false');
 });
 
-test('adds and removes tracks and sources', async function (t) {
+await test('adds and removes track and source clones', async function (t) {
   if (document.readyState === 'loading') {
     await new Promise((resolve) => addEventListener('DOMContentLoaded', resolve));
   }
@@ -124,20 +124,71 @@ test('adds and removes tracks and sources', async function (t) {
 
   customVideo.innerHTML = `
     <track default label="English" kind="captions" srclang="en" src="../en-cc.vtt">
-    <track label="thumbnails" id="customTrack" default kind="metadata" src="https://image.mux.com/DS00Spx1CV902MCtPj5WknGlR102V5HFkDe/storyboard.vtt">
+    <track label="thumbnails" id="custom-track" default kind="metadata" src="https://image.mux.com/DS00Spx1CV902MCtPj5WknGlR102V5HFkDe/storyboard.vtt">
+    <source src="http://stream.mux.com/DS00Spx1CV902MCtPj5WknGlR102V5HFkDe/low.mp4" type="video/mp4">
+    <source src="http://stream.mux.com/DS00Spx1CV902MCtPj5WknGlR102V5HFkDe/high.mp4" type="video/mp4">
   `;
 
   await Promise.resolve();
 
   t.equal(customVideo.querySelectorAll('track').length, 2);
   t.equal(customVideo.textTracks.length, 2);
+  t.equal(customVideo.querySelectorAll('source').length, 2);
+  t.equal(customVideo.nativeEl.querySelectorAll('source').length, 2);
 
-  customVideo.querySelector('track').remove();
+  customVideo.querySelector('#custom-track').remove();
 
   await Promise.resolve();
 
   t.equal(customVideo.querySelectorAll('track').length, 1);
   t.equal(customVideo.textTracks.length, 1);
+  t.equal(customVideo.querySelector('track').label, 'English');
+
+  customVideo.querySelector('source').remove();
+
+  await Promise.resolve();
+
+  t.equal(customVideo.querySelectorAll('source').length, 1);
+  t.equal(customVideo.nativeEl.querySelectorAll('source').length, 1);
+
+  customVideo.innerHTML = '';
+
+  await Promise.resolve();
+
+  t.equal(customVideo.querySelectorAll('track').length, 0);
+  t.equal(customVideo.nativeEl.querySelectorAll('track').length, 0);
+  t.equal(customVideo.textTracks.length, 0);
+  t.equal(customVideo.querySelectorAll('source').length, 0);
+  t.equal(customVideo.nativeEl.querySelectorAll('source').length, 0);
+});
+
+await test('updates track and source clones attributes', async function (t) {
+  if (document.readyState === 'loading') {
+    await new Promise((resolve) => addEventListener('DOMContentLoaded', resolve));
+  }
+
+  const customVideo = globalThis.customVideo;
+
+  customVideo.innerHTML = `
+    <track default label="English" kind="captions" srclang="en" src="../en-cc.vtt">
+    <track label="thumbnails" id="custom-track" default kind="metadata" src="https://image.mux.com/DS00Spx1CV902MCtPj5WknGlR102V5HFkDe/storyboard.vtt">
+    <source src="http://stream.mux.com/DS00Spx1CV902MCtPj5WknGlR102V5HFkDe/low.mp4" type="video/mp4">
+    <source src="http://stream.mux.com/DS00Spx1CV902MCtPj5WknGlR102V5HFkDe/high.mp4" type="video/mp4">
+  `;
+
+  customVideo.querySelector('track').setAttribute('kind', 'subtitles');
+
+  await Promise.resolve();
+
+  t.equal(customVideo.querySelector('track').kind, 'subtitles');
+  t.equal(customVideo.nativeEl.querySelector('track').kind, 'subtitles');
+
+  customVideo.querySelector('source').setAttribute('type', 'video/webm');
+
+  await Promise.resolve();
+
+  t.equal(customVideo.querySelector('source').type, 'video/webm');
+  t.equal(customVideo.nativeEl.querySelector('source').type, 'video/webm');
 });
 
 test('has HTMLVideoElement like properties', async function (t) {

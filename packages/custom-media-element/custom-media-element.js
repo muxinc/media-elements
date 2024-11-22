@@ -43,7 +43,7 @@ export const Events = [
 ];
 
 function getAudioTemplateHTML(attrs) {
-  return /*html*/`
+  return /*html*/ `
     <style>
       :host {
         display: inline-flex;
@@ -67,7 +67,7 @@ function getAudioTemplateHTML(attrs) {
 // It's a more consistent behavior pre and post custom element upgrade.
 
 function getVideoTemplateHTML(attrs) {
-  return /*html*/`
+  return /*html*/ `
     <style>
       :host {
         display: inline-block;
@@ -99,7 +99,6 @@ function getVideoTemplateHTML(attrs) {
  * @see https://justinfagnani.com/2015/12/21/real-mixins-with-javascript-classes/
  */
 export const CustomMediaMixin = (superclass, { tag, is }) => {
-
   // `is` makes it possible to extend a custom built-in. e.g. castable-video
   const nativeElTest = globalThis.document?.createElement?.(tag, { is });
   const nativeElProps = nativeElTest ? getNativeElProps(nativeElTest) : [];
@@ -209,6 +208,7 @@ export const CustomMediaMixin = (superclass, { tag, is }) => {
     #isInit;
     #nativeEl;
     #childMap = new Map();
+    #childObserver;
 
     constructor() {
       super();
@@ -221,10 +221,12 @@ export const CustomMediaMixin = (superclass, { tag, is }) => {
 
     get nativeEl() {
       this.#init();
-      return this.#nativeEl
-        ?? this.shadowRoot.querySelector(tag)
-        ?? this.querySelector(':scope > [slot=media]')
-        ?? this.querySelector(tag);
+      return (
+        this.#nativeEl ??
+        this.shadowRoot.querySelector(tag) ??
+        this.querySelector(':scope > [slot=media]') ??
+        this.querySelector(tag)
+      );
     }
 
     set nativeEl(val) {
@@ -280,6 +282,8 @@ export const CustomMediaMixin = (superclass, { tag, is }) => {
         this.#upgradeProperty(prop);
       }
 
+      this.#childObserver = new MutationObserver(this.#syncMediaChildAttribute);
+
       this.shadowRoot.addEventListener('slotchange', this);
       this.#syncMediaChildren();
 
@@ -289,7 +293,6 @@ export const CustomMediaMixin = (superclass, { tag, is }) => {
     }
 
     handleEvent(event) {
-
       if (event.type === 'slotchange') {
         this.#syncMediaChildren();
         return;
@@ -310,7 +313,8 @@ export const CustomMediaMixin = (superclass, { tag, is }) => {
     #syncMediaChildren() {
       const removeNativeChildren = new Map(this.#childMap);
 
-      this.shadowRoot.querySelector('slot:not([name])')
+      this.shadowRoot
+        .querySelector('slot:not([name])')
         .assignedElements({ flatten: true })
         .filter((el) => ['track', 'source'].includes(el.localName))
         .forEach((el) => {
@@ -321,26 +325,44 @@ export const CustomMediaMixin = (superclass, { tag, is }) => {
           if (!clone) {
             clone = el.cloneNode();
             this.#childMap.set(el, clone);
+            this.#childObserver.observe(el, { attributes: true });
           }
           this.nativeEl.append?.(clone);
-
-          // https://html.spec.whatwg.org/multipage/media.html#sourcing-out-of-band-text-tracks
-          // If there are any text tracks in the media element's list of text
-          // tracks whose text track kind is chapters or metadata that
-          // correspond to track elements with a default attribute set whose
-          // text track mode is set to disabled, then set the text track
-          // mode of all such tracks to hidden.
-          if (
-            clone.localName === 'track' &&
-            clone.default &&
-            (clone.kind === 'chapters' || clone.kind === 'metadata') &&
-            clone.track.mode === 'disabled'
-          ) {
-            clone.track.mode = 'hidden';
-          }
+          this.#enableDefaultTrack(clone);
         });
 
-      removeNativeChildren.forEach((el) => el.remove());
+      removeNativeChildren.forEach((clone, el) => {
+        clone.remove();
+        this.#childMap.delete(el);
+      });
+    }
+
+    #syncMediaChildAttribute = (mutations) => {
+      for (let mutation of mutations) {
+        if (mutation.type === 'attributes') {
+          const { target, attributeName } = mutation;
+          const clone = this.#childMap.get(target);
+          clone?.setAttribute(attributeName, target.getAttribute(attributeName));
+          this.#enableDefaultTrack(clone);
+        }
+      }
+    };
+
+    #enableDefaultTrack(trackEl) {
+      // https://html.spec.whatwg.org/multipage/media.html#sourcing-out-of-band-text-tracks
+      // If there are any text tracks in the media element's list of text
+      // tracks whose text track kind is chapters or metadata that
+      // correspond to track elements with a default attribute set whose
+      // text track mode is set to disabled, then set the text track
+      // mode of all such tracks to hidden.
+      if (
+        trackEl.localName === 'track' &&
+        trackEl.default &&
+        (trackEl.kind === 'chapters' || trackEl.kind === 'metadata') &&
+        trackEl.track.mode === 'disabled'
+      ) {
+        trackEl.track.mode = 'hidden';
+      }
     }
 
     #upgradeProperty(prop) {
@@ -369,8 +391,9 @@ export const CustomMediaMixin = (superclass, { tag, is }) => {
 
       // Ignore setting custom attributes from the child class.
       // They should not have any effect on the native element, it adds noise in the DOM.
-      if (!CustomMedia.observedAttributes.includes(attrName)
-        && this.constructor.observedAttributes.includes(attrName)
+      if (
+        !CustomMedia.observedAttributes.includes(attrName) &&
+        this.constructor.observedAttributes.includes(attrName)
       ) {
         return;
       }
@@ -430,6 +453,10 @@ function namedNodeMapToObject(namedNodeMap) {
   return obj;
 }
 
-export const CustomVideoElement = CustomMediaMixin(globalThis.HTMLElement ?? class {}, { tag: 'video' });
+export const CustomVideoElement = CustomMediaMixin(globalThis.HTMLElement ?? class {}, {
+  tag: 'video',
+});
 
-export const CustomAudioElement = CustomMediaMixin(globalThis.HTMLElement ?? class {}, { tag: 'audio' });
+export const CustomAudioElement = CustomMediaMixin(globalThis.HTMLElement ?? class {}, {
+  tag: 'audio',
+});
