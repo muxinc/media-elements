@@ -99,7 +99,7 @@ function getVideoTemplateHTML(attrs: Record<string, string>): string {
 }
 
 type Constructor<T> = {
-  new (): T
+  new (...args: any[]): T
 }
 
 type MediaChild = HTMLTrackElement | HTMLSourceElement;
@@ -144,9 +144,9 @@ type CustomAudioElementConstructor = CustomMediaElementConstructor<CustomAudioEl
 /**
  * @see https://justinfagnani.com/2015/12/21/real-mixins-with-javascript-classes/
  */
-export function CustomMediaMixin(superclass: Constructor<HTMLElement>, { tag, is }: { tag: 'video', is?: string }): Constructor<HTMLElement> & CustomVideoElementConstructor;
-export function CustomMediaMixin(superclass: Constructor<HTMLElement>, { tag, is }: { tag: 'audio', is?: string }): Constructor<HTMLElement> & CustomAudioElementConstructor;
-export function CustomMediaMixin(superclass: Constructor<HTMLElement>, { tag, is }: { tag: 'audio' | 'video', is?: string }): Constructor<HTMLElement> & any {
+export function CustomMediaMixin<T extends Constructor<HTMLElement>>(superclass: T, { tag, is }: { tag: 'video', is?: string }): CustomVideoElementConstructor;
+export function CustomMediaMixin<T extends Constructor<HTMLElement>>(superclass: T, { tag, is }: { tag: 'audio', is?: string }): CustomAudioElementConstructor;
+export function CustomMediaMixin<T extends Constructor<HTMLElement>>(superclass: T, { tag, is }: { tag: 'audio' | 'video', is?: string }): any {
   // `is` makes it possible to extend a custom built-in. e.g., castable-video
   const nativeElTest = globalThis.document?.createElement?.(tag, { is } as any);
   const nativeElProps = nativeElTest ? getNativeElProps(nativeElTest) : [];
@@ -246,14 +246,10 @@ export function CustomMediaMixin(superclass: Constructor<HTMLElement>, { tag, is
     #childMap = new Map<MediaChild, MediaChild>();
     #childObserver?: MutationObserver;
 
-    constructor() {
-      super();
-
-      // If the custom element is defined before the custom element's HTML is parsed
-      // no attributes will be available in the constructor (construction process).
-      // Wait until initializing in the attributeChangedCallback or
-      // connectedCallback or accessing any properties.
-    }
+    // If the custom element is defined before the custom element's HTML is parsed
+    // no attributes will be available in the constructor (construction process).
+    // Wait until initializing in the attributeChangedCallback or
+    // connectedCallback or accessing any properties.
 
     get nativeEl() {
       this.#init();
