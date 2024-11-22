@@ -138,14 +138,14 @@ type CustomMediaElementConstructor<T> = {
   new(): T;
 };
 
-type CustomVideoElementConstructor = CustomMediaElementConstructor<CustomVideoElementClass>;
-type CustomAudioElementConstructor = CustomMediaElementConstructor<CustomAudioElementClass>;
+type CustomVideoElement = CustomMediaElementConstructor<CustomVideoElementClass>;
+type CustomAudioElement = CustomMediaElementConstructor<CustomAudioElementClass>;
 
 /**
  * @see https://justinfagnani.com/2015/12/21/real-mixins-with-javascript-classes/
  */
-export function CustomMediaMixin<T extends Constructor<HTMLElement>>(superclass: T, { tag, is }: { tag: 'video', is?: string }): CustomVideoElementConstructor;
-export function CustomMediaMixin<T extends Constructor<HTMLElement>>(superclass: T, { tag, is }: { tag: 'audio', is?: string }): CustomAudioElementConstructor;
+export function CustomMediaMixin<T extends Constructor<HTMLElement>>(superclass: T, { tag, is }: { tag: 'video', is?: string }): CustomVideoElement;
+export function CustomMediaMixin<T extends Constructor<HTMLElement>>(superclass: T, { tag, is }: { tag: 'audio', is?: string }): CustomAudioElement;
 export function CustomMediaMixin<T extends Constructor<HTMLElement>>(superclass: T, { tag, is }: { tag: 'audio' | 'video', is?: string }): any {
   // `is` makes it possible to extend a custom built-in. e.g., castable-video
   const nativeElTest = globalThis.document?.createElement?.(tag, { is } as any);
