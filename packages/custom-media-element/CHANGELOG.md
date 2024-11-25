@@ -5,6 +5,14 @@
 [1]: https://www.npmjs.com/package/custom-media-element?activeTab=versions
 
 
+## [1.3.3](https://github.com/muxinc/media-elements/compare/custom-media-element@1.3.2...custom-media-element@1.3.3) (2024-11-25)
+
+
+### Bug Fixes
+
+* update track/source clone attributes ([#49](https://github.com/muxinc/media-elements/issues/49)) ([b4d8a4b](https://github.com/muxinc/media-elements/commit/b4d8a4b782c52bcc969aacc2cd9deeef4b7e2b11))
+* use media slot ([#52](https://github.com/muxinc/media-elements/issues/52)) ([d80267e](https://github.com/muxinc/media-elements/commit/d80267e0df1857fdd03020b408411b9b7223caf9))
+
 ## [1.3.2](https://github.com/muxinc/media-elements/compare/custom-media-element@1.3.1...custom-media-element@1.3.2) (2024-06-07)
 
 
