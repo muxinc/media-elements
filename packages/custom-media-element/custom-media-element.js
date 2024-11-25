@@ -57,7 +57,9 @@ function getAudioTemplateHTML(attrs) {
       }
     </style>
     <slot name="media">
-      <audio${serializeAttributes(attrs)}></audio>
+      <audio${serializeAttributes(attrs)}>
+        Audio player not working? Get <a href="https://media-chrome.org/html5-media-fallback">support for HTML5 audio</a>.
+      </audio>
     </slot>
     <slot></slot>
   `;
@@ -89,7 +91,9 @@ function getVideoTemplateHTML(attrs) {
       }
     </style>
     <slot name="media">
-      <video${serializeAttributes(attrs)}></video>
+      <video${serializeAttributes(attrs)}>
+        Video player not working? Get <a href="https://media-chrome.org/html5-media-fallback">support for HTML5 audio</a>.
+      </video>
     </slot>
     <slot></slot>
   `;
