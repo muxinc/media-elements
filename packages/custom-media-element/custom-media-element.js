@@ -223,9 +223,9 @@ export const CustomMediaMixin = (superclass, { tag, is }) => {
       this.#init();
       return (
         this.#nativeEl ??
-        this.shadowRoot.querySelector(tag) ??
         this.querySelector(':scope > [slot=media]') ??
-        this.querySelector(tag)
+        this.querySelector(tag) ??
+        this.shadowRoot.querySelector(tag)
       );
     }
 
