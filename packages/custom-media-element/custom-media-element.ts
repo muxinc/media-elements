@@ -255,9 +255,10 @@ export function CustomMediaMixin<T extends Constructor<HTMLElement>>(superclass:
       this.#init();
       return (
         this.#nativeEl ??
-        this.shadowRoot?.querySelector(tag) ??
         this.querySelector(':scope > [slot=media]') ??
-        this.querySelector(tag)
+        this.querySelector(tag) ??
+        this.shadowRoot?.querySelector(tag) ??
+        null
       );
     }
 
