@@ -5,6 +5,13 @@
 [1]: https://www.npmjs.com/package/custom-media-element?activeTab=versions
 
 
+## [1.4.0](https://github.com/muxinc/media-elements/compare/custom-media-element@1.3.3...custom-media-element@1.4.0) (2024-11-26)
+
+
+### Features
+
+* use Typescript in custom-media-element ([#51](https://github.com/muxinc/media-elements/issues/51)) ([5dbfb0a](https://github.com/muxinc/media-elements/commit/5dbfb0a04ebd8bff22574f3aeaf682d28cf07fb6))
+
 ## [1.3.3](https://github.com/muxinc/media-elements/compare/custom-media-element@1.3.2...custom-media-element@1.3.3) (2024-11-25)
 
 

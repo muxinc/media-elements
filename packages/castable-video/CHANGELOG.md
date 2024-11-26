@@ -5,6 +5,15 @@
 [1]: https://www.npmjs.com/package/castable-video?activeTab=versions
 
 
+## [1.1.2](https://github.com/muxinc/media-elements/compare/castable-video@1.1.1...castable-video@1.1.2) (2024-11-26)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * custom-media-element bumped from ~1.3.3 to ~1.4.0
+
 ## [1.1.1](https://github.com/muxinc/media-elements/compare/castable-video@1.1.0...castable-video@1.1.1) (2024-11-25)
 
 
