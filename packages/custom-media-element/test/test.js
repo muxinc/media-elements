@@ -1,5 +1,5 @@
 import { test } from 'zora';
-import { CustomVideoElement } from '../custom-media-element.js';
+import { CustomVideoElement } from '../dist/custom-media-element.js';
 
 // The custom-video-element JS import is defined in web-test-runner.config.js
 // for both an eager and lazy custom element upgrade.
