@@ -5,6 +5,13 @@
 [1]: https://www.npmjs.com/package/custom-media-element?activeTab=versions
 
 
+## [1.4.1](https://github.com/muxinc/media-elements/compare/custom-media-element@1.4.0...custom-media-element@1.4.1) (2024-11-26)
+
+
+### Bug Fixes
+
+* missing code / changes by AI TS conversion ([#54](https://github.com/muxinc/media-elements/issues/54)) ([f54dcf3](https://github.com/muxinc/media-elements/commit/f54dcf3e26b33223a5306c3d733521cd3388b62a))
+
 ## [1.4.0](https://github.com/muxinc/media-elements/compare/custom-media-element@1.3.3...custom-media-element@1.4.0) (2024-11-26)
 
 
