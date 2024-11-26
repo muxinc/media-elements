@@ -199,26 +199,34 @@ export function CustomMediaMixin<T extends Constructor<HTMLElement>>(superclass:
           // @ts-ignore
           this.prototype[prop] = function (...args: any[]) {
             this.#init();
-            // @ts-ignore
-            return this.nativeEl?.[prop](...args);
+
+            const fn = () => {
+              if (this.call) return this.call(prop, ...args);
+              const nativeFn = this.nativeEl?.[prop] as ((...args: any[]) => any) | undefined;
+              return nativeFn?.apply(this.nativeEl, args);
+            };
+
+            return fn();
           };
         } else {
           // Getter and setter configuration
           const config: PropertyDescriptor = {
             get(this: CustomMedia) {
               this.#init();
+
               const attr = prop.toLowerCase();
               if (propsToAttrs.has(attr)) {
                 const val = this.getAttribute(attr);
                 return val === null ? false : val === '' ? true : val;
               }
-              return this.nativeEl?.[prop];
+              return this.get?.(prop) ?? this.nativeEl?.[prop];
             },
           };
 
           if (prop !== prop.toUpperCase()) {
             config.set = function (this: CustomMedia, val: any) {
               this.#init();
+
               const attr = prop.toLowerCase();
               if (propsToAttrs.has(attr)) {
                 if (val === true || val === false || val == null) {
@@ -228,6 +236,12 @@ export function CustomMediaMixin<T extends Constructor<HTMLElement>>(superclass:
                 }
                 return;
               }
+
+              if (this.set) {
+                this.set(prop, val);
+                return;
+              }
+
               if (this.nativeEl) {
                 // @ts-ignore
                 this.nativeEl[prop] = val;
@@ -245,6 +259,10 @@ export function CustomMediaMixin<T extends Constructor<HTMLElement>>(superclass:
     #nativeEl: HTMLVideoElement | HTMLAudioElement | null = null;
     #childMap = new Map<MediaChild, MediaChild>();
     #childObserver?: MutationObserver;
+
+    get: ((prop: string) => any) | undefined;
+    set: ((prop: string, val: any) => void) | undefined;
+    call: ((prop: string, ...args: any[]) => any) | undefined;
 
     // If the custom element is defined before the custom element's HTML is parsed
     // no attributes will be available in the constructor (construction process).
@@ -283,7 +301,7 @@ export function CustomMediaMixin<T extends Constructor<HTMLElement>>(superclass:
     }
 
     get preload() {
-      return this.getAttribute('preload') ?? this.nativeEl?.getAttribute('preload');
+      return this.getAttribute('preload') ?? this.nativeEl?.preload;
     }
 
     set preload(val) {
@@ -299,19 +317,29 @@ export function CustomMediaMixin<T extends Constructor<HTMLElement>>(superclass:
     init(): void {
       if (!this.shadowRoot) {
         this.attachShadow({ mode: 'open' });
+
         const attrs = namedNodeMapToObject(this.attributes);
         if (is) attrs.is = is;
         if (tag) attrs.part = tag;
         this.shadowRoot!.innerHTML = (this.constructor as typeof CustomMedia).getTemplateHTML(attrs);
       }
 
+      // Neither Chrome or Firefox support setting the muted attribute
+      // after using document.createElement.
+      // Get around this by setting the muted property manually.
       this.nativeEl!.muted = this.hasAttribute('muted');
+
+      for (const prop of nativeElProps) {
+        // @ts-ignore
+        this.#upgradeProperty(prop);
+      }
+
       this.#childObserver = new MutationObserver(this.#syncMediaChildAttribute.bind(this));
       this.shadowRoot!.addEventListener('slotchange', this);
       this.#syncMediaChildren();
 
       for (const type of (this.constructor as typeof CustomMedia).Events) {
-        this.shadowRoot?.addEventListener(type, this.handleEvent.bind(this), true);
+        this.shadowRoot?.addEventListener(type, this, true);
       }
     }
 
@@ -379,6 +407,19 @@ export function CustomMediaMixin<T extends Constructor<HTMLElement>>(superclass:
       }
     }
 
+    #upgradeProperty(this: typeof nativeElTest, prop: keyof typeof nativeElTest) {
+      // Sets properties that are set before the custom element is upgraded.
+      // https://web.dev/custom-elements-best-practices/#make-properties-lazy
+      if (Object.prototype.hasOwnProperty.call(this, prop)) {
+        const value = this[prop];
+        // Delete the set property from this instance.
+        delete this[prop];
+        // Set the value again via the (prototype) setter on this class.
+        // @ts-ignore
+        this[prop] = value;
+      }
+    }
+
     attributeChangedCallback(attrName: string, oldValue: string | null, newValue: string | null): void {
       this.#init();
       this.#forwardAttribute(attrName, oldValue, newValue);
@@ -427,9 +468,13 @@ function getNativeElProps(nativeElTest: HTMLVideoElement | HTMLAudioElement) {
  * Helper function to serialize attributes into a string.
  */
 function serializeAttributes(attrs: Record<string, string>): string {
-  return Object.entries(attrs)
-    .map(([key, value]) => (value === '' ? ` ${key}` : ` ${key}="${value}"`))
-    .join('');
+  let html = '';
+  for (const key in attrs) {
+    const value = attrs[key];
+    if (value === '') html += ` ${key}`;
+    else html += ` ${key}="${value}"`;
+  }
+  return html;
 }
 
 /**
@@ -437,7 +482,7 @@ function serializeAttributes(attrs: Record<string, string>): string {
  */
 function namedNodeMapToObject(namedNodeMap: NamedNodeMap): Record<string, string> {
   const obj: Record<string, string> = {};
-  for (const attr of Array.from(namedNodeMap)) {
+  for (const attr of namedNodeMap) {
     obj[attr.name] = attr.value;
   }
   return obj;
