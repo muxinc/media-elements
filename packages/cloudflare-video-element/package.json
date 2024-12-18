@@ -14,10 +14,12 @@
     "directory": "packages/cloudflare-video-element"
   },
   "files": [
+    "cloudflare-video-element.d.ts",
     "dist"
   ],
   "type": "module",
   "main": "cloudflare-video-element.js",
+  "types": "cloudflare-video-element.d.ts",
   "exports": {
     ".": "./cloudflare-video-element.js",
     "./react": "./dist/react.js"

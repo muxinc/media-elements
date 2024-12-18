@@ -1,11 +1,13 @@
 import { CustomVideoElement } from 'custom-media-element';
 import Hls from 'hls.js';
 
-type HlsVideoElementConstructor<T> = { new(): T };
+type Constructor<T> = {
+  new (...args: any[]): T;
+};
 
-export function HlsVideoMixin(superclass: any): HlsVideoElementConstructor<HLSVideoElement>;
+export function HlsVideoMixin<T extends Constructor<HTMLElement>>(superclass: T): HlsVideoElement;
 
-export class HLSVideoElement extends CustomVideoElement {
+export class HlsVideoElement extends CustomVideoElement {
   /**
    * The current instance of the HLS.js library.
    *
@@ -28,6 +30,6 @@ export class HLSVideoElement extends CustomVideoElement {
   #destroy(): void;
 }
 
-export default HLSVideoElement;
+export default HlsVideoElement;
 
 export { Hls };

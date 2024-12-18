@@ -26,9 +26,9 @@ export default function Page(props: PageProps) {
           controls
           crossOrigin=""
           playsInline
-          autoPlay={props.searchParams?.autoplay}
-          muted={props.searchParams?.muted}
-          preload={props.searchParams?.preload}
+          autoplay={!!props.searchParams?.autoplay}
+          muted={!!props.searchParams?.muted}
+          preload={props.searchParams?.preload as 'auto' | 'metadata' | 'none'}
           suppressHydrationWarning
         >
           <track

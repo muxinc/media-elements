@@ -14,10 +14,12 @@
     "directory": "packages/jwplayer-video-element"
   },
   "files": [
+    "jwplayer-video-element.d.ts",
     "dist"
   ],
   "type": "module",
   "main": "jwplayer-video-element.js",
+  "types": "jwplayer-video-element.d.ts",
   "exports": {
     ".": "./jwplayer-video-element.js",
     "./react": "./dist/react.js"

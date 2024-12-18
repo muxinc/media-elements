@@ -6,5 +6,9 @@
   "main": "./build.js",
   "bin": {
     "build-react-wrapper": "./build.js"
+  },
+  "dependencies": {
+    "ce-la-react": "^0.1.2",
+    "tsup": "^8.3.5"
   }
 }

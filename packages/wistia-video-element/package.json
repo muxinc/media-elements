@@ -14,10 +14,12 @@
     "directory": "packages/wistia-video-element"
   },
   "files": [
+    "wistia-video-element.d.ts",
     "dist"
   ],
   "type": "module",
   "main": "wistia-video-element.js",
+  "types": "wistia-video-element.d.ts",
   "exports": {
     ".": "./wistia-video-element.js",
     "./react": "./dist/react.js"
