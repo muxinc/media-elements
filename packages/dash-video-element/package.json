@@ -14,10 +14,12 @@
     "directory": "packages/dash-video-element"
   },
   "files": [
+    "dash-video-element.d.ts",
     "dist"
   ],
   "type": "module",
   "main": "dash-video-element.js",
+  "types": "dash-video-element.d.ts",
   "exports": {
     ".": "./dash-video-element.js",
     "./react": "./dist/react.js"

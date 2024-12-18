@@ -14,10 +14,12 @@
     "directory": "packages/youtube-video-element"
   },
   "files": [
+    "youtube-video-element.d.ts",
     "dist"
   ],
   "type": "module",
   "main": "youtube-video-element.js",
+  "types": "youtube-video-element.d.ts",
   "exports": {
     ".": "./youtube-video-element.js",
     "./react": "./dist/react.js"

@@ -14,10 +14,12 @@
     "directory": "packages/shaka-video-element"
   },
   "files": [
+    "shaka-video-element.d.ts",
     "dist"
   ],
   "type": "module",
   "main": "shaka-video-element.js",
+  "types": "shaka-video-element.d.ts",
   "exports": {
     ".": "./shaka-video-element.js",
     "./react": "./dist/react.js"

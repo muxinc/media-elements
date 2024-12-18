@@ -24,6 +24,7 @@
     "examples/*"
   ],
   "scripts": {
+    "clean": "rimraf packages/*/dist",
     "lint": "turbo lint",
     "test": "turbo test --concurrency=1",
     "dev": "turbo run dev --concurrency=20 --filter '!./examples/*'",
@@ -31,7 +32,8 @@
   },
   "devDependencies": {
     "eslint": "^8.57.0",
-    "turbo": "^2.0.3",
+    "rimraf": "^6.0.1",
+    "turbo": "^2.3.3",
     "typescript": "^5.4.5"
   },
   "packageManager": "npm@10.8.1"

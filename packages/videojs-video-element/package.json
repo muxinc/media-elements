@@ -14,10 +14,12 @@
     "directory": "packages/videojs-video-element"
   },
   "files": [
+    "videojs-video-element.d.ts",
     "dist"
   ],
   "type": "module",
   "main": "videojs-video-element.js",
+  "types": "videojs-video-element.d.ts",
   "exports": {
     ".": "./videojs-video-element.js",
     "./react": "./dist/react.js"

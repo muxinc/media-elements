@@ -14,10 +14,12 @@
     "directory": "packages/spotify-audio-element"
   },
   "files": [
+    "spotify-audio-element.d.ts",
     "dist"
   ],
   "type": "module",
   "main": "spotify-audio-element.js",
+  "types": "spotify-audio-element.d.ts",
   "exports": {
     ".": "./spotify-audio-element.js",
     "./react": "./dist/react.js"
