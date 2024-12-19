@@ -6,7 +6,10 @@
   "include-v-in-tag": false,
   "plugins": ["node-workspace"],
   "packages": {
-    "examples/nextjs": {},
+    "examples/nextjs": {
+      "draft": true,
+      "skip-github-release": true
+    },
     "scripts/build-react-wrapper": {},
     "packages/castable-video": {},
     "packages/cloudflare-video-element": {},
