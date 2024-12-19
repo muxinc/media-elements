@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.1.16](https://github.com/muxinc/media-elements/compare/nextjs-v0.1.15...nextjs@0.1.16) (2024-12-19)
+
+
+### Features
+
+* add event support to React wrappers ([8522e2a](https://github.com/muxinc/media-elements/commit/8522e2a7dde94639029b45f52c63ccce77c89ac1))
+* add shaka-video ([#14](https://github.com/muxinc/media-elements/issues/14)) ([b56fe74](https://github.com/muxinc/media-elements/commit/b56fe743516663d35741b771a03ae12879f84296))
+* **example:** add mux-video-react ([a656903](https://github.com/muxinc/media-elements/commit/a656903013f73012d879dc4b2e6e3236a00d363e))
+* use ce-la-react, fix React 19 issues ([#61](https://github.com/muxinc/media-elements/issues/61)) ([0a734e9](https://github.com/muxinc/media-elements/commit/0a734e94149172bfd3019cf03ac3a3e74f395ac1))
+
+
+### Bug Fixes
+
+* add Airplay support to hls-video ([#40](https://github.com/muxinc/media-elements/issues/40)) ([e4ce158](https://github.com/muxinc/media-elements/commit/e4ce1584d16486fc5d445b130292e92a771fe0b6))
+* **build-react-wrapper:** fix suppressHydrationWarning ([586d221](https://github.com/muxinc/media-elements/commit/586d22106c3618769c753914f84b933b6b92c70f))
+* **custom-media-element:** fix track/source sync ([586d221](https://github.com/muxinc/media-elements/commit/586d22106c3618769c753914f84b933b6b92c70f))
+* **example:** update colors / favicon ([b9fce07](https://github.com/muxinc/media-elements/commit/b9fce077e6ebbfbb124c8c52f83375b3a843953d))
+* fix suppressHydrationWarning & track/source sync ([#19](https://github.com/muxinc/media-elements/issues/19)) ([586d221](https://github.com/muxinc/media-elements/commit/586d22106c3618769c753914f84b933b6b92c70f))
+* lint issues ([d32a387](https://github.com/muxinc/media-elements/commit/d32a3874deb1e624f5c92d294aac776774d4da63))
+* upgrade dependencies ([#24](https://github.com/muxinc/media-elements/issues/24)) ([f5abdcf](https://github.com/muxinc/media-elements/commit/f5abdcff0637e7d1f6b82f4684d94fccaceb8484))
+* version mismatch ([302f0d4](https://github.com/muxinc/media-elements/commit/302f0d4714f36526eaf430991e1eabd2b8b8178c))
+
 ## [0.1.15](https://github.com/muxinc/media-elements/compare/nextjs@0.1.14...nextjs@0.1.15) (2024-12-19)
 
 
