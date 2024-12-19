@@ -11,7 +11,7 @@ export default function Page() {
       <section>
         <JwplayerVideo
           className="video"
-          src="https://cdn.jwplayer.com/players/C8YE48zj-IxzuqJ4M.html"
+          src="https://cdn.jwplayer.com/players/BZ6tc0gy-uoIbMPm3.html"
           controls
           playsInline
         ></JwplayerVideo>

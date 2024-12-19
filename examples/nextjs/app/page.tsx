@@ -13,8 +13,8 @@ export default function Page() {
         <Player
           as={MuxVideo}
           className="video"
-          playbackId="jtWZbHQ013SLyISc9LbIGn8f4c3lWan00qOkoPMZEXmcU"
-          poster="https://image.mux.com/jtWZbHQ013SLyISc9LbIGn8f4c3lWan00qOkoPMZEXmcU/thumbnail.webp?time=0"
+          playbackId="Sc89iWAyNkhJ3P1rQ02nrEdCFTnfT01CZ2KmaEcxXfB008"
+          poster="https://image.mux.com/Sc89iWAyNkhJ3P1rQ02nrEdCFTnfT01CZ2KmaEcxXfB008/thumbnail.webp?time=13"
           controls
           crossOrigin=""
           playsInline
