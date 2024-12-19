@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.6.10](https://github.com/muxinc/media-elements/compare/shaka-video-element@0.6.9...shaka-video-element@0.6.10) (2024-12-19)
+
+
+### Features
+
+* use ce-la-react, fix React 19 issues ([#61](https://github.com/muxinc/media-elements/issues/61)) ([0a734e9](https://github.com/muxinc/media-elements/commit/0a734e94149172bfd3019cf03ac3a3e74f395ac1))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * build-react-wrapper bumped from ^0.1.6 to ^0.1.7
+
 ## [0.6.9](https://github.com/muxinc/media-elements/compare/shaka-video-element@0.6.8...shaka-video-element@0.6.9) (2024-11-26)
 
 
