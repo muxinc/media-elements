@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.1.7](https://github.com/muxinc/media-elements/compare/build-react-wrapper@0.1.6...build-react-wrapper@0.1.7) (2024-12-19)
+
+
+### Features
+
+* use ce-la-react, fix React 19 issues ([#61](https://github.com/muxinc/media-elements/issues/61)) ([0a734e9](https://github.com/muxinc/media-elements/commit/0a734e94149172bfd3019cf03ac3a3e74f395ac1))
+
+
+### Bug Fixes
+
+* ce-la-react upgrade ([751b692](https://github.com/muxinc/media-elements/commit/751b692a351027c3849f08feee7a478c3656ec27))
+
 ## [0.1.6](https://github.com/muxinc/media-elements/compare/build-react-wrapper@0.1.5...build-react-wrapper@0.1.6) (2024-06-14)
 
 
