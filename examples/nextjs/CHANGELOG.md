@@ -1,5 +1,28 @@
 # Changelog
 
+## [0.1.15](https://github.com/muxinc/media-elements/compare/nextjs@0.1.14...nextjs@0.1.15) (2024-12-19)
+
+
+### Features
+
+* use ce-la-react, fix React 19 issues ([#61](https://github.com/muxinc/media-elements/issues/61)) ([0a734e9](https://github.com/muxinc/media-elements/commit/0a734e94149172bfd3019cf03ac3a3e74f395ac1))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * cloudflare-video-element bumped from ^1.1.6 to ^1.2.0
+    * dash-video-element bumped from ^0.0.14 to ^0.0.15
+    * hls-video-element bumped from ^1.2.11 to ^1.3.0
+    * jwplayer-video-element bumped from ^1.1.7 to ^1.2.0
+    * shaka-video-element bumped from ^0.6.9 to ^0.6.10
+    * spotify-audio-element bumped from ^0.1.10 to ^0.1.11
+    * videojs-video-element bumped from ^1.2.7 to ^1.3.0
+    * vimeo-video-element bumped from ^1.1.7 to ^1.2.0
+    * wistia-video-element bumped from ^1.1.7 to ^1.2.0
+    * youtube-video-element bumped from ^1.1.6 to ^1.2.0
+
 ## [0.1.14](https://github.com/muxinc/media-elements/compare/nextjs@0.1.13...nextjs@0.1.14) (2024-11-26)
 
 

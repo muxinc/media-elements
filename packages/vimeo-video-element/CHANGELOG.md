@@ -5,6 +5,20 @@
 [1]: https://www.npmjs.com/package/vimeo-video-element?activeTab=versions
 
 
+## [1.2.0](https://github.com/muxinc/media-elements/compare/vimeo-video-element@1.1.7...vimeo-video-element@1.2.0) (2024-12-19)
+
+
+### Features
+
+* use ce-la-react, fix React 19 issues ([#61](https://github.com/muxinc/media-elements/issues/61)) ([0a734e9](https://github.com/muxinc/media-elements/commit/0a734e94149172bfd3019cf03ac3a3e74f395ac1))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * build-react-wrapper bumped from ^0.1.6 to ^0.1.7
+
 ## [1.1.7](https://github.com/muxinc/media-elements/compare/vimeo-video-element@1.1.6...vimeo-video-element@1.1.7) (2024-11-06)
 
 
