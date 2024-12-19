@@ -18,11 +18,31 @@
     "dist"
   ],
   "type": "module",
-  "main": "vimeo-video-element.js",
-  "types": "vimeo-video-element.d.ts",
+  "types": "./dist/vimeo-video-element.d.ts",
+  "main": "./dist/vimeo-video-element.js",
   "exports": {
-    ".": "./vimeo-video-element.js",
-    "./react": "./dist/react.js"
+    ".": {
+      "types": "./dist/vimeo-video-element.d.ts",
+      "import": "./dist/vimeo-video-element.js",
+      "require": "./dist/cjs/vimeo-video-element.js",
+      "default": "./dist/vimeo-video-element.js"
+    },
+    "./react": {
+      "types": "./dist/react.d.ts",
+      "import": "./dist/react.js",
+      "require": "./dist/cjs/react.js",
+      "default": "./dist/react.js"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "react": [
+        "./dist/react.d.ts"
+      ],
+      "*": [
+        "./dist/vimeo-video-element.d.ts"
+      ]
+    }
   },
   "scripts": {
     "lint": "eslint *.js",

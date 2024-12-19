@@ -18,11 +18,31 @@
     "dist"
   ],
   "type": "module",
-  "main": "videojs-video-element.js",
-  "types": "videojs-video-element.d.ts",
+  "types": "./dist/videojs-video-element.d.ts",
+  "main": "./dist/videojs-video-element.js",
   "exports": {
-    ".": "./videojs-video-element.js",
-    "./react": "./dist/react.js"
+    ".": {
+      "types": "./dist/videojs-video-element.d.ts",
+      "import": "./dist/videojs-video-element.js",
+      "require": "./dist/cjs/videojs-video-element.js",
+      "default": "./dist/videojs-video-element.js"
+    },
+    "./react": {
+      "types": "./dist/react.d.ts",
+      "import": "./dist/react.js",
+      "require": "./dist/cjs/react.js",
+      "default": "./dist/react.js"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "react": [
+        "./dist/react.d.ts"
+      ],
+      "*": [
+        "./dist/videojs-video-element.d.ts"
+      ]
+    }
   },
   "scripts": {
     "lint": "eslint *.js",

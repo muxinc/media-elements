@@ -18,11 +18,31 @@
     "dist"
   ],
   "type": "module",
-  "main": "jwplayer-video-element.js",
-  "types": "jwplayer-video-element.d.ts",
+  "types": "./dist/jwplayer-video-element.d.ts",
+  "main": "./dist/jwplayer-video-element.js",
   "exports": {
-    ".": "./jwplayer-video-element.js",
-    "./react": "./dist/react.js"
+    ".": {
+      "types": "./dist/jwplayer-video-element.d.ts",
+      "import": "./dist/jwplayer-video-element.js",
+      "require": "./dist/cjs/jwplayer-video-element.js",
+      "default": "./dist/jwplayer-video-element.js"
+    },
+    "./react": {
+      "types": "./dist/react.d.ts",
+      "import": "./dist/react.js",
+      "require": "./dist/cjs/react.js",
+      "default": "./dist/react.js"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "react": [
+        "./dist/react.d.ts"
+      ],
+      "*": [
+        "./dist/jwplayer-video-element.d.ts"
+      ]
+    }
   },
   "scripts": {
     "lint": "eslint *.js",
