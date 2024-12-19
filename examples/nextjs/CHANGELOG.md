@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.1.18](https://github.com/muxinc/media-elements/compare/nextjs@0.1.17...nextjs@0.1.18) (2024-12-19)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * cloudflare-video-element bumped from ^1.2.0 to ^1.3.0
+    * dash-video-element bumped from ^0.0.15 to ^0.0.16
+    * hls-video-element bumped from ^1.3.0 to ^1.4.0
+    * jwplayer-video-element bumped from ^1.2.0 to ^1.3.0
+    * shaka-video-element bumped from ^0.6.10 to ^0.6.11
+    * spotify-audio-element bumped from ^0.1.11 to ^0.1.12
+    * videojs-video-element bumped from ^1.3.0 to ^1.4.0
+    * vimeo-video-element bumped from ^1.2.0 to ^1.3.0
+    * wistia-video-element bumped from ^1.2.0 to ^1.3.0
+    * youtube-video-element bumped from ^1.2.0 to ^1.3.0
+
 ## [0.1.17](https://github.com/muxinc/media-elements/compare/nextjs-v0.1.16...nextjs@0.1.17) (2024-12-19)
 
 
