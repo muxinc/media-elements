@@ -29,7 +29,7 @@
     "custom-media-element": "~1.4.1"
   },
   "devDependencies": {
-    "wet-run": "^1.2.2"
+    "wet-run": "^1.2.5"
   },
   "keywords": [
     "chromecast",

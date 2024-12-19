@@ -31,11 +31,11 @@
     "serve": "wet serve --redirect :examples/ --cors"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^7.12.0",
-    "@typescript-eslint/parser": "^7.12.0",
-    "esbuild": "^0.21.4",
-    "typescript": "5.4.5",
-    "wet-run": "^1.2.2"
+    "@typescript-eslint/eslint-plugin": "^8.18.1",
+    "@typescript-eslint/parser": "^8.18.1",
+    "esbuild": "^0.24.0",
+    "typescript": "5.7.2",
+    "wet-run": "^1.2.5"
   },
   "eslintConfig": {
     "root": true,
