@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.8](https://github.com/muxinc/media-elements/compare/build-react-wrapper@0.1.7...build-react-wrapper@0.1.8) (2024-12-19)
+
+
+### Features
+
+* add better CJS + types support ([#66](https://github.com/muxinc/media-elements/issues/66)) ([8aa2066](https://github.com/muxinc/media-elements/commit/8aa20660faea741a264076a1464182ca283a8682)), closes [#44](https://github.com/muxinc/media-elements/issues/44)
+
 ## [0.1.7](https://github.com/muxinc/media-elements/compare/build-react-wrapper@0.1.6...build-react-wrapper@0.1.7) (2024-12-19)
 
 

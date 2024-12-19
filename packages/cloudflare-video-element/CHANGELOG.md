@@ -4,6 +4,20 @@
 
 [1]: https://www.npmjs.com/package/cloudflare-video-element?activeTab=versions
 
+## [1.3.0](https://github.com/muxinc/media-elements/compare/cloudflare-video-element@1.2.0...cloudflare-video-element@1.3.0) (2024-12-19)
+
+
+### Features
+
+* add better CJS + types support ([#66](https://github.com/muxinc/media-elements/issues/66)) ([8aa2066](https://github.com/muxinc/media-elements/commit/8aa20660faea741a264076a1464182ca283a8682)), closes [#44](https://github.com/muxinc/media-elements/issues/44)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * build-react-wrapper bumped from ^0.1.7 to ^0.1.8
+
 ## [1.2.0](https://github.com/muxinc/media-elements/compare/cloudflare-video-element@1.1.6...cloudflare-video-element@1.2.0) (2024-12-19)
 
 
