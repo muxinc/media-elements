@@ -18,11 +18,31 @@
     "dist"
   ],
   "type": "module",
-  "main": "wistia-video-element.js",
-  "types": "wistia-video-element.d.ts",
+  "types": "./dist/wistia-video-element.d.ts",
+  "main": "./dist/wistia-video-element.js",
   "exports": {
-    ".": "./wistia-video-element.js",
-    "./react": "./dist/react.js"
+    ".": {
+      "types": "./dist/wistia-video-element.d.ts",
+      "import": "./dist/wistia-video-element.js",
+      "require": "./dist/cjs/wistia-video-element.js",
+      "default": "./dist/wistia-video-element.js"
+    },
+    "./react": {
+      "types": "./dist/react.d.ts",
+      "import": "./dist/react.js",
+      "require": "./dist/cjs/react.js",
+      "default": "./dist/react.js"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "react": [
+        "./dist/react.d.ts"
+      ],
+      "*": [
+        "./dist/wistia-video-element.d.ts"
+      ]
+    }
   },
   "scripts": {
     "lint": "eslint *.js",

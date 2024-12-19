@@ -18,11 +18,31 @@
     "dist"
   ],
   "type": "module",
-  "main": "hls-video-element.js",
-  "types": "hls-video-element.d.ts",
+  "types": "./dist/hls-video-element.d.ts",
+  "main": "./dist/hls-video-element.js",
   "exports": {
-    ".": "./hls-video-element.js",
-    "./react": "./dist/react.js"
+    ".": {
+      "types": "./dist/hls-video-element.d.ts",
+      "import": "./dist/hls-video-element.js",
+      "require": "./dist/cjs/hls-video-element.js",
+      "default": "./dist/hls-video-element.js"
+    },
+    "./react": {
+      "types": "./dist/react.d.ts",
+      "import": "./dist/react.js",
+      "require": "./dist/cjs/react.js",
+      "default": "./dist/react.js"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "react": [
+        "./dist/react.d.ts"
+      ],
+      "*": [
+        "./dist/hls-video-element.d.ts"
+      ]
+    }
   },
   "scripts": {
     "lint": "eslint *.js",

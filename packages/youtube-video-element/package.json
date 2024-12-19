@@ -18,11 +18,31 @@
     "dist"
   ],
   "type": "module",
-  "main": "youtube-video-element.js",
-  "types": "youtube-video-element.d.ts",
+  "types": "./dist/youtube-video-element.d.ts",
+  "main": "./dist/youtube-video-element.js",
   "exports": {
-    ".": "./youtube-video-element.js",
-    "./react": "./dist/react.js"
+    ".": {
+      "types": "./dist/youtube-video-element.d.ts",
+      "import": "./dist/youtube-video-element.js",
+      "require": "./dist/cjs/youtube-video-element.js",
+      "default": "./dist/youtube-video-element.js"
+    },
+    "./react": {
+      "types": "./dist/react.d.ts",
+      "import": "./dist/react.js",
+      "require": "./dist/cjs/react.js",
+      "default": "./dist/react.js"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "react": [
+        "./dist/react.d.ts"
+      ],
+      "*": [
+        "./dist/youtube-video-element.d.ts"
+      ]
+    }
   },
   "scripts": {
     "lint": "eslint *.js",

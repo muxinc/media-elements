@@ -18,11 +18,31 @@
     "dist"
   ],
   "type": "module",
-  "main": "dash-video-element.js",
-  "types": "dash-video-element.d.ts",
+  "types": "./dist/dash-video-element.d.ts",
+  "main": "./dist/dash-video-element.js",
   "exports": {
-    ".": "./dash-video-element.js",
-    "./react": "./dist/react.js"
+    ".": {
+      "types": "./dist/dash-video-element.d.ts",
+      "import": "./dist/dash-video-element.js",
+      "require": "./dist/cjs/dash-video-element.js",
+      "default": "./dist/dash-video-element.js"
+    },
+    "./react": {
+      "types": "./dist/react.d.ts",
+      "import": "./dist/react.js",
+      "require": "./dist/cjs/react.js",
+      "default": "./dist/react.js"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "react": [
+        "./dist/react.d.ts"
+      ],
+      "*": [
+        "./dist/dash-video-element.d.ts"
+      ]
+    }
   },
   "scripts": {
     "lint": "eslint *.js",

@@ -18,11 +18,31 @@
     "dist"
   ],
   "type": "module",
-  "main": "shaka-video-element.js",
-  "types": "shaka-video-element.d.ts",
+  "types": "./dist/shaka-video-element.d.ts",
+  "main": "./dist/shaka-video-element.js",
   "exports": {
-    ".": "./shaka-video-element.js",
-    "./react": "./dist/react.js"
+    ".": {
+      "types": "./dist/shaka-video-element.d.ts",
+      "import": "./dist/shaka-video-element.js",
+      "require": "./dist/cjs/shaka-video-element.js",
+      "default": "./dist/shaka-video-element.js"
+    },
+    "./react": {
+      "types": "./dist/react.d.ts",
+      "import": "./dist/react.js",
+      "require": "./dist/cjs/react.js",
+      "default": "./dist/react.js"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "react": [
+        "./dist/react.d.ts"
+      ],
+      "*": [
+        "./dist/shaka-video-element.d.ts"
+      ]
+    }
   },
   "scripts": {
     "lint": "eslint *.js",

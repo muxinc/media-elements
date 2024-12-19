@@ -18,11 +18,31 @@
     "dist"
   ],
   "type": "module",
-  "main": "spotify-audio-element.js",
-  "types": "spotify-audio-element.d.ts",
+  "types": "./dist/spotify-audio-element.d.ts",
+  "main": "./dist/spotify-audio-element.js",
   "exports": {
-    ".": "./spotify-audio-element.js",
-    "./react": "./dist/react.js"
+    ".": {
+      "types": "./dist/spotify-audio-element.d.ts",
+      "import": "./dist/spotify-audio-element.js",
+      "require": "./dist/cjs/spotify-audio-element.js",
+      "default": "./dist/spotify-audio-element.js"
+    },
+    "./react": {
+      "types": "./dist/react.d.ts",
+      "import": "./dist/react.js",
+      "require": "./dist/cjs/react.js",
+      "default": "./dist/react.js"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "react": [
+        "./dist/react.d.ts"
+      ],
+      "*": [
+        "./dist/spotify-audio-element.d.ts"
+      ]
+    }
   },
   "scripts": {
     "lint": "eslint spotify-audio-element.js",
