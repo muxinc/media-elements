@@ -8,6 +8,7 @@ type PolymorphicProps<E extends React.ElementType> = React.PropsWithChildren<Rea
 
 export default function Player<T extends React.ElementType>({
   as: PlayerElement,
+  children,
   ...rest
 }: PolymorphicProps<T>) {
   return (
@@ -19,6 +20,8 @@ export default function Player<T extends React.ElementType>({
       onPause={(event: Event) => {
         console.log(event.type);
       }}
-    ></PlayerElement>
+    >
+      {children}
+    </PlayerElement>
   );
 }

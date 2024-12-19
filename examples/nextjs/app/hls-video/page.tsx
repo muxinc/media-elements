@@ -7,14 +7,15 @@ export const metadata: Metadata = {
 };
 
 type PageProps = {
-  searchParams: {
+  params: Promise<{
     autoplay: string;
     muted: string;
     preload: string;
-  };
+  }>;
 };
 
-export default function Page(props: PageProps) {
+export default async function Page(props: PageProps) {
+  const params = await props.params;
   return (
     <>
       <section>
@@ -26,9 +27,9 @@ export default function Page(props: PageProps) {
           controls
           crossOrigin=""
           playsInline
-          autoplay={!!props.searchParams?.autoplay}
-          muted={!!props.searchParams?.muted}
-          preload={props.searchParams?.preload as 'auto' | 'metadata' | 'none'}
+          autoplay={!!params?.autoplay}
+          muted={!!params?.muted}
+          preload={params?.preload as 'auto' | 'metadata' | 'none'}
           suppressHydrationWarning
         >
           <track

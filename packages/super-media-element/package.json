@@ -26,9 +26,9 @@
     "serve": "wet serve --cors --redirect :example/"
   },
   "devDependencies": {
-    "esbuild": "^0.21.4",
-    "wet-run": "^1.2.2",
-    "zora": "^5.2.0"
+    "esbuild": "^0.24.0",
+    "wet-run": "^1.2.5",
+    "zora": "^6.0.0"
   },
   "keywords": [
     "custom",
