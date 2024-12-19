@@ -318,9 +318,6 @@ class VimeoVideoElement extends (globalThis.HTMLElement ?? class {}) {
     return this.#videoHeight;
   }
 
-  // If the getter from SuperVideoElement is overridden, it's required to define
-  // the setter again too unless it's a read only property! It's a JS thing.
-
   get src() {
     return this.getAttribute('src');
   }
