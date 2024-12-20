@@ -5,6 +5,20 @@
 [1]: https://www.npmjs.com/package/castable-video?activeTab=versions
 
 
+## [1.1.4](https://github.com/muxinc/media-elements/compare/castable-video@1.1.3...castable-video@1.1.4) (2024-12-20)
+
+
+### Bug Fixes
+
+* no cast framework rq w/ disableremoteplayback ([#72](https://github.com/muxinc/media-elements/issues/72)) ([fd7a34d](https://github.com/muxinc/media-elements/commit/fd7a34df003a6cb7c0edf9e00df6562b5334bad3)), closes [#59](https://github.com/muxinc/media-elements/issues/59)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * custom-media-element bumped from ~1.4.1 to ~1.4.2
+
 ## [1.1.3](https://github.com/muxinc/media-elements/compare/castable-video@1.1.2...castable-video@1.1.3) (2024-11-26)
 
 
