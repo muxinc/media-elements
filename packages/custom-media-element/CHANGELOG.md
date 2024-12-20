@@ -5,6 +5,13 @@
 [1]: https://www.npmjs.com/package/custom-media-element?activeTab=versions
 
 
+## [1.4.2](https://github.com/muxinc/media-elements/compare/custom-media-element@1.4.1...custom-media-element@1.4.2) (2024-12-20)
+
+
+### Bug Fixes
+
+* SSR non video attrs ([#69](https://github.com/muxinc/media-elements/issues/69)) ([67c7141](https://github.com/muxinc/media-elements/commit/67c7141ccd43b4aeed81e536defb78f8fc580500))
+
 ## [1.4.1](https://github.com/muxinc/media-elements/compare/custom-media-element@1.4.0...custom-media-element@1.4.1) (2024-11-26)
 
 

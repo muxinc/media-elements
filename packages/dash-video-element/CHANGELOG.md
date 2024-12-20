@@ -5,6 +5,15 @@
 [1]: https://www.npmjs.com/package/dash-video-element?activeTab=versions
 
 
+## [0.0.17](https://github.com/muxinc/media-elements/compare/dash-video-element@0.0.16...dash-video-element@0.0.17) (2024-12-20)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * custom-media-element bumped from ^1.4.1 to ^1.4.2
+
 ## [0.0.16](https://github.com/muxinc/media-elements/compare/dash-video-element@0.0.15...dash-video-element@0.0.16) (2024-12-19)
 
 
