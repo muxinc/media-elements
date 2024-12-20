@@ -42,6 +42,22 @@ export const Events = [
   'webkitpresentationmodechanged',
 ];
 
+export const Attributes = [
+  'autopictureinpicture',
+  'disablepictureinpicture',
+  'disableremoteplayback',
+  'autoplay',
+  'controls',
+  'controlslist',
+  'crossorigin',
+  'loop',
+  'muted',
+  'playsinline',
+  'poster',
+  'preload',
+  'src',
+];
+
 /**
  * Helper function to generate the HTML template for audio elements.
  */
@@ -166,19 +182,7 @@ export function CustomMediaMixin<T extends Constructor<HTMLElement>>(superclass:
 
       return [
         ...natAttrs,
-        'autopictureinpicture',
-        'disablepictureinpicture',
-        'disableremoteplayback',
-        'autoplay',
-        'controls',
-        'controlslist',
-        'crossorigin',
-        'loop',
-        'muted',
-        'playsinline',
-        'poster',
-        'preload',
-        'src',
+        ...Attributes,
       ];
     }
 
@@ -425,7 +429,7 @@ export function CustomMediaMixin<T extends Constructor<HTMLElement>>(superclass:
       this.#forwardAttribute(attrName, oldValue, newValue);
     }
 
-    #forwardAttribute(attrName: string, oldValue: string | null, newValue: string | null): void {
+    #forwardAttribute(attrName: string, _oldValue: string | null, newValue: string | null): void {
       if (['id', 'class'].includes(attrName)) return;
 
       if (
@@ -470,6 +474,9 @@ function getNativeElProps(nativeElTest: HTMLVideoElement | HTMLAudioElement) {
 function serializeAttributes(attrs: Record<string, string>): string {
   let html = '';
   for (const key in attrs) {
+    // Skip forwarding non native video attributes.
+    if (!Attributes.includes(key)) continue;
+
     const value = attrs[key];
     if (value === '') html += ` ${key}`;
     else html += ` ${key}="${value}"`;
