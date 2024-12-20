@@ -37,7 +37,10 @@ export const CastableMediaMixin = (superclass) =>
       if (this.#remote) return this.#remote;
 
       if (requiresCastFramework()) {
-        loadCastFramework();
+        // No need to load the Cast framework if it's disabled.
+        if (!this.disableRemotePlayback) {
+          loadCastFramework();
+        }
 
         privateProps.set(this, {
           loadOnPrompt: () => this.#loadOnPrompt()

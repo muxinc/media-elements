@@ -30,7 +30,7 @@
     <script type="importmap">
       {
         "imports": {
-          "custom-media-element": "https://cdn.jsdelivr.net/npm/custom-media-element@1.0/+esm"
+          "custom-media-element": "https://cdn.jsdelivr.net/npm/custom-media-element@1.4/+esm"
         }
       }
     </script>
@@ -48,6 +48,7 @@
     >
       <!-- Uses progressive enhancement for best performance -->
       <video
+        slot="media"
         poster="https://image.mux.com/O6LdRc0112FEJXH00bGsN9Q31yu5EIVHTgjTKRkKtEq1k/thumbnail.jpg?time=56"
         src="https://stream.mux.com/O6LdRc0112FEJXH00bGsN9Q31yu5EIVHTgjTKRkKtEq1k/high.mp4"
         crossorigin
@@ -82,7 +83,9 @@
       if (castable.remote.state === 'disconnected') {
         castable.remote.watchAvailability((available) => {
           castBtn.hidden = !available;
-          castBtn2.hidden = !available;
+        })
+        .catch((error) => {
+          console.error(`> Error watching remote device availability: ${error}`);
         })
         .then((id) => {
           console.log(`> Started watching remote device availability: ${id}`);
@@ -107,6 +110,20 @@
       src="https://stream.mux.com/A3VXy02VoUinw01pwyomEO3bHnG4P32xzV7u1j1FSzjNg/high.mp4"
       crossorigin
     ></castable-video>
+
+    <script type="module">
+      if (castable2.remote.state === 'disconnected') {
+        castable2.remote.watchAvailability((available) => {
+          castBtn2.hidden = !available;
+        })
+        .catch((error) => {
+          console.error(`> Error watching remote device availability: ${error}`);
+        })
+        .then((id) => {
+          console.log(`> Started watching remote device availability: ${id}`);
+        });
+      }
+    </script>
 
     <br />
 
