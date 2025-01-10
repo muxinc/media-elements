@@ -12,6 +12,7 @@ const HlsVideoMixin = (superclass) => {
     };
 
     #airplaySourceEl = null;
+    config = {};
 
     attributeChangedCallback(attrName, oldValue, newValue) {
       if (attrName !== 'src') {
@@ -52,6 +53,8 @@ const HlsVideoMixin = (superclass) => {
           liveDurationInfinity: true,
           // Disable auto quality level/fragment loading.
           autoStartLoad: false,
+          // Custom configuration for hls.js.
+          ...this.config,
         });
 
         // Wait 1 tick to allow other attributes to be set.
