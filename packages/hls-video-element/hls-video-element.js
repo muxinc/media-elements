@@ -12,7 +12,20 @@ const HlsVideoMixin = (superclass) => {
     };
 
     #airplaySourceEl = null;
-    config = {};
+    #config = null;
+
+    constructor() {
+      super();
+      this.#upgradeProperty('config');
+    }
+
+    get config() {
+      return this.#config;
+    }
+
+    set config(value) {
+      this.#config = value;
+    }
 
     attributeChangedCallback(attrName, oldValue, newValue) {
       if (attrName !== 'src') {
@@ -252,6 +265,19 @@ const HlsVideoMixin = (superclass) => {
         this.api?.startLoad();
       }
     };
+
+    // This is a pattern to update property values that are set before
+    // the custom element is upgraded.
+    // https://web.dev/custom-elements-best-practices/#make-properties-lazy
+    #upgradeProperty(prop) {
+      if (Object.prototype.hasOwnProperty.call(this, prop)) {
+        const value = this[prop];
+        // Delete the set property from this instance.
+        delete this[prop];
+        // Set the value again via the (prototype) setter on this class.
+        this[prop] = value;
+      }
+    }
   };
 };
 

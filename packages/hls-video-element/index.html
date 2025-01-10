@@ -27,7 +27,6 @@
     }
   </style>
 
-  <script async src="https://cdn.jsdelivr.net/npm/es-module-shims"></script>
   <script type="importmap">
     {
       "imports": {
@@ -52,6 +51,13 @@
     crossorigin
     playsinline
   ></hls-video>
+
+  <script>
+    // Test setting config before custom element upgrade (upgradeProperty)
+    // myVideo.config = {
+    //   debug: true,
+    // };
+  </script>
 
   <br>
 
