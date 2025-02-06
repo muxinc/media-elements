@@ -134,7 +134,10 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
           this.isLoaded = true;
           this.loadComplete.resolve();
         },
-        onError: (error) => console.error(error),
+        onError: (error) => {
+          console.error(error);
+          this.dispatchEvent(new CustomEvent('error', { detail: error }));
+        },
       },
     });
 
