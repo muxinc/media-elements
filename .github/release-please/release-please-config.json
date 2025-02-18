@@ -1,6 +1,6 @@
 {
   "bump-minor-pre-major": true,
-  "bump-patch-for-minor-pre-major": true,
+  "bump-patch-for-minor-pre-major": false,
   "tag-separator": "@",
   "include-component-in-tag": true,
   "include-v-in-tag": false,
