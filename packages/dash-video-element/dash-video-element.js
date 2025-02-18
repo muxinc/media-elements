@@ -25,7 +25,7 @@ class DashVideoElement extends CustomVideoElement {
     if (!this.#apiInit) {
       this.#apiInit = true;
 
-      const Dash = await import('dashjs-esm');
+      const Dash = await import('dashjs');
 
       this.api = Dash.MediaPlayer().create();
       this.api.initialize(this.nativeEl, this.src, this.autoplay);

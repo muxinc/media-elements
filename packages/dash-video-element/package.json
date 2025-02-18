@@ -53,7 +53,7 @@
   },
   "dependencies": {
     "custom-media-element": "^1.4.2",
-    "dashjs-esm": "^4.6.0"
+    "dashjs": "^5.0.0"
   },
   "devDependencies": {
     "build-react-wrapper": "^0.1.8",
