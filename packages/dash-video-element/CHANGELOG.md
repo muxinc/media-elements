@@ -5,6 +5,13 @@
 [1]: https://www.npmjs.com/package/dash-video-element?activeTab=versions
 
 
+## [0.1.0](https://github.com/muxinc/media-elements/compare/dash-video-element@0.0.17...dash-video-element@0.1.0) (2025-02-18)
+
+
+### Features
+
+* upgrade dash.js ([#79](https://github.com/muxinc/media-elements/issues/79)) ([36edc9e](https://github.com/muxinc/media-elements/commit/36edc9e84c7d8d75ea1d658975d312312b18637c))
+
 ## [0.0.17](https://github.com/muxinc/media-elements/compare/dash-video-element@0.0.16...dash-video-element@0.0.17) (2024-12-20)
 
 
