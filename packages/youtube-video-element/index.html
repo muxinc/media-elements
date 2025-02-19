@@ -113,6 +113,9 @@
     video.addEventListener('resize', (e) => {
       console.log(e.type, video.videoWidth, video.videoHeight);
     });
+    video.addEventListener('error', (e) => {
+      console.log(e);
+    });
   </script>
 
 </body>
