@@ -1,6 +1,6 @@
 {
   "name": "youtube-video-element",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Custom element (web component) for the YouTube player.",
   "author": "@muxinc",
   "license": "MIT",
