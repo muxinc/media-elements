@@ -5,6 +5,13 @@
 [1]: https://www.npmjs.com/package/youtube-video-element?activeTab=versions
 
 
+## [1.4.0](https://github.com/muxinc/media-elements/compare/youtube-video-element@1.3.0...youtube-video-element@1.4.0) (2025-02-20)
+
+
+### Features
+
+* Add event dispatch for youtube errors ([#78](https://github.com/muxinc/media-elements/issues/78)) ([54528b2](https://github.com/muxinc/media-elements/commit/54528b21b234a79760a2e5b823884c5abf55af52))
+
 ## [1.3.0](https://github.com/muxinc/media-elements/compare/youtube-video-element@1.2.0...youtube-video-element@1.3.0) (2024-12-19)
 
 
