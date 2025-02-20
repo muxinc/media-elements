@@ -82,6 +82,7 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
   #seeking = false;
   #seekComplete;
   isLoaded = false;
+  #error = null;
 
   async load() {
     if (this.#loadRequested) return;
@@ -134,7 +135,14 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
           this.isLoaded = true;
           this.loadComplete.resolve();
         },
-        onError: (error) => console.error(error),
+        onError: (error) => {
+          console.error(error);
+          this.#error = {
+            code: error.data,
+            message: `YouTube iframe player error #${error.data}; visit https://developers.google.com/youtube/iframe_api_reference#onError for the full error message.`
+          }
+          this.dispatchEvent(new Event('error'));
+        },
       },
     });
 
@@ -274,6 +282,10 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
   set src(val) {
     if (this.src == val) return;
     this.setAttribute('src', val);
+  }
+
+  get error() {
+    return this.#error;
   }
 
   /* onStateChange
