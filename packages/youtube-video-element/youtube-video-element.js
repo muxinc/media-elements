@@ -4,8 +4,7 @@ const EMBED_BASE = 'https://www.youtube.com/embed';
 const API_URL = 'https://www.youtube.com/iframe_api';
 const API_GLOBAL = 'YT';
 const API_GLOBAL_READY = 'onYouTubeIframeAPIReady';
-const MATCH_SRC =
-  /(?:youtu\.be\/|youtube\.com\/(?:shorts\/|embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})/;
+const MATCH_SRC = /(?:youtu\.be\/|youtube\.com\/(?:shorts\/|embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})/;
 
 function getTemplateHTML(attrs) {
   const iframeAttrs = {
@@ -16,7 +15,7 @@ function getTemplateHTML(attrs) {
     allow: 'accelerometer; fullscreen; autoplay; encrypted-media; gyroscope; picture-in-picture',
   };
 
-  return /*html*/`
+  return /*html*/ `
     <style>
       :host {
         display: inline-block;
@@ -34,6 +33,24 @@ function getTemplateHTML(attrs) {
     <iframe${serializeAttributes(iframeAttrs)}></iframe>
   `;
 }
+
+const YOUTUBE_IFRAME_PARAMS = [
+  'cc_lang_pref',
+  'cc_load_policy',
+  'color',
+  'disablekb',
+  'enablejsapi',
+  'end',
+  'fs',
+  'hl',
+  'iv_load_policy',
+  'origin',
+  'playlist',
+  'playsinline',
+  'rel',
+  'start',
+  'widget_referrer',
+];
 
 function serializeIframeUrl(attrs) {
   if (!attrs.src) return;
@@ -55,6 +72,10 @@ function serializeIframeUrl(attrs) {
     rel: 0,
     iv_load_policy: 3,
     modestbranding: 1,
+    ...YOUTUBE_IFRAME_PARAMS.reduce((acc, key) => {
+      (acc[key] = attrs[key]), key;
+      return acc;
+    }, {}),
   };
 
   return `${EMBED_BASE}/${srcId}?${serialize(params)}`;
@@ -73,6 +94,7 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
     'poster',
     'preload',
     'src',
+    ...YOUTUBE_IFRAME_PARAMS,
   ];
 
   loadComplete = new PublicPromise();
@@ -139,8 +161,8 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
           console.error(error);
           this.#error = {
             code: error.data,
-            message: `YouTube iframe player error #${error.data}; visit https://developers.google.com/youtube/iframe_api_reference#onError for the full error message.`
-          }
+            message: `YouTube iframe player error #${error.data}; visit https://developers.google.com/youtube/iframe_api_reference#onError for the full error message.`,
+          };
           this.dispatchEvent(new Event('error'));
         },
       },
@@ -158,10 +180,7 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
     let playFired = false;
     this.api.addEventListener('onStateChange', (event) => {
       const state = event.data;
-      if (
-        state === YT.PlayerState.PLAYING ||
-        state === YT.PlayerState.BUFFERING
-      ) {
+      if (state === YT.PlayerState.PLAYING || state === YT.PlayerState.BUFFERING) {
         if (!playFired) {
           playFired = true;
           this.dispatchEvent(new Event('play'));
@@ -316,9 +335,8 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
   }
 
   get buffered() {
+    const progress = this.api?.getVideoLoadedFraction() * this.api?.getDuration();
     if (!this.isLoaded) return createTimeRanges();
-    const progress =
-      this.api?.getVideoLoadedFraction() * this.api?.getDuration();
     if (progress > 0) {
       return createTimeRanges(0, progress);
     }
@@ -468,7 +486,7 @@ async function loadScript(src, globalName, readyFnName) {
     const script = document.createElement('script');
     script.src = src;
     const ready = () => resolve(self[globalName]);
-    if (readyFnName) (self[readyFnName] = ready);
+    if (readyFnName) self[readyFnName] = ready;
     script.onload = () => !readyFnName && ready();
     script.onerror = reject;
     document.head.append(script);
@@ -540,14 +558,27 @@ function createTimeRanges(start, end) {
 function createTimeRangesObj(ranges) {
   Object.defineProperties(ranges, {
     start: {
-      value: i => ranges[i][0]
+      value: (i) => ranges[i][0],
     },
     end: {
-      value: i => ranges[i][1]
-    }
+      value: (i) => ranges[i][1],
+    },
   });
   return ranges;
 }
+
+YOUTUBE_IFRAME_PARAMS.forEach((attr) => {
+  Object.defineProperty(YoutubeVideoElement.prototype, attr, {
+    get() {
+      return this.getAttribute(attr);
+    },
+    set(val) {
+      if (this.getAttribute(attr) !== val) {
+        this.setAttribute(attr, val || '');
+      }
+    },
+  });
+});
 
 if (globalThis.customElements && !globalThis.customElements.get('youtube-video')) {
   globalThis.customElements.define('youtube-video', YoutubeVideoElement);
