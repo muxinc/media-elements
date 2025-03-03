@@ -4,7 +4,7 @@ import VimeoPlayerAPI from '@vimeo/player/dist/player.es.js';
 const EMBED_BASE = 'https://player.vimeo.com/video';
 const MATCH_SRC = /vimeo\.com\/(?:video\/)?(\d+)(?:\/([\w-]+))?/;
 
-function getTemplateHTML(attrs, props) {
+function getTemplateHTML(attrs, props = {}) {
   const iframeAttrs = {
     src: serializeIframeUrl(attrs, props),
     frameborder: 0,
