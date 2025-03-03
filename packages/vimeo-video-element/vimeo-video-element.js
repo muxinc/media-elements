@@ -4,9 +4,9 @@ import VimeoPlayerAPI from '@vimeo/player/dist/player.es.js';
 const EMBED_BASE = 'https://player.vimeo.com/video';
 const MATCH_SRC = /vimeo\.com\/(?:video\/)?(\d+)(?:\/([\w-]+))?/;
 
-function getTemplateHTML(attrs) {
+function getTemplateHTML(attrs, props) {
   const iframeAttrs = {
-    src: serializeIframeUrl(attrs),
+    src: serializeIframeUrl(attrs, props),
     frameborder: 0,
     width: '100%',
     height: '100%',
@@ -34,7 +34,7 @@ function getTemplateHTML(attrs) {
   `;
 }
 
-function serializeIframeUrl(attrs) {
+function serializeIframeUrl(attrs, props) {
   if (!attrs.src) return;
 
   const matches = attrs.src.match(MATCH_SRC);
@@ -52,6 +52,7 @@ function serializeIframeUrl(attrs) {
     transparent: false,
     autopause: attrs.autopause,
     h: hParam, // This param is required when the video is Unlisted.
+    ...props.config
   };
 
   return `${EMBED_BASE}/${srcId}?${serialize(params)}`;
@@ -87,6 +88,20 @@ class VimeoVideoElement extends (globalThis.HTMLElement ?? class {}) {
   #volume = 1;
   #videoWidth = NaN;
   #videoHeight = NaN;
+  #config = null;
+
+  constructor() {
+    super();
+    this.#upgradeProperty('config');
+  }
+
+  get config() {
+    return this.#config;
+  }
+
+  set config(value) {
+    this.#config = value;
+  }
 
   async load() {
     if (this.#loadRequested) return;
@@ -121,6 +136,7 @@ class VimeoVideoElement extends (globalThis.HTMLElement ?? class {}) {
 
     this.dispatchEvent(new Event('loadstart'));
 
+    // https://developer.vimeo.com/player/sdk/embed
     const options = {
       autoplay: this.autoplay,
       controls: this.controls,
@@ -130,6 +146,7 @@ class VimeoVideoElement extends (globalThis.HTMLElement ?? class {}) {
       preload: this.preload ?? 'metadata',
       transparent: false,
       autopause: this.hasAttribute('autopause'),
+      ...this.#config,
     };
 
     const onLoaded = async () => {
@@ -164,7 +181,7 @@ class VimeoVideoElement extends (globalThis.HTMLElement ?? class {}) {
 
     if (!this.shadowRoot) {
       this.attachShadow({ mode: 'open' });
-      this.shadowRoot.innerHTML = getTemplateHTML(namedNodeMapToObject(this.attributes));
+      this.shadowRoot.innerHTML = getTemplateHTML(namedNodeMapToObject(this.attributes), this);
     }
 
     let iframe = this.shadowRoot.querySelector('iframe');
@@ -442,6 +459,19 @@ class VimeoVideoElement extends (globalThis.HTMLElement ?? class {}) {
     this.loadComplete.then(() => {
       this.api?.setVolume(val);
     });
+  }
+
+  // This is a pattern to update property values that are set before
+  // the custom element is upgraded.
+  // https://web.dev/custom-elements-best-practices/#make-properties-lazy
+  #upgradeProperty(prop) {
+    if (Object.prototype.hasOwnProperty.call(this, prop)) {
+      const value = this[prop];
+      // Delete the set property from this instance.
+      delete this[prop];
+      // Set the value again via the (prototype) setter on this class.
+      this[prop] = value;
+    }
   }
 }
 
