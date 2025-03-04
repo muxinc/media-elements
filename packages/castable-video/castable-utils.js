@@ -6,6 +6,8 @@ export class InvalidStateError extends Error {}
 export class NotSupportedError extends Error {}
 export class NotFoundError extends Error {}
 
+const HLS_RESPONSE_HEADERS = ['application/x-mpegURL','application/vnd.apple.mpegurl','audio/mpegurl']
+
 // Fallback to a plain Set if WeakRef is not available.
 export const IterableWeakSet = globalThis.WeakRef ?
   class extends Set {
@@ -105,4 +107,66 @@ export function getDefaultCastOptions() {
     language: 'en-US',
     resumeSavedSession: true,
   };
+}
+
+//Get the chunk format in the playlist given the end of the chunk URL (.m4s, .ts, etc)
+function getFormat(chunks) {
+  const regex = /\.([a-zA-Z0-9]+)(?:\?.*)?$/;
+  const chunk = chunks[0];
+  const match = chunk.match(regex);
+  return match ? match[1] : null;
+}
+
+function parsePlaylistUrls(playlistContent) {
+  const lines = playlistContent.split('\n');
+  const urls = [];
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i].trim();
+
+    // Locate Video playlist flag and get the next line
+    if (line.startsWith('#EXT-X-STREAM-INF')) {
+      const nextLine = lines[i + 1] ? lines[i + 1].trim() : '';
+      if (nextLine && !nextLine.startsWith('#')) {
+        urls.push(nextLine);
+      }
+    }
+
+    // Chunks case
+    if (!line.startsWith('#') && line !== '') {
+      urls.push(line);
+    }
+  }
+
+  return urls;
+}
+
+export async function isHls(url) {
+  try {
+    const response = await fetch(url, {method: 'HEAD'});
+    const contentType = response.headers.get('Content-Type');
+
+    return HLS_RESPONSE_HEADERS.some((header) => contentType === header);
+  } catch (err) {
+    console.error('Error while trying to get the Content-Type of the manifest', err);
+    return false;
+  }
+}
+
+export async function getPlaylistSegmentFormat(url) {
+  try {
+    const mainManifestContent = await (await fetch(url)).text();
+
+    const playlists = parsePlaylistUrls(mainManifestContent);
+    const chosenPlaylistUrl = new URL(playlists[0], url).toString();
+
+    const availableChunksContent = await (await fetch(chosenPlaylistUrl)).text();
+
+    const chunks = parsePlaylistUrls(availableChunksContent);
+
+    return getFormat(chunks);
+  } catch (err) {
+    console.error('Error while trying to parse the manifest playlist', err);
+    return undefined;
+  }
 }
