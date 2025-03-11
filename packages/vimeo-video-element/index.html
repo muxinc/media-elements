@@ -45,6 +45,9 @@
 
 <script>
   const video = document.querySelector('vimeo-video');
+  video.config = {
+    color: '00fa9a',
+  };
 
   loadbtn.onclick = () => {
     video.src = 'https://vimeo.com/638371504';
