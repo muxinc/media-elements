@@ -7,9 +7,9 @@ const API_GLOBAL_READY = 'onYouTubeIframeAPIReady';
 const MATCH_SRC =
   /(?:youtu\.be\/|youtube\.com\/(?:shorts\/|embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})/;
 
-function getTemplateHTML(attrs) {
+function getTemplateHTML(attrs, props = {}) {
   const iframeAttrs = {
-    src: serializeIframeUrl(attrs),
+    src: serializeIframeUrl(attrs, props),
     frameborder: 0,
     width: '100%',
     height: '100%',
@@ -35,7 +35,7 @@ function getTemplateHTML(attrs) {
   `;
 }
 
-function serializeIframeUrl(attrs) {
+function serializeIframeUrl(attrs, props) {
   if (!attrs.src) return;
 
   const matches = attrs.src.match(MATCH_SRC);
@@ -49,12 +49,14 @@ function serializeIframeUrl(attrs) {
     mute: attrs.muted,
     playsinline: attrs.playsinline,
     preload: attrs.preload ?? 'metadata',
+    // https://developers.google.com/youtube/player_parameters#Parameters
     // origin: globalThis.location?.origin,
     enablejsapi: 1,
     showinfo: 0,
     rel: 0,
     iv_load_policy: 3,
     modestbranding: 1,
+    ...props.config,
   };
 
   return `${EMBED_BASE}/${srcId}?${serialize(params)}`;
@@ -83,6 +85,20 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
   #seekComplete;
   isLoaded = false;
   #error = null;
+  #config = null;
+
+  constructor() {
+    super();
+    this.#upgradeProperty('config');
+  }
+
+  get config() {
+    return this.#config;
+  }
+
+  set config(value) {
+    this.#config = value;
+  }
 
   async load() {
     if (this.#loadRequested) return;
@@ -118,8 +134,8 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
     let iframe = this.shadowRoot.querySelector('iframe');
     let attrs = namedNodeMapToObject(this.attributes);
 
-    if (!iframe?.src || iframe.src !== serializeIframeUrl(attrs)) {
-      this.shadowRoot.innerHTML = getTemplateHTML(attrs);
+    if (!iframe?.src || iframe.src !== serializeIframeUrl(attrs, this)) {
+      this.shadowRoot.innerHTML = getTemplateHTML(attrs, this);
       iframe = this.shadowRoot.querySelector('iframe');
     }
 
@@ -421,6 +437,19 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
   get volume() {
     if (!this.isLoaded) return 1;
     return this.api?.getVolume() / 100;
+  }
+
+  // This is a pattern to update property values that are set before
+  // the custom element is upgraded.
+  // https://web.dev/custom-elements-best-practices/#make-properties-lazy
+  #upgradeProperty(prop) {
+    if (Object.prototype.hasOwnProperty.call(this, prop)) {
+      const value = this[prop];
+      // Delete the set property from this instance.
+      delete this[prop];
+      // Set the value again via the (prototype) setter on this class.
+      this[prop] = value;
+    }
   }
 }
 

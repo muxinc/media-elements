@@ -60,14 +60,18 @@
   <br>
 
     <script>
-    const video = document.querySelector('#yt2');
+      const video = document.querySelector('#yt2');
 
-    window.addEventListener('load', function() {
+      window.addEventListener('load', function() {
         document.querySelector('#yt1').currentTime = 23;
       });
 
       loadbtn.onclick = () => {
-        video.src = 'https://www.youtube.com/watch?v=H3KSKS3TTbc';
+        const video = document.querySelector('#yt1');
+        video.config = {
+          start: 10
+        };
+        video.src = 'https://www.youtube.com/watch?v=uxsOYVWclA0';
       };
 
       video.addEventListener('loadstart', (e) => {
