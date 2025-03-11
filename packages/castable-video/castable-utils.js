@@ -109,11 +109,12 @@ export function getDefaultCastOptions() {
   };
 }
 
-//Get the chunk format in the playlist given the end of the chunk URL (.m4s, .ts, etc)
-function getFormat(chunks) {
+//Get the segment format given the end of the URL (.m4s, .ts, etc)
+function getFormat(segment) {
+  if (!segment) return undefined;
+
   const regex = /\.([a-zA-Z0-9]+)(?:\?.*)?$/;
-  const chunk = chunks[0];
-  const match = chunk.match(regex);
+  const match = segment.match(regex);
   return match ? match[1] : null;
 }
 
@@ -124,21 +125,24 @@ function parsePlaylistUrls(playlistContent) {
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i].trim();
 
-    // Locate Video playlist flag and get the next line
+    // Locate available video playlists and get the next line which is the URI (https://datatracker.ietf.org/doc/html/draft-pantos-hls-rfc8216bis-17#section-4.4.6.2)
     if (line.startsWith('#EXT-X-STREAM-INF')) {
       const nextLine = lines[i + 1] ? lines[i + 1].trim() : '';
       if (nextLine && !nextLine.startsWith('#')) {
         urls.push(nextLine);
       }
     }
-
-    // Chunks case
-    if (!line.startsWith('#') && line !== '') {
-      urls.push(line);
-    }
   }
 
   return urls;
+}
+
+function parseSegment(playlistContent){
+  const lines = playlistContent.split('\n');
+
+  const url = lines.find(line => !line.trim().startsWith('#') && line.trim() !== '');
+
+  return url;
 }
 
 export async function isHls(url) {
@@ -156,15 +160,17 @@ export async function isHls(url) {
 export async function getPlaylistSegmentFormat(url) {
   try {
     const mainManifestContent = await (await fetch(url)).text();
+    let availableChunksContent = mainManifestContent;
 
     const playlists = parsePlaylistUrls(mainManifestContent);
-    const chosenPlaylistUrl = new URL(playlists[0], url).toString();
+    if (playlists.length > 0) {    
+      const chosenPlaylistUrl = new URL(playlists[0], url).toString();
+      availableChunksContent = await (await fetch(chosenPlaylistUrl)).text();
+    }
 
-    const availableChunksContent = await (await fetch(chosenPlaylistUrl)).text();
-
-    const chunks = parsePlaylistUrls(availableChunksContent);
-
-    return getFormat(chunks);
+    const segment = parseSegment(availableChunksContent);
+    const format = getFormat(segment);
+    return format
   } catch (err) {
     console.error('Error while trying to parse the manifest playlist', err);
     return undefined;

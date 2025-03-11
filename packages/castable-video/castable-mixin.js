@@ -141,8 +141,9 @@ export const CastableMediaMixin = (superclass) =>
       mediaInfo.metadata.images = [{ url: this.poster }];
 
       if (isHls(this.castSrc)) {
-        const isM4SSegment = (await getPlaylistSegmentFormat(this.castSrc)) === 'm4s';
-        if (isM4SSegment) {
+        const segmentFormat = await getPlaylistSegmentFormat(this.castSrc);
+        const isFragmentedMP4 = segmentFormat?.includes('m4s') || segmentFormat?.includes('mp4');
+        if (isFragmentedMP4) {
           mediaInfo.hlsSegmentFormat = chrome.cast.media.HlsSegmentFormat.FMP4;
           mediaInfo.hlsVideoSegmentFormat = chrome.cast.media.HlsVideoSegmentFormat.FMP4;
         }
