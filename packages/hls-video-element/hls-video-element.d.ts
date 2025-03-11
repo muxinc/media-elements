@@ -1,5 +1,6 @@
 import { CustomVideoElement } from 'custom-media-element';
 import Hls from 'hls.js';
+import { HlsConfig } from 'hls.js';
 
 type Constructor<T> = {
   new (...args: any[]): T;
@@ -9,7 +10,7 @@ export function HlsVideoMixin<T extends Constructor<HTMLElement>>(superclass: T)
 
 export class HlsVideoElement extends CustomVideoElement {
   /**
-   * The current instance of the HLS.js library.
+   * The current instance of the hls.js library.
    *
    * @example
    * ```js
@@ -18,6 +19,11 @@ export class HlsVideoElement extends CustomVideoElement {
    * ```
    */
   api: Hls | null;
+
+  /**
+   * The configuration object for the hls.js instance.
+   */
+  config: Partial<HlsConfig> | null;
 
   /**
    * Fires when attributes are changed on the custom element.
