@@ -5,7 +5,9 @@ import {
   requiresCastFramework,
   loadCastFramework,
   currentSession,
-  getDefaultCastOptions
+  getDefaultCastOptions,
+  isHls,
+  getPlaylistSegmentFormat
 } from './castable-utils.js';
 
 /**
@@ -137,6 +139,15 @@ export const CastableMediaMixin = (superclass) =>
       mediaInfo.metadata = new chrome.cast.media.GenericMediaMetadata();
       mediaInfo.metadata.title = this.title;
       mediaInfo.metadata.images = [{ url: this.poster }];
+
+      if (isHls(this.castSrc)) {
+        const segmentFormat = await getPlaylistSegmentFormat(this.castSrc);
+        const isFragmentedMP4 = segmentFormat?.includes('m4s') || segmentFormat?.includes('mp4');
+        if (isFragmentedMP4) {
+          mediaInfo.hlsSegmentFormat = chrome.cast.media.HlsSegmentFormat.FMP4;
+          mediaInfo.hlsVideoSegmentFormat = chrome.cast.media.HlsVideoSegmentFormat.FMP4;
+        }
+      }
 
       const request = new chrome.cast.media.LoadRequest(mediaInfo);
       request.currentTime = super.currentTime ?? 0;
