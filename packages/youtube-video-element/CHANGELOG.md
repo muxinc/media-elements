@@ -5,6 +5,20 @@
 [1]: https://www.npmjs.com/package/youtube-video-element?activeTab=versions
 
 
+## [1.5.0](https://github.com/muxinc/media-elements/compare/youtube-video-element@1.4.0...youtube-video-element@1.5.0) (2025-03-12)
+
+
+### Features
+
+* add YT config property ([#91](https://github.com/muxinc/media-elements/issues/91)) ([f661eb4](https://github.com/muxinc/media-elements/commit/f661eb4a5ce0dd49351264e78f5dbf73fbe77cb0))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * build-react-wrapper bumped from ^0.1.8 to ^0.2.0
+
 ## [1.4.0](https://github.com/muxinc/media-elements/compare/youtube-video-element@1.3.0...youtube-video-element@1.4.0) (2025-02-20)
 
 
