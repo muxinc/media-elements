@@ -6,6 +6,20 @@
 
 
 
+## [1.5.0](https://github.com/muxinc/media-elements/compare/hls-video-element@1.4.1...hls-video-element@1.5.0) (2025-03-12)
+
+
+### Features
+
+* add easier way to set hls.js config ([#73](https://github.com/muxinc/media-elements/issues/73)) ([e4d6f0b](https://github.com/muxinc/media-elements/commit/e4d6f0b00d6a7b7325bf209d9e05fa8df1747c86))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * build-react-wrapper bumped from ^0.1.8 to ^0.2.0
+
 ## [1.4.1](https://github.com/muxinc/media-elements/compare/hls-video-element@1.4.0...hls-video-element@1.4.1) (2024-12-20)
 
 

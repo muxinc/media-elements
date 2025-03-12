@@ -5,6 +5,13 @@
 [1]: https://www.npmjs.com/package/castable-video?activeTab=versions
 
 
+## [1.1.5](https://github.com/muxinc/media-elements/compare/castable-video@1.1.4...castable-video@1.1.5) (2025-03-12)
+
+
+### Bug Fixes
+
+* **castable-video:** Enable playback of HLS videos with .m4s segments ([#89](https://github.com/muxinc/media-elements/issues/89)) ([9624547](https://github.com/muxinc/media-elements/commit/9624547111e1036bfd377574b955c1c6677c4513))
+
 ## [1.1.4](https://github.com/muxinc/media-elements/compare/castable-video@1.1.3...castable-video@1.1.4) (2024-12-20)
 
 

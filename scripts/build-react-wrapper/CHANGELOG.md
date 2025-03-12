@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://github.com/muxinc/media-elements/compare/build-react-wrapper@0.1.8...build-react-wrapper@0.2.0) (2025-03-12)
+
+
+### Features
+
+* add config property to vimeo-video ([#88](https://github.com/muxinc/media-elements/issues/88)) ([8d19588](https://github.com/muxinc/media-elements/commit/8d19588702072a710f4c27f5eaf1d8df1e1a22f2))
+
 ## [0.1.8](https://github.com/muxinc/media-elements/compare/build-react-wrapper@0.1.7...build-react-wrapper@0.1.8) (2024-12-19)
 
 
