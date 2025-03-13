@@ -11,6 +11,9 @@ export default function Page() {
       <section>
         <YoutubeVideo
           className="video"
+          config={{
+            start: 20,
+          }}
           src="https://www.youtube.com/watch?v=uxsOYVWclA0"
           controls
           playsInline

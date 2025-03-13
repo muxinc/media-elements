@@ -16,6 +16,12 @@ function getTemplateHTML(attrs, props = {}) {
     allow: 'accelerometer; fullscreen; autoplay; encrypted-media; gyroscope; picture-in-picture',
   };
 
+  if (props.config) {
+    // Serialize YouTube config on iframe so it can be quickly accessed on first load.
+    // Required for React SSR because the custom element is initialized long before React client render.
+    iframeAttrs['data-config'] = JSON.stringify(props.config);
+  }
+
   return /*html*/`
     <style>
       :host {
@@ -107,6 +113,8 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
       this.attachShadow({ mode: 'open' });
     }
 
+    const isFirstLoad = !this.#hasLoaded;
+
     if (this.#hasLoaded) {
       this.loadComplete = new PublicPromise();
       this.isLoaded = false;
@@ -133,6 +141,10 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
 
     let iframe = this.shadowRoot.querySelector('iframe');
     let attrs = namedNodeMapToObject(this.attributes);
+
+    if (isFirstLoad && iframe) {
+      this.#config = JSON.parse(iframe.getAttribute('data-config') || '{}');
+    }
 
     if (!iframe?.src || iframe.src !== serializeIframeUrl(attrs, this)) {
       this.shadowRoot.innerHTML = getTemplateHTML(attrs, this);
@@ -457,10 +469,20 @@ function serializeAttributes(attrs) {
   let html = '';
   for (const key in attrs) {
     const value = attrs[key];
-    if (value === '') html += ` ${key}`;
-    else html += ` ${key}="${value}"`;
+    if (value === '') html += ` ${escapeHtml(key)}`;
+    else html += ` ${escapeHtml(key)}="${escapeHtml(`${value}`)}"`;
   }
   return html;
+}
+
+function escapeHtml(str) {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;')
+    .replace(/`/g, '&#x60;');
 }
 
 function serialize(props) {
