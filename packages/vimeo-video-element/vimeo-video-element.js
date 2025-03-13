@@ -187,7 +187,7 @@ class VimeoVideoElement extends (globalThis.HTMLElement ?? class {}) {
 
     this.#isInit = true;
 
-    let iframe = this.shadowRoot.querySelector('iframe');
+    let iframe = this.shadowRoot?.querySelector('iframe');
 
     if (isFirstLoad && iframe) {
       this.#config = JSON.parse(iframe.getAttribute('data-config') || '{}');
