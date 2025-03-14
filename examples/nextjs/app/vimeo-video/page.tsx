@@ -12,6 +12,9 @@ export default function Page() {
         <VimeoVideo
           className="video"
           src="https://vimeo.com/648359100"
+          config={{
+            color: 'ffadef',
+          }}
           controls
           playsInline
         ></VimeoVideo>

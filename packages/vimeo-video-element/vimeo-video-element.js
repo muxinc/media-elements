@@ -13,6 +13,12 @@ function getTemplateHTML(attrs, props = {}) {
     allow: 'accelerometer; fullscreen; autoplay; encrypted-media; gyroscope; picture-in-picture',
   };
 
+  if (props.config) {
+    // Serialize Vimeo config on iframe so it can be quickly accessed on first load.
+    // Required for React SSR because the custom element is initialized long before React client render.
+    iframeAttrs['data-config'] = JSON.stringify(props.config);
+  }
+
   return /*html*/`
     <style>
       :host {
@@ -106,6 +112,8 @@ class VimeoVideoElement extends (globalThis.HTMLElement ?? class {}) {
   async load() {
     if (this.#loadRequested) return;
 
+    const isFirstLoad = !this.#hasLoaded;
+
     if (this.#hasLoaded) this.loadComplete = new PublicPromise();
     this.#hasLoaded = true;
 
@@ -179,12 +187,17 @@ class VimeoVideoElement extends (globalThis.HTMLElement ?? class {}) {
 
     this.#isInit = true;
 
+    let iframe = this.shadowRoot?.querySelector('iframe');
+
+    if (isFirstLoad && iframe) {
+      this.#config = JSON.parse(iframe.getAttribute('data-config') || '{}');
+    }
+
     if (!this.shadowRoot) {
       this.attachShadow({ mode: 'open' });
       this.shadowRoot.innerHTML = getTemplateHTML(namedNodeMapToObject(this.attributes), this);
+      iframe = this.shadowRoot.querySelector('iframe');
     }
-
-    let iframe = this.shadowRoot.querySelector('iframe');
 
     this.api = new VimeoPlayerAPI(iframe);
     const onceLoaded = () => {
@@ -479,10 +492,20 @@ function serializeAttributes(attrs) {
   let html = '';
   for (const key in attrs) {
     const value = attrs[key];
-    if (value === '') html += ` ${key}`;
-    else html += ` ${key}="${value}"`;
+    if (value === '') html += ` ${escapeHtml(key)}`;
+    else html += ` ${escapeHtml(key)}="${escapeHtml(`${value}`)}"`;
   }
   return html;
+}
+
+function escapeHtml(str) {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;')
+    .replace(/`/g, '&#x60;');
 }
 
 function serialize(props) {
