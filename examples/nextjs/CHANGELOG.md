@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.1.23](https://github.com/muxinc/media-elements/compare/nextjs@0.1.22...nextjs@0.1.23) (2025-03-14)
+
+
+### Bug Fixes
+
+* Vimeo config w/ React SSR + types ([#94](https://github.com/muxinc/media-elements/issues/94)) ([c8fed3e](https://github.com/muxinc/media-elements/commit/c8fed3e06282aa317d7acc67ce42f598a7fd1c4e))
+* YT config on React (SSR) + config types ([#92](https://github.com/muxinc/media-elements/issues/92)) ([0894345](https://github.com/muxinc/media-elements/commit/089434504e72c8b2ffcc7e63dae0e85888b7ed52))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * vimeo-video-element bumped from ^1.4.0 to ^1.4.1
+    * youtube-video-element bumped from ^1.5.0 to ^1.5.1
+
 ## [0.1.22](https://github.com/muxinc/media-elements/compare/nextjs@0.1.21...nextjs@0.1.22) (2025-03-12)
 
 

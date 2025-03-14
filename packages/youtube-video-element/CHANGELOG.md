@@ -5,6 +5,13 @@
 [1]: https://www.npmjs.com/package/youtube-video-element?activeTab=versions
 
 
+## [1.5.1](https://github.com/muxinc/media-elements/compare/youtube-video-element@1.5.0...youtube-video-element@1.5.1) (2025-03-14)
+
+
+### Bug Fixes
+
+* YT config on React (SSR) + config types ([#92](https://github.com/muxinc/media-elements/issues/92)) ([0894345](https://github.com/muxinc/media-elements/commit/089434504e72c8b2ffcc7e63dae0e85888b7ed52))
+
 ## [1.5.0](https://github.com/muxinc/media-elements/compare/youtube-video-element@1.4.0...youtube-video-element@1.5.0) (2025-03-12)
 
 

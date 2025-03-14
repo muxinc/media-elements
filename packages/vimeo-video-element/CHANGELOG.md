@@ -5,6 +5,13 @@
 [1]: https://www.npmjs.com/package/vimeo-video-element?activeTab=versions
 
 
+## [1.4.1](https://github.com/muxinc/media-elements/compare/vimeo-video-element@1.4.0...vimeo-video-element@1.4.1) (2025-03-14)
+
+
+### Bug Fixes
+
+* Vimeo config w/ React SSR + types ([#94](https://github.com/muxinc/media-elements/issues/94)) ([c8fed3e](https://github.com/muxinc/media-elements/commit/c8fed3e06282aa317d7acc67ce42f598a7fd1c4e))
+
 ## [1.4.0](https://github.com/muxinc/media-elements/compare/vimeo-video-element@1.3.0...vimeo-video-element@1.4.0) (2025-03-12)
 
 
