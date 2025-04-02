@@ -1,5 +1,5 @@
 import { CustomVideoElement } from 'custom-media-element';
-import './server-safe-globals';
+import './server-safe-globals.js';
 import shaka from 'shaka-player';
 
 function onErrorEvent(event) {
