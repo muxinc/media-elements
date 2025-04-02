@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.1.24](https://github.com/muxinc/media-elements/compare/nextjs@0.1.23...nextjs@0.1.24) (2025-04-02)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * shaka-video-element bumped from ^0.6.13 to ^0.6.14
+
 ## [0.1.23](https://github.com/muxinc/media-elements/compare/nextjs@0.1.22...nextjs@0.1.23) (2025-03-14)
 
 

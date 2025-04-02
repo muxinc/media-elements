@@ -1,6 +1,6 @@
 {
   "name": "nextjs",
-  "version": "0.1.23",
+  "version": "0.1.24",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -18,7 +18,7 @@
     "open-props": "^1.7.8",
     "react": "^19",
     "react-dom": "^19",
-    "shaka-video-element": "^0.6.13",
+    "shaka-video-element": "^0.6.14",
     "spotify-audio-element": "^0.1.13",
     "videojs-video-element": "^1.4.1",
     "vimeo-video-element": "^1.4.1",

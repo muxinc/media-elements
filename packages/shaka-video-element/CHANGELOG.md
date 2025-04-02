@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.14](https://github.com/muxinc/media-elements/compare/shaka-video-element@0.6.13...shaka-video-element@0.6.14) (2025-04-02)
+
+
+### Bug Fixes
+
+* updated shaka player to latest version ([#97](https://github.com/muxinc/media-elements/issues/97)) ([50d1ea6](https://github.com/muxinc/media-elements/commit/50d1ea6863db45d2f7a43ee0a17bf02f71f1b23a))
+
 ## [0.6.13](https://github.com/muxinc/media-elements/compare/shaka-video-element@0.6.12...shaka-video-element@0.6.13) (2025-03-12)
 
 
