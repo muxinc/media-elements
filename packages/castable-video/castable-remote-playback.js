@@ -131,12 +131,13 @@ export class RemotePlayback extends EventTarget {
       // Open browser cast menu.
       await castContext().requestSession();
     } catch (err) {
+      // If there will be no disconnect, reset some state here.
+      if (!willDisconnect) {
+        castElementRef.delete(this.#media);
+      }
+
       // Don't throw an error if disconnecting or cancelling.
       if (err === 'cancel') {
-        // If there will be no disconnect, reset some state here.
-        if (!willDisconnect) {
-          castElementRef.delete(this.#media);
-        }
         return;
       }
 
