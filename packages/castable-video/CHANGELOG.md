@@ -5,6 +5,13 @@
 [1]: https://www.npmjs.com/package/castable-video?activeTab=versions
 
 
+## [1.1.6](https://github.com/muxinc/media-elements/compare/castable-video@1.1.5...castable-video@1.1.6) (2025-04-25)
+
+
+### Bug Fixes
+
+* media api unresponssive after session error ([#102](https://github.com/muxinc/media-elements/issues/102)) ([0ee2d78](https://github.com/muxinc/media-elements/commit/0ee2d78abd755a13d39280d7505330d9edd94642)), closes [#96](https://github.com/muxinc/media-elements/issues/96)
+
 ## [1.1.5](https://github.com/muxinc/media-elements/compare/castable-video@1.1.4...castable-video@1.1.5) (2025-03-12)
 
 
