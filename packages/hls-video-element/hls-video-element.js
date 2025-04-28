@@ -206,30 +206,7 @@ const HlsVideoMixin = (superclass) => {
         const switchRendition = (event) => {
           const level = event.target.selectedIndex;
           if (level != this.api.nextLevel) {
-            smoothSwitch(level);
-          }
-        };
-
-        // Workaround for issue changing renditions on an alternative audio track.
-        // https://github.com/video-dev/hls.js/issues/5749#issuecomment-1684629437
-        const smoothSwitch = (levelIndex) => {
-          const currentTime = this.currentTime;
-          let flushedFwdBuffer = false;
-
-          const callback = (event, data) => {
-            flushedFwdBuffer ||= !Number.isFinite(data.endOffset);
-          };
-
-          this.api.on(Hls.Events.BUFFER_FLUSHING, callback);
-          this.api.nextLevel = levelIndex;
-          this.api.off(Hls.Events.BUFFER_FLUSHING, callback);
-
-          if (!flushedFwdBuffer) {
-            this.api.trigger(Hls.Events.BUFFER_FLUSHING, {
-              startOffset: currentTime + 10,
-              endOffset: Infinity,
-              type: 'video',
-            });
+            this.api.nextLevel = level;
           }
         };
 
