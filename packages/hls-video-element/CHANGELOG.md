@@ -6,6 +6,13 @@
 
 
 
+## [1.5.1](https://github.com/muxinc/media-elements/compare/hls-video-element@1.5.0...hls-video-element@1.5.1) (2025-04-29)
+
+
+### Bug Fixes
+
+* upgrade hls.js to 1.6.2 ([#104](https://github.com/muxinc/media-elements/issues/104)) ([ecd1ffe](https://github.com/muxinc/media-elements/commit/ecd1ffe796d8df9aa045031a84dacdb5d420aad5))
+
 ## [1.5.0](https://github.com/muxinc/media-elements/compare/hls-video-element@1.4.1...hls-video-element@1.5.0) (2025-03-12)
 
 
