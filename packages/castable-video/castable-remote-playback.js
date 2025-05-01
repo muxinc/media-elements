@@ -94,6 +94,9 @@ export class RemotePlayback extends EventTarget {
     this.#callbackIds.set(callback, ++remotePlaybackCallbackIdCount);
     this.#callbacks.add(callback);
 
+    // https://w3c.github.io/remote-playback/#getting-the-remote-playback-devices-availability-information
+    queueMicrotask(() => callback(this.#hasDevicesAvailable()));
+
     return remotePlaybackCallbackIdCount;
   }
 
@@ -162,6 +165,13 @@ export class RemotePlayback extends EventTarget {
     if (this.#remotePlayer.savedPlayerState.isPaused === false) {
       this.#media.play();
     }
+  }
+
+  #hasDevicesAvailable() {
+    // Cast state: NO_DEVICES_AVAILABLE, NOT_CONNECTED, CONNECTING, CONNECTED
+    // https://developers.google.com/cast/docs/reference/web_sender/cast.framework#.CastState
+    const castState = castContext()?.getCastState();
+    return castState && castState !== 'NO_DEVICES_AVAILABLE';
   }
 
   #onCastStateChanged() {
