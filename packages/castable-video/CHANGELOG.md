@@ -5,6 +5,13 @@
 [1]: https://www.npmjs.com/package/castable-video?activeTab=versions
 
 
+## [1.1.7](https://github.com/muxinc/media-elements/compare/castable-video@1.1.6...castable-video@1.1.7) (2025-05-01)
+
+
+### Bug Fixes
+
+* callback on watchAvailability bug ([#106](https://github.com/muxinc/media-elements/issues/106)) ([3a6544c](https://github.com/muxinc/media-elements/commit/3a6544ca6eabbd9e91dde6a90327c6d78588c314))
+
 ## [1.1.6](https://github.com/muxinc/media-elements/compare/castable-video@1.1.5...castable-video@1.1.6) (2025-04-25)
 
 
