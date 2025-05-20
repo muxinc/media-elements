@@ -125,6 +125,17 @@ const HlsVideoMixin = (superclass) => {
           this.#toggleHlsLoad
         );
 
+        this.nativeEl.addEventListener('loadstart', () => {
+          if (this.nativeEl.autoplay && this.nativeEl.paused) 
+            this.nativeEl.play();
+        
+          this.#setLoadingState(true);
+        });
+
+        this.nativeEl.addEventListener('loadedmetadata', () => {
+          this.#setLoadingState(false);
+        });
+
         this.#airplaySourceEl = document.createElement('source');
         this.#airplaySourceEl.setAttribute('type', 'application/x-mpegURL');
         this.#airplaySourceEl.setAttribute('src', this.src);
@@ -265,6 +276,13 @@ const HlsVideoMixin = (superclass) => {
         this.api?.startLoad();
       }
     };
+
+    #setLoadingState(isLoading) {
+      this.nativeEl?.dispatchEvent(new Event('waiting', { bubbles: true, composed: true }));
+      if (!isLoading) {
+        this.nativeEl?.dispatchEvent(new Event('canplay', { bubbles: true, composed: true }));
+      }
+    }
 
     // This is a pattern to update property values that are set before
     // the custom element is upgraded.
