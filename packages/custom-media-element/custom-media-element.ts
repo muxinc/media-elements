@@ -151,11 +151,11 @@ type CustomMediaElementConstructor<T> = {
   getTemplateHTML: typeof getVideoTemplateHTML | typeof getAudioTemplateHTML;
   shadowRootOptions: ShadowRootInit;
   Events: string[];
-  new(): T;
+  new(...args: any[]): T;
 };
 
-type CustomVideoElement = CustomMediaElementConstructor<CustomVideoElementClass>;
-type CustomAudioElement = CustomMediaElementConstructor<CustomAudioElementClass>;
+export type CustomVideoElement = CustomMediaElementConstructor<CustomVideoElementClass>;
+export type CustomAudioElement = CustomMediaElementConstructor<CustomAudioElementClass>;
 
 /**
  * @see https://justinfagnani.com/2015/12/21/real-mixins-with-javascript-classes/
