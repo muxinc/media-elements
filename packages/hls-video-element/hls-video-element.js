@@ -125,7 +125,6 @@ const HlsVideoMixin = (superclass) => {
           this.#toggleHlsLoad
         );
 
-
         this.#airplaySourceEl = document.createElement('source');
         this.#airplaySourceEl.setAttribute('type', 'application/x-mpegURL');
         this.#airplaySourceEl.setAttribute('src', this.src);
