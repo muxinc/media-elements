@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.1.26](https://github.com/muxinc/media-elements/compare/nextjs@0.1.25...nextjs@0.1.26) (2025-05-23)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * dash-video-element bumped from ^0.1.1 to ^0.1.2
+    * hls-video-element bumped from ^1.5.1 to ^1.5.2
+    * shaka-video-element bumped from ^0.6.14 to ^0.6.15
+
 ## [0.1.25](https://github.com/muxinc/media-elements/compare/nextjs@0.1.24...nextjs@0.1.25) (2025-04-29)
 
 

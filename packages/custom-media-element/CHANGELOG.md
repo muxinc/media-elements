@@ -5,6 +5,13 @@
 [1]: https://www.npmjs.com/package/custom-media-element?activeTab=versions
 
 
+## [1.4.3](https://github.com/muxinc/media-elements/compare/custom-media-element@1.4.2...custom-media-element@1.4.3) (2025-05-23)
+
+
+### Bug Fixes
+
+* types for mixins ([#111](https://github.com/muxinc/media-elements/issues/111)) ([1b3e5e9](https://github.com/muxinc/media-elements/commit/1b3e5e9153d94c02ca2ddd2c4e643f4a4163c8cf))
+
 ## [1.4.2](https://github.com/muxinc/media-elements/compare/custom-media-element@1.4.1...custom-media-element@1.4.2) (2024-12-20)
 
 
