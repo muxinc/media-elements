@@ -6,6 +6,13 @@
 
 
 
+## [1.5.3](https://github.com/muxinc/media-elements/compare/hls-video-element@1.5.2...hls-video-element@1.5.3) (2025-05-27)
+
+
+### Bug Fixes
+
+* Notify Video element the metadata is still loading ([#110](https://github.com/muxinc/media-elements/issues/110)) ([f36c000](https://github.com/muxinc/media-elements/commit/f36c000a20c611450c52c090ac0331913b1a602e))
+
 ## [1.5.2](https://github.com/muxinc/media-elements/compare/hls-video-element@1.5.1...hls-video-element@1.5.2) (2025-05-23)
 
 
