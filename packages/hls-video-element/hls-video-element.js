@@ -139,6 +139,12 @@ const HlsVideoMixin = (superclass) => {
         const levelIdMap = new WeakMap();
 
         this.api.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
+          // If the video is set to autoplay, start playback.
+          if (this.nativeEl.autoplay && this.nativeEl.paused) {
+            this.nativeEl.play().catch((err) => {
+              console.warn('Autoplay failed:', err);
+            });
+          }
           removeAllMediaTracks();
 
           let videoTrack = this.videoTracks.getTrackById('main');
