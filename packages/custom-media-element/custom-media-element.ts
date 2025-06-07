@@ -339,7 +339,7 @@ export function CustomMediaMixin<T extends Constructor<HTMLElement>>(superclass:
       }
 
       this.#childObserver = new MutationObserver(this.#syncMediaChildAttribute.bind(this));
-      this.shadowRoot!.addEventListener('slotchange', this);
+      this.shadowRoot!.addEventListener('slotchange', () => this.#syncMediaChildren());
       this.#syncMediaChildren();
 
       for (const type of (this.constructor as typeof CustomMedia).Events) {
@@ -348,11 +348,6 @@ export function CustomMediaMixin<T extends Constructor<HTMLElement>>(superclass:
     }
 
     handleEvent(event: Event): void {
-      if (event.type === 'slotchange') {
-        this.#syncMediaChildren();
-        return;
-      }
-
       if (event.target === this.nativeEl) {
         this.dispatchEvent(new CustomEvent(event.type, { detail: (event as CustomEvent).detail }));
       }
