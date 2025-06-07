@@ -5,6 +5,13 @@
 [1]: https://www.npmjs.com/package/custom-media-element?activeTab=versions
 
 
+## [1.4.4](https://github.com/muxinc/media-elements/compare/custom-media-element@1.4.3...custom-media-element@1.4.4) (2025-06-07)
+
+
+### Bug Fixes
+
+* always sync media children on slotchange ([#116](https://github.com/muxinc/media-elements/issues/116)) ([30f289a](https://github.com/muxinc/media-elements/commit/30f289a0bae18c00c98704221ba2e80239cf4bd4))
+
 ## [1.4.3](https://github.com/muxinc/media-elements/compare/custom-media-element@1.4.2...custom-media-element@1.4.3) (2025-05-23)
 
 
