@@ -40,7 +40,11 @@ export const Events = [
   'webkitbeginfullscreen',
   'webkitendfullscreen',
   'webkitpresentationmodechanged',
-];
+] as const;
+
+export type EventsMap = {
+  [key in typeof Events[number]]: CustomEvent;
+};
 
 export const Attributes = [
   'autopictureinpicture',
@@ -56,7 +60,7 @@ export const Attributes = [
   'poster',
   'preload',
   'src',
-];
+] as const;
 
 /**
  * Helper function to generate the HTML template for audio elements.
@@ -343,7 +347,7 @@ export function CustomMediaMixin<T extends Constructor<HTMLElement>>(superclass:
       this.#syncMediaChildren();
 
       for (const type of (this.constructor as typeof CustomMedia).Events) {
-        this.shadowRoot?.addEventListener(type, this, true);
+        this.shadowRoot!.addEventListener(type, this, true);
       }
     }
 
@@ -470,7 +474,7 @@ function serializeAttributes(attrs: Record<string, string>): string {
   let html = '';
   for (const key in attrs) {
     // Skip forwarding non native video attributes.
-    if (!Attributes.includes(key)) continue;
+    if (!Attributes.includes(key as typeof Attributes[number])) continue;
 
     const value = attrs[key];
     if (value === '') html += ` ${key}`;
