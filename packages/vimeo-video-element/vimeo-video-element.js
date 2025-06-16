@@ -282,6 +282,18 @@ class VimeoVideoElement extends (globalThis.HTMLElement ?? class {}) {
       this.dispatchEvent(new Event('resize'));
     });
 
+    this.requestFullscreen = () => {
+      if (this.api && typeof this.api.requestFullscreen === 'function') {
+        return this.api.requestFullscreen();
+      }
+    };
+    
+    this.requestPictureInPicture = () => {
+      if (this.api && typeof this.api.requestPictureInPicture === 'function') {
+        return this.api.requestPictureInPicture();
+      }
+    };
+    
     await this.loadComplete;
   }
 
