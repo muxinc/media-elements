@@ -101,6 +101,30 @@ class VimeoVideoElement extends (globalThis.HTMLElement ?? class {}) {
     this.#upgradeProperty('config');
   }
 
+  requestFullscreen() {
+    if (this.api?.requestFullscreen instanceof Function) {
+      return this.api.requestFullscreen();
+    }
+  }
+
+  exitFullscreen() {
+    if (this.api?.exitFullscreen instanceof Function) {
+      return this.api.exitFullscreen();
+    }
+  }
+
+  requestPictureInPicture() {
+    if (this.api?.requestPictureInPicture instanceof Function) {
+      return this.api.requestPictureInPicture();
+    }
+  }
+
+  exitPictureInPicture() {
+    if (this.api?.exitPictureInPicture instanceof Function) {
+      return this.api.exitPictureInPicture();
+    }
+  }
+
   get config() {
     return this.#config;
   }
@@ -282,18 +306,6 @@ class VimeoVideoElement extends (globalThis.HTMLElement ?? class {}) {
       this.dispatchEvent(new Event('resize'));
     });
 
-    this.requestFullscreen = () => {
-      if (this.api && typeof this.api.requestFullscreen === 'function') {
-        return this.api.requestFullscreen();
-      }
-    };
-    
-    this.requestPictureInPicture = () => {
-      if (this.api && typeof this.api.requestPictureInPicture === 'function') {
-        return this.api.requestPictureInPicture();
-      }
-    };
-    
     await this.loadComplete;
   }
 
