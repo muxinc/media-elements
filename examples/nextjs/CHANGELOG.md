@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.1.29](https://github.com/muxinc/media-elements/compare/nextjs@0.1.28...nextjs@0.1.29) (2025-06-23)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * vimeo-video-element bumped from ^1.4.1 to ^1.5.0
+
 ## [0.1.28](https://github.com/muxinc/media-elements/compare/nextjs@0.1.27...nextjs@0.1.28) (2025-06-09)
 
 

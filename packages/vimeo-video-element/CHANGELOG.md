@@ -5,6 +5,13 @@
 [1]: https://www.npmjs.com/package/vimeo-video-element?activeTab=versions
 
 
+## [1.5.0](https://github.com/muxinc/media-elements/compare/vimeo-video-element@1.4.1...vimeo-video-element@1.5.0) (2025-06-23)
+
+
+### Features
+
+* Vimeo fullscreen & PiP via API to avoid Apple iframe restriction ([#122](https://github.com/muxinc/media-elements/issues/122)) ([bff8f09](https://github.com/muxinc/media-elements/commit/bff8f09e9f4799986c29b11b96df5117efb9b74a))
+
 ## [1.4.1](https://github.com/muxinc/media-elements/compare/vimeo-video-element@1.4.0...vimeo-video-element@1.4.1) (2025-03-14)
 
 
