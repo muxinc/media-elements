@@ -1,11 +1,12 @@
 // https://developers.google.com/youtube/iframe_api_reference
 
 const EMBED_BASE = 'https://www.youtube.com/embed';
+const EMBED_BASE_NOCOOKIE = 'https://www.youtube-nocookie.com/embed';
 const API_URL = 'https://www.youtube.com/iframe_api';
 const API_GLOBAL = 'YT';
 const API_GLOBAL_READY = 'onYouTubeIframeAPIReady';
 const MATCH_SRC =
-  /(?:youtu\.be\/|youtube\.com\/(?:shorts\/|embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})/;
+  /(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=|shorts\/|live\/))((\w|-){11})/;
 
 function getTemplateHTML(attrs, props = {}) {
   const iframeAttrs = {
@@ -47,6 +48,10 @@ function serializeIframeUrl(attrs, props) {
   const matches = attrs.src.match(MATCH_SRC);
   const srcId = matches && matches[1];
 
+  const embedBase = attrs.src.includes('-nocookie')
+    ? EMBED_BASE_NOCOOKIE
+    : EMBED_BASE;
+
   const params = {
     // ?controls=true is enabled by default in the iframe
     controls: attrs.controls === '' ? null : 0,
@@ -65,7 +70,7 @@ function serializeIframeUrl(attrs, props) {
     ...props.config,
   };
 
-  return `${EMBED_BASE}/${srcId}?${serialize(params)}`;
+  return `${embedBase}/${srcId}?${serialize(params)}`;
 }
 
 class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
