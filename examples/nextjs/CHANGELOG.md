@@ -1,5 +1,29 @@
 # Changelog
 
+## [0.1.31](https://github.com/muxinc/media-elements/compare/nextjs@0.1.30...nextjs@0.1.31) (2025-06-26)
+
+
+### Bug Fixes
+
+* **hls-video-element:** serialize config for SSR ([#128](https://github.com/muxinc/media-elements/issues/128)) ([80fc30e](https://github.com/muxinc/media-elements/commit/80fc30e45c1b28ffeaf3f940de072cdf46249576))
+* upgrade dependencies ([#130](https://github.com/muxinc/media-elements/issues/130)) ([afb6797](https://github.com/muxinc/media-elements/commit/afb6797342db3be3d173957d44df49fd26ffafc5))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * cloudflare-video-element bumped from ^1.3.1 to ^1.3.2
+    * dash-video-element bumped from ^0.1.4 to ^0.1.5
+    * hls-video-element bumped from ^1.5.4 to ^1.5.5
+    * jwplayer-video-element bumped from ^1.3.1 to ^1.3.2
+    * shaka-video-element bumped from ^0.6.17 to ^0.6.18
+    * spotify-audio-element bumped from ^0.1.13 to ^0.1.14
+    * videojs-video-element bumped from ^1.4.1 to ^1.4.2
+    * vimeo-video-element bumped from ^1.5.0 to ^1.5.1
+    * wistia-video-element bumped from ^1.3.1 to ^1.3.2
+    * youtube-video-element bumped from ^1.5.2 to ^1.5.3
+
 ## [0.1.30](https://github.com/muxinc/media-elements/compare/nextjs@0.1.29...nextjs@0.1.30) (2025-06-26)
 
 

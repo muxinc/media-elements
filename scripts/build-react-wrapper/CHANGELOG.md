@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/muxinc/media-elements/compare/build-react-wrapper@0.2.0...build-react-wrapper@0.2.1) (2025-06-26)
+
+
+### Bug Fixes
+
+* upgrade dependencies ([#130](https://github.com/muxinc/media-elements/issues/130)) ([afb6797](https://github.com/muxinc/media-elements/commit/afb6797342db3be3d173957d44df49fd26ffafc5))
+
 ## [0.2.0](https://github.com/muxinc/media-elements/compare/build-react-wrapper@0.1.8...build-react-wrapper@0.2.0) (2025-03-12)
 
 
