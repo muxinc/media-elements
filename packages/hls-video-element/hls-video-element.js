@@ -69,7 +69,7 @@ const HlsVideoMixin = (superclass) => {
       }
 
       if (isFirstLoad && !this.#config) {
-        this.#config = JSON.parse(this.shadowRoot.getElementById('config').textContent);
+        this.#config = JSON.parse(this.shadowRoot.getElementById('config')?.textContent || '{}');
       }
 
       // Prefer using hls.js over native if it is supported.
