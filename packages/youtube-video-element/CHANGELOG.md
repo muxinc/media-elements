@@ -5,6 +5,13 @@
 [1]: https://www.npmjs.com/package/youtube-video-element?activeTab=versions
 
 
+## [1.5.2](https://github.com/muxinc/media-elements/compare/youtube-video-element@1.5.1...youtube-video-element@1.5.2) (2025-06-26)
+
+
+### Bug Fixes
+
+* **youtube-video-element:** support -nocookie ([#125](https://github.com/muxinc/media-elements/issues/125)) ([159199d](https://github.com/muxinc/media-elements/commit/159199d819273b201c7ce370801724b4167d7949))
+
 ## [1.5.1](https://github.com/muxinc/media-elements/compare/youtube-video-element@1.5.0...youtube-video-element@1.5.1) (2025-03-14)
 
 
