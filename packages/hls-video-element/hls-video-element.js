@@ -6,9 +6,16 @@ const HlsVideoMixin = (superclass) => {
   return class HlsVideo extends superclass {
     static shadowRootOptions = { ...superclass.shadowRootOptions };
 
-    static getTemplateHTML = (attrs) => {
+    static getTemplateHTML = (attrs, props = {}) => {
       const { src, ...rest } = attrs; // eslint-disable-line no-unused-vars
-      return superclass.getTemplateHTML(rest);
+      // Serialize hls.js config in script tag so it can be quickly accessed on first load.
+      // Required for React SSR because the custom element is initialized long before React client render.
+      return `
+        <script type="application/json" id="config">
+          ${JSON.stringify(props.config || {})}
+        </script>
+        ${superclass.getTemplateHTML(rest)}
+      `;
     };
 
     #airplaySourceEl = null;
@@ -53,10 +60,16 @@ const HlsVideoMixin = (superclass) => {
     }
 
     async load() {
+      const isFirstLoad = !this.api;
+
       this.#destroy();
 
       if (!this.src) {
         return;
+      }
+
+      if (isFirstLoad && !this.#config) {
+        this.#config = JSON.parse(this.shadowRoot.getElementById('config').textContent);
       }
 
       // Prefer using hls.js over native if it is supported.

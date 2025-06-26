@@ -31,6 +31,9 @@ export default async function Page(props: PageProps) {
           muted={!!params?.muted}
           preload={params?.preload as 'auto' | 'metadata' | 'none'}
           suppressHydrationWarning
+          config={{
+            debug: true,
+          }}
         >
           <track
             label="thumbnails"
