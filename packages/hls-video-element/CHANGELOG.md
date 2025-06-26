@@ -6,6 +6,21 @@
 
 
 
+## [1.5.5](https://github.com/muxinc/media-elements/compare/hls-video-element@1.5.4...hls-video-element@1.5.5) (2025-06-26)
+
+
+### Bug Fixes
+
+* **hls-video-element:** serialize config for SSR ([#128](https://github.com/muxinc/media-elements/issues/128)) ([80fc30e](https://github.com/muxinc/media-elements/commit/80fc30e45c1b28ffeaf3f940de072cdf46249576))
+* upgrade dependencies ([#130](https://github.com/muxinc/media-elements/issues/130)) ([afb6797](https://github.com/muxinc/media-elements/commit/afb6797342db3be3d173957d44df49fd26ffafc5))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * build-react-wrapper bumped from ^0.2.0 to ^0.2.1
+
 ## [1.5.4](https://github.com/muxinc/media-elements/compare/hls-video-element@1.5.3...hls-video-element@1.5.4) (2025-06-09)
 
 

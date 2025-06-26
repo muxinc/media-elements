@@ -5,6 +5,20 @@
 [1]: https://www.npmjs.com/package/vimeo-video-element?activeTab=versions
 
 
+## [1.5.1](https://github.com/muxinc/media-elements/compare/vimeo-video-element@1.5.0...vimeo-video-element@1.5.1) (2025-06-26)
+
+
+### Bug Fixes
+
+* upgrade dependencies ([#130](https://github.com/muxinc/media-elements/issues/130)) ([afb6797](https://github.com/muxinc/media-elements/commit/afb6797342db3be3d173957d44df49fd26ffafc5))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * build-react-wrapper bumped from ^0.2.0 to ^0.2.1
+
 ## [1.5.0](https://github.com/muxinc/media-elements/compare/vimeo-video-element@1.4.1...vimeo-video-element@1.5.0) (2025-06-23)
 
 
