@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>&lt;tiktok-video&gt;</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css" />
+    <style>
+      body {
+        text-align: center;
+      }
+      media-controller,
+      tiktok-video {
+        display: block;
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        background: #000;
+      }
+    </style>
+    <script type="module" src="./tiktok-video-element.js"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/media-chrome/+esm"></script>
+  </head>
+  <body>
+    <h1>&lt;tiktok-video&gt;</h1>
+    <br />
+
+    <tiktok-video video-id="6718335390845095173" music_info="" description="" controls="1"></tiktok-video>
+
+    <br />
+
+    <h2>With <a href="https://github.com/muxinc/media-chrome" target="_blank">Media Chrome</a></h2>
+
+    <media-controller>
+      <tiktok-video slot='media' video-id="6718335390845095173"></tiktok-video>
+      <media-control-bar>
+        <media-play-button></media-play-button>
+        <media-seek-backward-button seek-offset="5"></media-seek-backward-button>
+        <media-seek-forward-button seek-offset="5"></media-seek-forward-button>
+        <media-mute-button></media-mute-button>
+        <media-volume-range></media-volume-range>
+        <media-time-range></media-time-range>
+        <media-time-display show-duration></media-time-display>
+        <media-fullscreen-button></media-fullscreen-button>
+      </media-control-bar>
+    </media-controller>
+
+  </body>
+</html>
