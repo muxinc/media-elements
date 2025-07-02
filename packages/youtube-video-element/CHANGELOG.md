@@ -5,6 +5,13 @@
 [1]: https://www.npmjs.com/package/youtube-video-element?activeTab=versions
 
 
+## [1.6.0](https://github.com/muxinc/media-elements/compare/youtube-video-element@1.5.3...youtube-video-element@1.6.0) (2025-07-02)
+
+
+### Features
+
+* **youtube-video:** add playlist support ([#134](https://github.com/muxinc/media-elements/issues/134)) ([34f7469](https://github.com/muxinc/media-elements/commit/34f7469b4b8204d92346ccb911c6a734632621d3))
+
 ## [1.5.3](https://github.com/muxinc/media-elements/compare/youtube-video-element@1.5.2...youtube-video-element@1.5.3) (2025-06-26)
 
 
