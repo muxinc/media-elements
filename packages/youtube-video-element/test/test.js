@@ -7,6 +7,13 @@ function createVideoElement() {
   ></youtube-video>`);
 }
 
+function createPlaylistElement() {
+  return fixture(`<youtube-video  
+    src="https://www.youtube.com/playlist?list=PLRfhDHeBTBJ7MU5DX4P_oBIRN457ah9lA"
+    muted
+  ></youtube-video>`);
+}
+
 test('has default video props', async function (t) {
   const video = await createVideoElement();
 
@@ -121,6 +128,21 @@ test('play promise', async function (t) {
     console.warn(error);
   }
   t.ok(!video.paused, 'is playing after video.play()');
+});
+
+test('playlist', async function (t) {
+  const playlist = await createPlaylistElement();
+  await playlist.loadComplete;
+
+  t.equal(playlist.paused, true, 'is paused on initialization');
+  t.ok(!playlist.ended, 'is not ended');
+  t.ok(playlist.muted, 'is muted');
+
+  if (playlist.duration == null || Number.isNaN(playlist.duration)) {
+    await promisify(playlist.addEventListener.bind(playlist))('durationchange');
+  }
+
+  t.ok(playlist.duration > 0, `has a duration of ${playlist.duration}`);
 });
 
 function delay(ms) {
