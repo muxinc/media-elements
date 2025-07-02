@@ -5,8 +5,10 @@ const EMBED_BASE_NOCOOKIE = 'https://www.youtube-nocookie.com/embed';
 const API_URL = 'https://www.youtube.com/iframe_api';
 const API_GLOBAL = 'YT';
 const API_GLOBAL_READY = 'onYouTubeIframeAPIReady';
-const MATCH_SRC =
+const VIDEO_MATCH_SRC =
   /(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=|shorts\/|live\/))((\w|-){11})/;
+const PLAYLIST_MATCH_SRC =
+  /(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/.*?[?&]list=)([\w_-]+)/;
 
 function getTemplateHTML(attrs, props = {}) {
   const iframeAttrs = {
@@ -45,9 +47,6 @@ function getTemplateHTML(attrs, props = {}) {
 function serializeIframeUrl(attrs, props) {
   if (!attrs.src) return;
 
-  const matches = attrs.src.match(MATCH_SRC);
-  const srcId = matches && matches[1];
-
   const embedBase = attrs.src.includes('-nocookie')
     ? EMBED_BASE_NOCOOKIE
     : EMBED_BASE;
@@ -70,7 +69,23 @@ function serializeIframeUrl(attrs, props) {
     ...props.config,
   };
 
-  return `${embedBase}/${srcId}?${serialize(params)}`;
+  // If the src is a video, we use the video ID.
+  if (VIDEO_MATCH_SRC.test(attrs.src)) {
+    const matches = attrs.src.match(VIDEO_MATCH_SRC);
+    const srcId = matches && matches[1];
+    return `${embedBase}/${srcId}?${serialize(params)}`;
+  }
+
+  // Otherwise, we use the playlist ID.
+  const matches = attrs.src.match(PLAYLIST_MATCH_SRC);
+  const playlistId = matches && matches[1];
+  const extendedParams = {
+    listType: 'playlist',
+    list: playlistId,
+    ...params
+  }
+  
+  return `${embedBase}?${serialize(extendedParams)}`;
 }
 
 class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
