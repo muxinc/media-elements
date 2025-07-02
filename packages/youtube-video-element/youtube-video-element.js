@@ -85,7 +85,7 @@ function serializeIframeUrl(attrs, props) {
     ...params
   }
   
-  return `${embedBase}${serialize(extendedParams)}`;
+  return `${embedBase}?${serialize(extendedParams)}`;
 }
 
 class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
