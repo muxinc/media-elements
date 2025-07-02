@@ -8,7 +8,7 @@ const API_GLOBAL_READY = 'onYouTubeIframeAPIReady';
 const VIDEO_MATCH_SRC =
   /(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=|shorts\/|live\/))((\w|-){11})/;
 const PLAYLIST_MATCH_SRC =
-  /(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/.*?[?&]list=)([a-zA-Z0-9_-]+)/;
+  /(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/.*?[?&]list=)([\w_-]+)/;
 
 function getTemplateHTML(attrs, props = {}) {
   const iframeAttrs = {
