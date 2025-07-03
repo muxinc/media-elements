@@ -1,21 +1,8 @@
 class TikTokVideoElement extends (globalThis.HTMLElement ?? class {}) {
   static EMBED_BASE = 'https://www.tiktok.com/player/v1';
-  static observedAttributes = [
-    'video-id',
-    'controls',
-    'progress_bar',
-    'play_button',
-    'volume_control',
-    'fullscreen_button',
-    'timestamp',
-    'loop',
-    'autoplay',
-    'music_info',
-    'description',
-    'rel',
-    'native_context_menu',
-    'closed_caption',
-  ];
+  static get observedAttributes() {
+    return ['src', 'controls', 'loop', 'autoplay', 'muted'];
+  }
 
   static PlayerState = { INIT: -1, ENDED: 0, PLAYING: 1, PAUSED: 2, BUFFERING: 3 };
 
@@ -30,6 +17,9 @@ class TikTokVideoElement extends (globalThis.HTMLElement ?? class {}) {
     this._paused = true;
     this.playerState = TikTokVideoElement.PlayerState.INIT;
 
+    this._config = {};
+    this._upgradeProperty?.('config');
+
     this._onMessage = this.handleMessage.bind(this);
   }
 
@@ -42,8 +32,16 @@ class TikTokVideoElement extends (globalThis.HTMLElement ?? class {}) {
     window.removeEventListener('message', this._onMessage);
   }
 
-  attributeChangedCallback() {
+  attributeChangedCallback(name, oldValue, newValue) {
     this.render();
+
+    if (name === 'muted') {
+      if (newValue !== null && newValue !== 'false') {
+        this.mute();
+      } else {
+        this.unMute();
+      }
+    }
   }
 
   _createPublicPromise() {
@@ -65,37 +63,94 @@ class TikTokVideoElement extends (globalThis.HTMLElement ?? class {}) {
     }, {});
   }
 
-  render() {
-    const id = this.getAttribute('video-id');
+  async resolveVideoId() {
+    const src = this.getAttribute('src');
+    if (!src) return null;
+
+    // 1. Direct numeric ID
+    if (/^\d{10,}$/.test(src)) return src;
+
+    // 2. player/v1 URLs
+    let m = src.match(/player\/v1\/(\d+)/);
+    if (m) return m[1];
+
+    // 3. embed, share paths, shareId or item_id
+    m = src.match(/(?:embed|v|usr|user)\/(\d+)/) || src.match(/[?&](?:shareId|item_id)=(\d+)/);
+    if (m) return m[1];
+
+    // 4. watch URLs including optional username
+    m = src.match(/\/@[^/]*\/video\/(\d+)/);
+    if (m) return m[1];
+
+    // 5. /@/video/ format
+    m = src.match(/\/@\/video\/(\d+)/);
+    if (m) return m[1];
+
+    // 6. Short links—resolve via HEAD redirect
+    if (/vm\.tiktok\.com|vt\.tiktok\.com/.test(src)) {
+      try {
+        const resp = await fetch(src, { method: 'HEAD', redirect: 'follow' });
+        const final = resp.url;
+        m =
+          final.match(/\/video\/(\d+)/) ||
+          final.match(/player\/v1\/(\d+)/) ||
+          final.match(/[?&](?:shareId|item_id)=(\d+)/);
+        if (m) return m[1];
+      } catch (e) {
+        console.error('Error resolving short link', e);
+      }
+    }
+
+    return null;
+  }
+
+  async render() {
+    const id = await this.resolveVideoId();
     if (!id) return;
 
     this.loadComplete = this._createPublicPromise();
 
     const params = {
-      controls: this.attrs.controls === '' ? null : 0,
+      controls: this.attrs.controls === undefined ? null : 1,
       autoplay: this.attrs.autoplay,
       loop: this.attrs.loop,
-      mute: this.attrs.muted,
-      playsinline: this.attrs.playsinline,
-      preload: this.attrs.preload ?? 'metadata',
-      enablejsapi: 1,
-      showinfo: 0,
       rel: 0,
-      iv_load_policy: 3,
-      modestbranding: 1,
       ...this.config,
     };
+
     const src = `${TikTokVideoElement.EMBED_BASE}/${id}?${this.serialize(params)}`;
+    const dataConfigAttr = this.config ? `data-config='${JSON.stringify(this.config).replace(/'/g, '&apos;')}'` : '';
 
     this.shadowRoot.innerHTML = `
       <style>
         :host { display:inline-block;position:relative;width:100%;height:100%; }
         iframe { position:absolute;top:0;left:0;width:100%;height:100%;border:0;}
       </style>
-      <iframe src="${src}" allow="autoplay; fullscreen" title="TikTok video"></iframe>
+      <iframe src="${src}" ${dataConfigAttr} allow="autoplay; fullscreen" title="TikTok video"></iframe>
     `;
 
     this.iframe = this.shadowRoot.querySelector('iframe');
+
+    if (this.hasAttribute('muted') && this.getAttribute('muted') !== 'false') {
+      this.mute();
+    }
+  }
+
+  get config() {
+    return this._config;
+  }
+
+  set config(value) {
+    this._config = value || {};
+    this.render();
+  }
+
+  _upgradeProperty(prop) {
+    if (Object.prototype.hasOwnProperty.call(this, prop)) {
+      const value = this[prop];
+      delete this[prop];
+      this[prop] = value;
+    }
   }
 
   boolToBinary(props) {
@@ -120,13 +175,11 @@ class TikTokVideoElement extends (globalThis.HTMLElement ?? class {}) {
     switch (msg.type) {
       case 'onPlayerReady':
         this.loadComplete.resolve();
-        this.dispatchEvent(new Event('ready'));
         break;
 
       case 'onStateChange':
         this.playerState = msg.value;
         this._paused = msg.value !== TikTokVideoElement.PlayerState.PLAYING;
-        this.dispatchEvent(new CustomEvent('statechange', { detail: msg.value }));
         this.dispatchEvent(
           new Event(
             msg.value === TikTokVideoElement.PlayerState.PLAYING
@@ -155,12 +208,9 @@ class TikTokVideoElement extends (globalThis.HTMLElement ?? class {}) {
         } else {
           this._muted = false;
         }
-        this.dispatchEvent(new CustomEvent('mutechange', { detail: this._muted }));
         break;
 
       case 'onMute':
-        this._volume = msg.value ? 0 : this._volume;
-        this.dispatchEvent(new CustomEvent('mutechange', { detail: this._muted }));
         this._muted = msg.value ? true : false;
         this.dispatchEvent(new CustomEvent('volumechange', { detail: this._volume }));
         break;
