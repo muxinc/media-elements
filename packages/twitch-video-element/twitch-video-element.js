@@ -72,7 +72,7 @@ function serializeIframeUrl(attrs, props) {
   const channelMatch = attrs.src.match(MATCH_CHANNEL);
 
   const params = {
-    parent: window.location.hostname,
+    parent: globalThis.location?.hostname,
     // ?controls=true is enabled by default in the iframe
     controls: attrs.controls === '' ? null : false,
     autoplay: attrs.autoplay === '' ? null : false,
