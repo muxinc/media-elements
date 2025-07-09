@@ -379,7 +379,7 @@ class TwitchVideoElement extends (globalThis.HTMLElement ?? class {}) {
       namespace: 'twitch-embed-player-proxy'
     };
     
-    this.#embedWindow.postMessage(message, '*');
+    this.#embedWindow.postMessage(message, EMBED_BASE);
   }
 
   // This is a pattern to update property values that are set before
