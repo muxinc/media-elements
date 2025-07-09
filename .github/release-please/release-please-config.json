@@ -21,6 +21,7 @@
     "packages/videojs-video-element": {},
     "packages/vimeo-video-element": {},
     "packages/wistia-video-element": {},
+    "packages/twitch-video-element": {},
     "packages/youtube-video-element": {}
   }
 }

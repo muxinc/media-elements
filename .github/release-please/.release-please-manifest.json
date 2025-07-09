@@ -14,5 +14,6 @@
   "packages/videojs-video-element": "1.4.2",
   "packages/vimeo-video-element": "1.5.1",
   "packages/wistia-video-element": "1.3.2",
+  "packages/twitch-video-element": "0.1.0",
   "packages/youtube-video-element": "1.6.0"
 }
