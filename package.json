@@ -28,8 +28,7 @@
     "lint": "turbo lint",
     "test": "turbo test --concurrency=1",
     "dev": "turbo run dev --concurrency=20 --filter '!./examples/*' & turbo watch build --filter '!./examples/*'",
-    "build": "turbo build",
-    "build:packages": "turbo build --filter '!./examples/*'"
+    "build": "turbo build"
   },
   "devDependencies": {
     "eslint": "^8.57.0",
