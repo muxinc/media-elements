@@ -10,9 +10,14 @@ export default function Page() {
     <>
       <section>
         <SpotifyAudio
-          style={{ width: 500 }}
-          src="https://open.spotify.com/episode/7makk4oTQel546B0PZlDM5"
+          className="video"
+          src="https://open.spotify.com/episode/5Jo9ncrz2liWiKj8inZwD2"
           controls
+          config={{
+            startAt: 20,
+            theme: 'dark',
+            preferVideo: true,
+          }}
         ></SpotifyAudio>
       </section>
     </>
