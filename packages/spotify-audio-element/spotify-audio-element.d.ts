@@ -7,4 +7,9 @@ export default class CustomAudioElement extends HTMLAudioElement {
   ): void;
   connectedCallback(): void;
   disconnectedCallback(): void;
+  config: {
+    startAt?: number;
+    theme?: 'dark' | 'light';
+    preferVideo?: boolean;
+  };
 }

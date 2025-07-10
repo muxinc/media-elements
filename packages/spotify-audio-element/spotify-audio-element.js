@@ -2,13 +2,15 @@
 
 const EMBED_BASE = 'https://open.spotify.com';
 const MATCH_SRC = /open\.spotify\.com\/(\w+)\/(\w+)/i;
+// todo: remove loading script and directly communicate with iframe
 const API_URL = 'https://open.spotify.com/embed-podcast/iframe-api/v1';
 const API_GLOBAL = 'SpotifyIframeApi';
 const API_GLOBAL_READY = 'onSpotifyIframeApiReady';
 
-function getTemplateHTML(attrs) {
+function getTemplateHTML(attrs, props = {}) {
   const iframeAttrs = {
-    src: serializeIframeUrl(attrs),
+    src: serializeIframeUrl(attrs, props),
+    scrolling: 'no',
     frameborder: 0,
     width: '100%',
     height: '100%',
@@ -27,6 +29,9 @@ function getTemplateHTML(attrs) {
         position: absolute;
         top: 0;
         left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
       }
       :host(:not([controls])) {
         display: none !important;
@@ -36,7 +41,7 @@ function getTemplateHTML(attrs) {
   `;
 }
 
-function serializeIframeUrl(attrs) {
+function serializeIframeUrl(attrs, props) {
   if (!attrs.src) return;
 
   const matches = attrs.src.match(MATCH_SRC);
@@ -44,11 +49,12 @@ function serializeIframeUrl(attrs) {
   const metaId = matches && matches[2];
 
   const params = {
-    t: attrs.starttime,
-    theme: attrs.theme === 'dark' ? '0' : null,
+    t: props.config?.startAt,
+    theme: props.config?.theme === 'dark' ? '0' : null,
   };
 
-  return `${EMBED_BASE}/embed/${type}/${metaId}?${serialize(params)}`;
+  const videoPath = props.config?.preferVideo ? '/video' : '';
+  return `${EMBED_BASE}/embed/${type}/${metaId}${videoPath}?${serialize(params)}`;
 }
 
 class SpotifyAudioElement extends (globalThis.HTMLElement ?? class {}) {
@@ -58,9 +64,6 @@ class SpotifyAudioElement extends (globalThis.HTMLElement ?? class {}) {
     'controls',
     'loop',
     'src',
-    'starttime',
-    'continuous',
-    'theme',
   ];
 
   loadComplete = new PublicPromise();
@@ -74,6 +77,12 @@ class SpotifyAudioElement extends (globalThis.HTMLElement ?? class {}) {
   #currentTime = 0;
   #duration = NaN;
   #seeking = false;
+  #config = null;
+
+  constructor() {
+    super();
+    this.#upgradeProperty('config');
+  }
 
   async load() {
     if (this.#loadRequested) return;
@@ -104,8 +113,9 @@ class SpotifyAudioElement extends (globalThis.HTMLElement ?? class {}) {
     this.dispatchEvent(new Event('loadstart'));
 
     const options = {
-      t: this.startTime,
-      theme: this.theme === 'dark' ? '0' : null,
+      t: this.config?.startAt,
+      theme: this.config?.theme === 'dark' ? '0' : null,
+      preferVideo: this.config?.preferVideo,
     };
 
     if (this.#isInit) {
@@ -117,7 +127,7 @@ class SpotifyAudioElement extends (globalThis.HTMLElement ?? class {}) {
 
       if (!this.shadowRoot) {
         this.attachShadow({ mode: 'open' });
-        this.shadowRoot.innerHTML = getTemplateHTML(namedNodeMapToObject(this.attributes));
+        this.shadowRoot.innerHTML = getTemplateHTML(namedNodeMapToObject(this.attributes), this);
       }
 
       let iframe = this.shadowRoot.querySelector('iframe');
@@ -209,9 +219,7 @@ class SpotifyAudioElement extends (globalThis.HTMLElement ?? class {}) {
 
     // This is required to come before the await for resolving loadComplete.
     switch (attrName) {
-      case 'src':
-      case 'theme':
-      case 'starttime': {
+      case 'src': {
         this.load();
         return;
       }
@@ -233,6 +241,14 @@ class SpotifyAudioElement extends (globalThis.HTMLElement ?? class {}) {
     return this.api?.pause();
   }
 
+  get config() {
+    return this.#config;
+  }
+
+  set config(value) {
+    this.#config = value;
+  }
+
   get paused() {
     return this.#paused ?? true;
   }
@@ -241,8 +257,16 @@ class SpotifyAudioElement extends (globalThis.HTMLElement ?? class {}) {
     return false;
   }
 
+  set muted(val) {
+    // noop
+  }
+
   get volume() {
     return 1;
+  }
+
+  set volume(val) {
+    // noop
   }
 
   get ended() {
@@ -293,30 +317,17 @@ class SpotifyAudioElement extends (globalThis.HTMLElement ?? class {}) {
     this.setAttribute('src', `${val}`);
   }
 
-  get startTime() {
-    return parseFloat(this.getAttribute('starttime') ?? 0);
-  }
-
-  set startTime(val) {
-    if (this.startTime == val) return;
-    this.setAttribute('starttime', +val);
-  }
-
-  get theme() {
-    return this.getAttribute('theme');
-  }
-
-  set theme(val) {
-    this.setAttribute('theme', val);
-  }
-
-  get continuous() {
-    return this.hasAttribute('continuous');
-  }
-
-  set continuous(val) {
-    if (this.continuous == val) return;
-    this.toggleAttribute('continuous', Boolean(val));
+  // This is a pattern to update property values that are set before
+  // the custom element is upgraded.
+  // https://web.dev/custom-elements-best-practices/#make-properties-lazy
+  #upgradeProperty(prop) {
+    if (Object.prototype.hasOwnProperty.call(this, prop)) {
+      const value = this[prop];
+      // Delete the set property from this instance.
+      delete this[prop];
+      // Set the value again via the (prototype) setter on this class.
+      this[prop] = value;
+    }
   }
 }
 

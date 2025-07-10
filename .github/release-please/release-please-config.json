@@ -1,5 +1,5 @@
 {
-  "bump-minor-pre-major": true,
+  "bump-minor-pre-major": false,
   "bump-patch-for-minor-pre-major": false,
   "tag-separator": "@",
   "include-component-in-tag": true,
