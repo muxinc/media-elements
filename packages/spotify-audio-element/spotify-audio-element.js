@@ -10,6 +10,7 @@ const API_GLOBAL_READY = 'onSpotifyIframeApiReady';
 function getTemplateHTML(attrs, props = {}) {
   const iframeAttrs = {
     src: serializeIframeUrl(attrs, props),
+    scrolling: 'no',
     frameborder: 0,
     width: '100%',
     height: '100%',
@@ -28,6 +29,9 @@ function getTemplateHTML(attrs, props = {}) {
         position: absolute;
         top: 0;
         left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
       }
       :host(:not([controls])) {
         display: none !important;
