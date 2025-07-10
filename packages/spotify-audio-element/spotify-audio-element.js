@@ -123,7 +123,7 @@ class SpotifyAudioElement extends (globalThis.HTMLElement ?? class {}) {
 
       if (!this.shadowRoot) {
         this.attachShadow({ mode: 'open' });
-        this.shadowRoot.innerHTML = getTemplateHTML(namedNodeMapToObject(this.attributes));
+        this.shadowRoot.innerHTML = getTemplateHTML(namedNodeMapToObject(this.attributes), this);
       }
 
       let iframe = this.shadowRoot.querySelector('iframe');
