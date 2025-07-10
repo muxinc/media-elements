@@ -2,6 +2,7 @@
 
 const EMBED_BASE = 'https://open.spotify.com';
 const MATCH_SRC = /open\.spotify\.com\/(\w+)\/(\w+)/i;
+// todo: remove loading script and directly communicate with iframe
 const API_URL = 'https://open.spotify.com/embed-podcast/iframe-api/v1';
 const API_GLOBAL = 'SpotifyIframeApi';
 const API_GLOBAL_READY = 'onSpotifyIframeApiReady';
@@ -110,6 +111,7 @@ class SpotifyAudioElement extends (globalThis.HTMLElement ?? class {}) {
     const options = {
       t: this.config?.startAt,
       theme: this.config?.theme === 'dark' ? '0' : null,
+      preferVideo: this.config?.preferVideo,
     };
 
     if (this.#isInit) {
