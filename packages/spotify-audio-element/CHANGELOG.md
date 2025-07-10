@@ -5,6 +5,17 @@
 [1]: https://www.npmjs.com/package/spotify-audio-element?activeTab=versions
 
 
+## [1.0.0](https://github.com/muxinc/media-elements/compare/spotify-audio-element@0.1.14...spotify-audio-element@1.0.0) (2025-07-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* remove attributes in favor of config property
+
+### Features
+
+* use config instead of attributes ([#139](https://github.com/muxinc/media-elements/issues/139)) ([f4c8610](https://github.com/muxinc/media-elements/commit/f4c86102e1e07f3eb2d63fa5370bfb1b9061dc5d))
+
 ## [0.1.14](https://github.com/muxinc/media-elements/compare/spotify-audio-element@0.1.13...spotify-audio-element@0.1.14) (2025-06-26)
 
 
