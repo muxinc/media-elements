@@ -18,4 +18,5 @@ A collection of HTMLMediaElement compatible elements and add-ons.
 | [`<spotify-audio>`](packages/spotify-audio-element)                                  | A custom audio element for Spotify player.                                     |
 | [`<wistia-video>`](packages/wistia-video-element)                                    | A custom video element for Wistia player.                                      |
 | [`<jwplayer-video>`](packages/jwplayer-video-element)                                | A custom video element for JW Player.                                          |
+| [`<twitch-video>`](packages/twitch-video-element)                                    | A custom video element for Twitch player.                                      |
 | [`<cloudflare-video>`](packages/cloudflare-video-element)                            | A custom video element for Cloudflare Stream.                                  |
