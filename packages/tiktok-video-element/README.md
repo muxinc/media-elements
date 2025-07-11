@@ -15,7 +15,7 @@ for the TikTok player with an API that matches the
 ## Example
 
 ```html
-<script type="module" src="https://cdn.jsdelivr.net/npm/tiktok-video-element@1"></script>
+<script type="module" src="https://cdn.jsdelivr.net/npm/tiktok-video-element@0"></script>
 <tiktok-video controls video-id="6718335390845095173"></tiktok-video>
 ```
 
@@ -31,7 +31,7 @@ Note the `type="module"`, that's important.
 
 ```html
 <head>
-  <script type="module" src="https://cdn.jsdelivr.net/npm/tiktok-video-element@1"></script>
+  <script type="module" src="https://cdn.jsdelivr.net/npm/tiktok-video-element@0"></script>
 </head>
 ```
 
