@@ -120,7 +120,7 @@ class SpotifyAudioElement extends (globalThis.HTMLElement ?? class {}) {
 
     if (this.#isInit) {
       this.api = oldApi;
-      this.api.iframeElement.src = serializeIframeUrl(namedNodeMapToObject(this.attributes));
+      this.api.iframeElement.src = serializeIframeUrl(namedNodeMapToObject(this.attributes), this);
 
     } else {
       this.#isInit = true;
