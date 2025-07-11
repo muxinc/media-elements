@@ -5,6 +5,13 @@
 [1]: https://www.npmjs.com/package/spotify-audio-element?activeTab=versions
 
 
+## [1.0.1](https://github.com/muxinc/media-elements/compare/spotify-audio-element@1.0.0...spotify-audio-element@1.0.1) (2025-07-11)
+
+
+### Bug Fixes
+
+* update iframe src with config bug ([3fa1fe8](https://github.com/muxinc/media-elements/commit/3fa1fe82928d077ab3cb1b060377fc8866455b31))
+
 ## [1.0.0](https://github.com/muxinc/media-elements/compare/spotify-audio-element@0.1.14...spotify-audio-element@1.0.0) (2025-07-10)
 
 
