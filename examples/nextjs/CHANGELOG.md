@@ -1,5 +1,30 @@
 # Changelog
 
+## [1.0.0](https://github.com/muxinc/media-elements/compare/nextjs@0.1.32...nextjs@1.0.0) (2025-07-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* remove attributes in favor of config property
+
+### Features
+
+* add twitch-video-element ([#137](https://github.com/muxinc/media-elements/issues/137)) ([3715889](https://github.com/muxinc/media-elements/commit/3715889f341695dc6882a5028198abfaf8425352))
+* use config instead of attributes ([#139](https://github.com/muxinc/media-elements/issues/139)) ([f4c8610](https://github.com/muxinc/media-elements/commit/f4c86102e1e07f3eb2d63fa5370bfb1b9061dc5d))
+
+
+### Bug Fixes
+
+* twitch video element version ([1b9b2be](https://github.com/muxinc/media-elements/commit/1b9b2beebb7601ed8a34ee87b7ea1349b08591a3))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * spotify-audio-element bumped from ^0.1.14 to ^1.0.0
+    * twitch-video-element bumped from ^0.0.1 to ^0.1.0
+
 ## [0.1.32](https://github.com/muxinc/media-elements/compare/nextjs@0.1.31...nextjs@0.1.32) (2025-07-02)
 
 

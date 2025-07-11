@@ -1,6 +1,6 @@
 {
   "name": "spotify-audio-element",
-  "version": "0.1.14",
+  "version": "1.0.0",
   "description": "A custom element for the Spotify player with an API that aims to match the `<audio>` API",
   "author": "@muxinc",
   "license": "MIT",
