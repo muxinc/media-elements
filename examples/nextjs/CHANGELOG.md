@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.0.1](https://github.com/muxinc/media-elements/compare/nextjs@1.0.0...nextjs@1.0.1) (2025-07-11)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * spotify-audio-element bumped from ^1.0.0 to ^1.0.1
+
 ## [1.0.0](https://github.com/muxinc/media-elements/compare/nextjs@0.1.32...nextjs@1.0.0) (2025-07-10)
 
 
