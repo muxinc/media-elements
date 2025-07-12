@@ -184,12 +184,11 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
           this.loadComplete.resolve();
         },
         onError: (error) => {
-          console.error(error);
           this.#error = {
             code: error.data,
             message: `YouTube iframe player error #${error.data}; visit https://developers.google.com/youtube/iframe_api_reference#onError for the full error message.`
           }
-          this.dispatchEvent(new Event('error'));
+          this.dispatchEvent(new CustomEvent('error', {details: error}));
         },
       },
     });
