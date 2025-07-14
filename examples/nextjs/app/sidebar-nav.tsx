@@ -1,7 +1,7 @@
 'use client'
 
 import { usePathname } from 'next/navigation'
-import Link from 'next/link';
+import Link from './link';
 
 export default function SidebarNav() {
   const pathname = usePathname()

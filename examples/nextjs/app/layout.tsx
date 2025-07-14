@@ -2,9 +2,11 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import * as fs from 'node:fs/promises';
 import type React from 'react';
+import { Suspense } from 'react';
 
 import type { Metadata } from 'next';
 import { DM_Sans, JetBrains_Mono } from 'next/font/google';
+import Link from 'next/link';
 import Nav from './nav';
 import SidebarNav from './sidebar-nav';
 import './globals.css';
@@ -46,13 +48,15 @@ export default async function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <header>
           <div className="inner">
-            <Nav />
+            <Suspense fallback={null}>
+              <Nav />
+            </Suspense>
           </div>
         </header>
         <main>
           <div className="inner">
             <aside>
-              <h1><code>media-elements</code> <span>Playground</span></h1>
+              <h1><Link href="/"><code>media-elements</code></Link> <span>Playground</span></h1>
               <SidebarNav />
             </aside>
             {children}
