@@ -1,5 +1,29 @@
 # Changelog
 
+## [1.0.2](https://github.com/muxinc/media-elements/compare/nextjs@1.0.1...nextjs@1.0.2) (2025-07-14)
+
+
+### Bug Fixes
+
+* muted prop for react wrappers ([#143](https://github.com/muxinc/media-elements/issues/143)) ([d312f39](https://github.com/muxinc/media-elements/commit/d312f392a40602312f197fb793a7a8d41b7afa61))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * cloudflare-video-element bumped from ^1.3.2 to ^1.3.3
+    * dash-video-element bumped from ^0.1.5 to ^0.1.6
+    * hls-video-element bumped from ^1.5.5 to ^1.5.6
+    * jwplayer-video-element bumped from ^1.3.2 to ^1.3.3
+    * shaka-video-element bumped from ^0.6.18 to ^0.6.19
+    * spotify-audio-element bumped from ^1.0.1 to ^1.0.2
+    * twitch-video-element bumped from ^0.1.0 to ^0.1.1
+    * videojs-video-element bumped from ^1.4.2 to ^1.4.3
+    * vimeo-video-element bumped from ^1.5.1 to ^1.5.2
+    * wistia-video-element bumped from ^1.3.2 to ^1.3.3
+    * youtube-video-element bumped from ^1.6.0 to ^1.6.1
+
 ## [1.0.1](https://github.com/muxinc/media-elements/compare/nextjs@1.0.0...nextjs@1.0.1) (2025-07-11)
 
 
