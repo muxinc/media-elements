@@ -23,7 +23,7 @@ function getTemplateHTML(attrs, props = {}) {
   };
 
   if (props.config) {
-    // Serialize Vimeo config on iframe so it can be quickly accessed on first load.
+    // Serialize TikTok config on iframe so it can be quickly accessed on first load.
     // Required for React SSR because the custom element is initialized long before React client render.
     iframeAttrs['data-config'] = JSON.stringify(props.config);
   }
