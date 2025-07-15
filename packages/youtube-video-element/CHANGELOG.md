@@ -5,6 +5,15 @@
 [1]: https://www.npmjs.com/package/youtube-video-element?activeTab=versions
 
 
+## [1.6.1](https://github.com/muxinc/media-elements/compare/youtube-video-element@1.6.0...youtube-video-element@1.6.1) (2025-07-14)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * build-react-wrapper bumped from ^0.2.1 to ^0.2.2
+
 ## [1.6.0](https://github.com/muxinc/media-elements/compare/youtube-video-element@1.5.3...youtube-video-element@1.6.0) (2025-07-02)
 
 
