@@ -1,5 +1,5 @@
 {
-  "examples/nextjs": "1.0.2",
+  "examples/nextjs": "1.1.0",
   "scripts/build-react-wrapper": "0.2.2",
   "packages/castable-video": "1.1.10",
   "packages/cloudflare-video-element": "1.3.3",
@@ -11,8 +11,8 @@
   "packages/shaka-video-element": "0.6.19",
   "packages/spotify-audio-element": "1.0.2",
   "packages/super-media-element": "1.4.2",
-  "packages/tiktok-video-element": "0.0.1",
-  "packages/twitch-video-element": "0.1.1",
+  "packages/tiktok-video-element": "0.1.0",
+  "packages/twitch-video-element": "0.1.2",
   "packages/videojs-video-element": "1.4.3",
   "packages/vimeo-video-element": "1.5.2",
   "packages/wistia-video-element": "1.3.3",

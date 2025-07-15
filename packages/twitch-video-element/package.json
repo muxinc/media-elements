@@ -1,6 +1,6 @@
 {
   "name": "twitch-video-element",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A custom element for the Twitch player with an API that matches the `<video>` API",
   "author": "@muxinc",
   "license": "MIT",
