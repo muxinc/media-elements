@@ -16,7 +16,7 @@ for the TikTok player with an API that matches the
 
 ```html
 <script type="module" src="https://cdn.jsdelivr.net/npm/tiktok-video-element@0"></script>
-<tiktok-video controls video-id="6718335390845095173"></tiktok-video>
+<tiktok-video controls src="https://www.tiktok.com/@wesbos/video/6718335390845095173"></tiktok-video>
 ```
 
 ## Installing
