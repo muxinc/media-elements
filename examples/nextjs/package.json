@@ -20,6 +20,7 @@
     "react-dom": "^19",
     "shaka-video-element": "^0.6.19",
     "spotify-audio-element": "^1.0.2",
+    "tiktok-video-element": "^0.0.1",
     "twitch-video-element": "^0.1.1",
     "videojs-video-element": "^1.4.3",
     "vimeo-video-element": "^1.5.2",

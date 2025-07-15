@@ -1,0 +1,42 @@
+<html>
+  <body>
+    <h1>TikTok iframe with volume controls</h1>
+
+    <iframe
+      id="ttframe"
+      src="https://www.tiktok.com/player/v1/6718335390845095173?controls=0&volume_control=0&progress_bar=0&autoplay=0&muted=0&loop=0&start=20&fullscreen_button=0&play_button0&music_info=0&description=0&native_context_menu=0&closed_caption=0"
+      width="400"
+      height="700"
+      allow="autoplay; fullscreen"
+      title="TikTok video"
+      style="border: none;"
+    ></iframe>
+
+    <div style="margin-top: 10px;">
+      <button onclick="postPause()">Pause</button>
+      <button onclick="postMute()">Mute</button>
+      <button onclick="postUnMute()">Unmute</button>
+      <button onclick="postVolume(40)">Volume 40%</button>
+      <button onclick="postVolume(90)">Volume 90%</button>
+    </div>
+
+    <script>
+      const frame = document.getElementById('ttframe').contentWindow;
+
+      function post(type, value) {
+        frame.postMessage({ 'x-tiktok-player': true, type, ...(value !== undefined ? { value } : {}) }, '*');
+        console.log('Sent:', type, value);
+      }
+
+      function postPause() { post('pause'); }
+      function postMute() { post('mute'); }
+      function postUnMute() { post('unMute'); }
+      function postVolume(val) { post('changeVolume', val); }
+
+      window.addEventListener('message', (e) => {
+        if (!e.data?.['x-tiktok-player']) return;
+        console.log('Received from iframe:', e.data);
+      });
+    </script>
+  </body>
+</html>

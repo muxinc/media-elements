@@ -24,6 +24,9 @@ export default function SidebarNav() {
         <Link className={`link ${pathname === '/youtube-video' ? 'active' : ''}`} href="/youtube-video">youtube-video</Link>
       </li>
       <li>
+        <Link className={`link ${pathname === '/tiktok-video' ? 'active' : ''}`} href="/tiktok-video">tiktok-video</Link>
+      </li>
+      <li>
         <Link className={`link ${pathname === '/vimeo-video' ? 'active' : ''}`} href="/vimeo-video">vimeo-video</Link>
       </li>
       <li>
