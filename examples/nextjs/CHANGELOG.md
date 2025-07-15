@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.1.0](https://github.com/muxinc/media-elements/compare/nextjs@1.0.2...nextjs@1.1.0) (2025-07-15)
+
+
+### Features
+
+* Create TikTok Video Element ([#133](https://github.com/muxinc/media-elements/issues/133)) ([#145](https://github.com/muxinc/media-elements/issues/145)) ([89cf6d3](https://github.com/muxinc/media-elements/commit/89cf6d393710da96108a038530867130fe73d4d3))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * tiktok-video-element bumped from ^0.0.1 to ^0.1.0
+    * twitch-video-element bumped from ^0.1.1 to ^0.1.2
+
 ## [1.0.2](https://github.com/muxinc/media-elements/compare/nextjs@1.0.1...nextjs@1.0.2) (2025-07-14)
 
 

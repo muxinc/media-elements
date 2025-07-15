@@ -1,6 +1,6 @@
 {
   "name": "tiktok-video-element",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Custom element (web component) for the TikTok player.",
   "author": "@muxinc",
   "license": "MIT",
