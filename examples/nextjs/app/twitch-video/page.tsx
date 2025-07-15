@@ -12,7 +12,7 @@ export default function Page() {
       <section>
         <Player
           as={TwitchVideo}
-          src="https://www.twitch.tv/videos/106400740"
+          src="https://www.twitch.tv/videos/675696011"
           config={{
             time: 5,
           }}

@@ -12,7 +12,7 @@ export default function Page() {
       <section>
         <Player
           as={TikTokVideo}
-          src="https://www.tiktok.com/@wesbos/video/6718335390845095173"
+          src="https://www.tiktok.com/@_luwes/video/7527453781764689207"
           config={{
             fullscreen_button: true,
             progress_bar: true,
