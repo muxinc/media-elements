@@ -22,7 +22,6 @@
     "packages/videojs-video-element": {},
     "packages/vimeo-video-element": {},
     "packages/wistia-video-element": {},
-    "packages/youtube-video-element": {},
-    "packages/tiktok-video-element": {}
+    "packages/youtube-video-element": {}
   }
 }

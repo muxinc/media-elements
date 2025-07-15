@@ -11,7 +11,6 @@
   "packages/shaka-video-element": "0.6.19",
   "packages/spotify-audio-element": "1.0.2",
   "packages/super-media-element": "1.4.2",
-  "packages/tiktok-video-element": "0.0.1",
   "packages/twitch-video-element": "0.1.1",
   "packages/videojs-video-element": "1.4.3",
   "packages/vimeo-video-element": "1.5.2",
