@@ -206,10 +206,11 @@ class TikTokVideoElement extends (globalThis.HTMLElement ?? class {}) {
         console.warn('Unhandled TikTok player message:', msg);
         break;
     }
-  }
+  };
 
   #post(type, value) {
     if (!this.#iframe?.contentWindow) return;
+
     const message = { 'x-tiktok-player': true, type, ...(value !== undefined ? { value } : {}) };
     this.#iframe.contentWindow.postMessage(message, '*');
   }

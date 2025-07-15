@@ -9,7 +9,7 @@ const PlaybackState = {
   READY: 'Ready',
   BUFFERING: 'Buffering',
   PLAYING: 'Playing',
-  ENDED: 'Ended'
+  ENDED: 'Ended',
 };
 
 const PlayerCommands = {
@@ -24,7 +24,7 @@ const PlayerCommands = {
   SET_QUALITY: 8,
   SET_VIDEO: 9,
   SET_MUTED: 10,
-  SET_VOLUME: 11
+  SET_VOLUME: 11,
 };
 
 function getTemplateHTML(attrs, props = {}) {
@@ -42,7 +42,7 @@ function getTemplateHTML(attrs, props = {}) {
     iframeAttrs['data-config'] = JSON.stringify(props.config);
   }
 
-  return /*html*/`
+  return /*html*/ `
     <style>
       :host {
         display: inline-block;
@@ -78,7 +78,7 @@ function serializeIframeUrl(attrs, props) {
     autoplay: attrs.autoplay === '' ? null : false,
     muted: attrs.muted,
     preload: attrs.preload,
-    ...props.config
+    ...props.config,
   };
 
   if (videoMatch) {
@@ -97,20 +97,12 @@ function serializeIframeUrl(attrs, props) {
 class TwitchVideoElement extends (globalThis.HTMLElement ?? class {}) {
   static getTemplateHTML = getTemplateHTML;
   static shadowRootOptions = { mode: 'open' };
-  static observedAttributes = [
-    'autoplay',
-    'controls',
-    'loop',
-    'muted',
-    'playsinline',
-    'preload',
-    'src',
-  ];
+  static observedAttributes = ['autoplay', 'controls', 'loop', 'muted', 'playsinline', 'preload', 'src'];
 
   loadComplete = new PublicPromise();
   #loadRequested;
   #hasLoaded;
-  #embedWindow;
+  #iframe;
   #playerState = {};
   #currentTime = 0;
   #muted = false;
@@ -173,10 +165,11 @@ class TwitchVideoElement extends (globalThis.HTMLElement ?? class {}) {
     if (!iframe?.src || iframe.src !== serializeIframeUrl(attrs, this)) {
       this.shadowRoot.innerHTML = getTemplateHTML(attrs, this);
       iframe = this.shadowRoot.querySelector('iframe');
-      this.#embedWindow = iframe.contentWindow;
-      globalThis.addEventListener('message', this.#onMessage);
     }
-  } 
+
+    this.#iframe = iframe;
+    globalThis.addEventListener('message', this.#onMessage);
+  }
 
   attributeChangedCallback(attrName, oldValue, newValue) {
     if (oldValue === newValue) return;
@@ -312,10 +305,10 @@ class TwitchVideoElement extends (globalThis.HTMLElement ?? class {}) {
   }
 
   #onMessage = async (event) => {
-    if (!this.#embedWindow) return;
-      
+    if (!this.#iframe.contentWindow) return;
+
     const { data, source } = event;
-    const isFromEmbedWindow = source === this.#embedWindow;
+    const isFromEmbedWindow = source === this.#iframe.contentWindow;
     if (!isFromEmbedWindow) return;
 
     if (data.namespace === 'twitch-embed') {
@@ -341,15 +334,13 @@ class TwitchVideoElement extends (globalThis.HTMLElement ?? class {}) {
       } else {
         this.dispatchEvent(new Event(data.eventName));
       }
-      
-    } 
-    else if (data.namespace === 'twitch-embed-player-proxy' && data.eventName === 'UPDATE_STATE') {
+    } else if (data.namespace === 'twitch-embed-player-proxy' && data.eventName === 'UPDATE_STATE') {
       const oldDuration = this.#playerState.duration;
       const oldCurrentTime = this.#playerState.currentTime;
       const oldVolume = this.#playerState.volume;
       const oldMuted = this.#playerState.muted;
       const oldBuffered = this.#playerState.stats?.videoStats?.bufferSize;
-      
+
       this.#playerState = { ...this.#playerState, ...data.params };
 
       if (oldDuration !== this.#playerState.duration) {
@@ -368,18 +359,18 @@ class TwitchVideoElement extends (globalThis.HTMLElement ?? class {}) {
         this.dispatchEvent(new Event('progress'));
       }
     }
-  }
+  };
 
   #sendCommand(command, params) {
-    if (!this.#embedWindow) return;
-    
+    if (!this.#iframe.contentWindow) return;
+
     const message = {
       eventName: command,
       params: params,
-      namespace: 'twitch-embed-player-proxy'
+      namespace: 'twitch-embed-player-proxy',
     };
-    
-    this.#embedWindow.postMessage(message, EMBED_BASE);
+
+    this.#iframe.contentWindow.postMessage(message, EMBED_BASE);
   }
 
   // This is a pattern to update property values that are set before
@@ -480,11 +471,11 @@ function createTimeRanges(start, end) {
 function createTimeRangesObj(ranges) {
   Object.defineProperties(ranges, {
     start: {
-      value: i => ranges[i][0]
+      value: (i) => ranges[i][0],
     },
     end: {
-      value: i => ranges[i][1]
-    }
+      value: (i) => ranges[i][1],
+    },
   });
   return ranges;
 }
