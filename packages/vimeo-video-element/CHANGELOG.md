@@ -5,6 +5,36 @@
 [1]: https://www.npmjs.com/package/vimeo-video-element?activeTab=versions
 
 
+## [1.5.2](https://github.com/muxinc/media-elements/compare/vimeo-video-element@1.5.1...vimeo-video-element@1.5.2) (2025-07-14)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * build-react-wrapper bumped from ^0.2.1 to ^0.2.2
+
+## [1.5.1](https://github.com/muxinc/media-elements/compare/vimeo-video-element@1.5.0...vimeo-video-element@1.5.1) (2025-06-26)
+
+
+### Bug Fixes
+
+* upgrade dependencies ([#130](https://github.com/muxinc/media-elements/issues/130)) ([afb6797](https://github.com/muxinc/media-elements/commit/afb6797342db3be3d173957d44df49fd26ffafc5))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * build-react-wrapper bumped from ^0.2.0 to ^0.2.1
+
+## [1.5.0](https://github.com/muxinc/media-elements/compare/vimeo-video-element@1.4.1...vimeo-video-element@1.5.0) (2025-06-23)
+
+
+### Features
+
+* Vimeo fullscreen & PiP via API to avoid Apple iframe restriction ([#122](https://github.com/muxinc/media-elements/issues/122)) ([bff8f09](https://github.com/muxinc/media-elements/commit/bff8f09e9f4799986c29b11b96df5117efb9b74a))
+
 ## [1.4.1](https://github.com/muxinc/media-elements/compare/vimeo-video-element@1.4.0...vimeo-video-element@1.4.1) (2025-03-14)
 
 

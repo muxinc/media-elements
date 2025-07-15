@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+  <head>
+    <title>&lt;twitch-video&gt;</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css" />
+    <style>
+      body {
+        text-align: center;
+      }
+      media-controller,
+      twitch-video {
+        display: block;
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        background: #000;
+      }
+    </style>
+    <script type="module" src="./twitch-video-element.js"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/media-chrome/+esm"></script>
+  </head>
+  <body>
+    <h1>&lt;twitch-video&gt;</h1>
+    <br />
+
+    <twitch-video id="t1" muted controls src="https://www.twitch.tv/videos/106400740"></twitch-video>
+
+    <br />
+
+    <br />
+
+    <h2>With <a href="https://github.com/muxinc/media-chrome" target="_blank">Media Chrome</a></h2>
+
+    <media-controller>
+      <twitch-video id="t2" src="https://www.twitch.tv/videos/106400740" slot="media"></twitch-video>
+      <media-control-bar>
+        <media-play-button></media-play-button>
+        <media-seek-backward-button seek-offset="15"></media-seek-backward-button>
+        <media-seek-forward-button seek-offset="15"></media-seek-forward-button>
+        <media-mute-button></media-mute-button>
+        <media-volume-range></media-volume-range>
+        <media-time-range></media-time-range>
+        <media-time-display show-duration remaining></media-time-display>
+        <media-fullscreen-button></media-fullscreen-button>
+      </media-control-bar>
+    </media-controller>
+  </body>
+</html>

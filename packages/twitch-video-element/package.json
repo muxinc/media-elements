@@ -1,7 +1,7 @@
 {
-  "name": "videojs-video-element",
-  "version": "1.4.3",
-  "description": "A custom element for Video.js with an API that matches the `<video>` API",
+  "name": "twitch-video-element",
+  "version": "0.1.1",
+  "description": "A custom element for the Twitch player with an API that matches the `<video>` API",
   "author": "@muxinc",
   "license": "MIT",
   "homepage": "https://github.com/muxinc/media-elements#readme",
@@ -11,21 +11,21 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/muxinc/media-elements.git",
-    "directory": "packages/videojs-video-element"
+    "directory": "packages/twitch-video-element"
   },
   "files": [
-    "videojs-video-element.d.ts",
+    "twitch-video-element.d.ts",
     "dist"
   ],
   "type": "module",
-  "types": "./dist/videojs-video-element.d.ts",
-  "main": "./dist/videojs-video-element.js",
+  "types": "./dist/twitch-video-element.d.ts",
+  "main": "./dist/twitch-video-element.js",
   "exports": {
     ".": {
-      "types": "./dist/videojs-video-element.d.ts",
-      "import": "./dist/videojs-video-element.js",
-      "require": "./dist/cjs/videojs-video-element.js",
-      "default": "./dist/videojs-video-element.js"
+      "types": "./dist/twitch-video-element.d.ts",
+      "import": "./dist/twitch-video-element.js",
+      "require": "./dist/cjs/twitch-video-element.js",
+      "default": "./dist/twitch-video-element.js"
     },
     "./react": {
       "types": "./dist/react.d.ts",
@@ -40,7 +40,7 @@
         "./dist/react.d.ts"
       ],
       "*": [
-        "./dist/videojs-video-element.d.ts"
+        "./dist/twitch-video-element.d.ts"
       ]
     }
   },
@@ -51,18 +51,13 @@
     "build:react": "build-react-wrapper",
     "build": "run-s build:*"
   },
-  "dependencies": {
-    "media-tracks": "^0.3.3",
-    "super-media-element": "~1.4.2"
-  },
   "devDependencies": {
     "build-react-wrapper": "^0.2.2",
     "npm-run-all": "^4.1.5",
     "wet-run": "^1.2.5"
   },
   "keywords": [
-    "video.js",
-    "videojs",
+    "twitch",
     "video",
     "player",
     "web component",

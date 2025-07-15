@@ -1,9 +1,9 @@
 import { Metadata } from 'next';
-import CloudflareVideo from 'cloudflare-video-element/react';
+import TwitchVideo from 'twitch-video-element/react';
 import Player from '../player';
 
 export const metadata: Metadata = {
-  title: 'Cloudflare Video - Media Elements',
+  title: 'Twitch Video - Media Elements',
 };
 
 export default function Page() {
@@ -11,8 +11,11 @@ export default function Page() {
     <>
       <section>
         <Player
-          as={CloudflareVideo}
-          src="https://watch.videodelivery.net/bfbd585059e33391d67b0f1d15fe6ea4"
+          as={TwitchVideo}
+          src="https://www.twitch.tv/videos/106400740"
+          config={{
+            time: 5,
+          }}
         />
       </section>
     </>

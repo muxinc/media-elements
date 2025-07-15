@@ -1,4 +1,4 @@
-export default class CustomAudioElement extends HTMLAudioElement {
+export default class CustomVideoElement extends HTMLVideoElement {
   static readonly observedAttributes: string[];
   attributeChangedCallback(
     attrName: string,
@@ -8,8 +8,7 @@ export default class CustomAudioElement extends HTMLAudioElement {
   connectedCallback(): void;
   disconnectedCallback(): void;
   config: {
-    startAt?: number;
-    theme?: 'dark' | 'light';
-    preferVideo?: boolean;
-  };
+    // Time in the video where playback starts. Specifies hours, minutes, and seconds. Default: 0h0m0s (the start of the video).
+    time?: number;
+  }
 }

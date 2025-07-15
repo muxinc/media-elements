@@ -101,6 +101,22 @@ class VimeoVideoElement extends (globalThis.HTMLElement ?? class {}) {
     this.#upgradeProperty('config');
   }
 
+  requestFullscreen() {
+    return this.api?.requestFullscreen?.();
+  }
+
+  exitFullscreen() {
+    return this.api?.exitFullscreen?.();
+  }
+
+  requestPictureInPicture() {
+    return this.api?.requestPictureInPicture?.();
+  }
+
+  exitPictureInPicture() {
+    return this.api?.exitPictureInPicture?.();
+  }
+
   get config() {
     return this.#config;
   }
