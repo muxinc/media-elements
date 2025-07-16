@@ -19,7 +19,7 @@ function getTemplateHTML(attrs, props = {}) {
     iframeAttrs['data-config'] = JSON.stringify(props.config);
   }
 
-  return /*html*/`
+  return /*html*/ `
     <style>
       :host {
         display: inline-block;
@@ -58,7 +58,7 @@ function serializeIframeUrl(attrs, props) {
     transparent: false,
     autopause: attrs.autopause,
     h: hParam, // This param is required when the video is Unlisted.
-    ...props.config
+    ...props.config,
   };
 
   return `${EMBED_BASE}/${srcId}?${serialize(params)}`;
@@ -414,7 +414,7 @@ class VimeoVideoElement extends (globalThis.HTMLElement ?? class {}) {
     if (this.currentTime == val) return;
     this.#currentTime = val;
     this.loadComplete.then(() => {
-      this.api?.setCurrentTime(val);
+      this.api?.setCurrentTime(val).catch(() => {});
     });
   }
 
@@ -444,7 +444,7 @@ class VimeoVideoElement extends (globalThis.HTMLElement ?? class {}) {
     if (this.muted == val) return;
     this.#muted = val;
     this.loadComplete.then(() => {
-      this.api?.setMuted(val);
+      this.api?.setMuted(val).catch(() => {});
     });
   }
 
@@ -456,7 +456,7 @@ class VimeoVideoElement extends (globalThis.HTMLElement ?? class {}) {
     if (this.playbackRate == val) return;
     this.#playbackRate = val;
     this.loadComplete.then(() => {
-      this.api?.setPlaybackRate(val);
+      this.api?.setPlaybackRate(val).catch(() => {});
     });
   }
 
@@ -486,7 +486,7 @@ class VimeoVideoElement extends (globalThis.HTMLElement ?? class {}) {
     if (this.volume == val) return;
     this.#volume = val;
     this.loadComplete.then(() => {
-      this.api?.setVolume(val);
+      this.api?.setVolume(val).catch(() => {});
     });
   }
 
@@ -587,11 +587,11 @@ function createTimeRanges(start, end) {
 function createTimeRangesObj(ranges) {
   Object.defineProperties(ranges, {
     start: {
-      value: i => ranges[i][0]
+      value: (i) => ranges[i][0],
     },
     end: {
-      value: i => ranges[i][1]
-    }
+      value: (i) => ranges[i][1],
+    },
   });
   return ranges;
 }
