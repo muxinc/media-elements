@@ -5,6 +5,13 @@
 [1]: https://www.npmjs.com/package/vimeo-video-element?activeTab=versions
 
 
+## [1.5.3](https://github.com/muxinc/media-elements/compare/vimeo-video-element@1.5.2...vimeo-video-element@1.5.3) (2025-07-16)
+
+
+### Bug Fixes
+
+* vimeo setter error due to nil value ([42ab3e7](https://github.com/muxinc/media-elements/commit/42ab3e72a46662fb597e3150adad66396fbc3639))
+
 ## [1.5.2](https://github.com/muxinc/media-elements/compare/vimeo-video-element@1.5.1...vimeo-video-element@1.5.2) (2025-07-14)
 
 
