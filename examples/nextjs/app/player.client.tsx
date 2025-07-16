@@ -18,11 +18,12 @@ export default function Player<T extends React.ElementType>({
   const autoPlay = !!searchParams.get('autoplay');
   const muted = !!searchParams.get('muted');
   const preload = searchParams.get('preload') as 'auto' | 'metadata' | 'none' | undefined;
+  const controls = searchParams.get('controls') !== '0';
 
   return (
     <PlayerElement
       className="video"
-      controls
+      controls={controls}
       playsInline
       crossOrigin=""
       autoPlay={autoPlay}

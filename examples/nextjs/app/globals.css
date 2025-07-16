@@ -210,17 +210,20 @@ aside nav a.active::before {
   background: none;
   border-radius: 0;
   border: none;
-}
-
-.mute-toggle {
-  border-right: 1px solid var(--border-1);
   padding-inline: 2rem;
   fill: var(--nav-icon);
 }
 
+.mute-toggle {
+  border-right: 1px solid var(--border-1);
+}
+
+.controls-toggle {
+  border-right: 1px solid var(--border-1);
+}
+
 .theme-toggle {
   border-left: 1px solid var(--border-1);
-  padding-inline: 2rem;
 }
 
 #moon,
