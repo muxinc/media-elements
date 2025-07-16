@@ -1,10 +1,13 @@
+import { Suspense } from 'react';
 import NavPlayerControls from './nav-player-controls';
 
 export default function Nav() {
   return (
     <nav>
       <div className="left nav-section">
-        <NavPlayerControls />
+        <Suspense fallback={null}>
+          <NavPlayerControls />
+        </Suspense>
       </div>
       <div className="right nav-section">
         <button

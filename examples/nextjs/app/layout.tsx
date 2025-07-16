@@ -2,7 +2,6 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import * as fs from 'node:fs/promises';
 import type React from 'react';
-import { Suspense } from 'react';
 
 import type { Metadata } from 'next';
 import { DM_Sans, JetBrains_Mono } from 'next/font/google';
@@ -48,9 +47,7 @@ export default async function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <header>
           <div className="inner">
-            <Suspense fallback={null}>
-              <Nav />
-            </Suspense>
+            <Nav />
           </div>
         </header>
         <main>
