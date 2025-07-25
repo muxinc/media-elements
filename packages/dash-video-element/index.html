@@ -20,12 +20,14 @@
   {
     "imports": {
       "custom-media-element": "https://cdn.jsdelivr.net/npm/custom-media-element@1.2/+esm",
+      "media-tracks": "https://cdn.jsdelivr.net/npm/media-tracks@0.3/+esm",
       "dashjs": "https://cdn.jsdelivr.net/npm/dashjs@5.0/dist/modern/esm/dash.all.min.js"
     }
   }
 </script>
 <script type="module" src="./dash-video-element.js"></script>
 <script type="module" src="https://cdn.jsdelivr.net/npm/media-chrome/+esm"></script>
+<script type="module" src="https://cdn.jsdelivr.net/npm/media-chrome/menu/+esm"></script>
 
 <h1>&lt;dash-video&gt;</h1>
 <br>
@@ -117,6 +119,9 @@
   >
     <track label="thumbnails" default kind="thumbnails" src="https://image.mux.com/r4rOE02cc95tbe3I00302nlrHfT023Q3IedFJW029w018KxZA/storyboard.vtt"></track>
   </dash-video>
+  <media-rendition-menu anchor="auto" hidden>
+    <div slot="header">Quality</div>
+  </media-rendition-menu>
   <media-loading-indicator slot="centered-chrome" no-auto-hide></media-loading-indicator>
   <media-control-bar>
     <media-play-button></media-play-button>
@@ -126,6 +131,7 @@
     <media-volume-range></media-volume-range>
     <media-time-range></media-time-range>
     <media-time-display show-duration remaining></media-time-display>
+    <media-rendition-menu-button></media-rendition-menu-button>
     <media-playback-rate-button></media-playback-rate-button>
     <media-pip-button></media-pip-button>
     <media-fullscreen-button></media-fullscreen-button>
