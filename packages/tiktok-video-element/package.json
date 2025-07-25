@@ -1,0 +1,66 @@
+{
+  "name": "tiktok-video-element",
+  "version": "0.1.0",
+  "description": "Custom element (web component) for the TikTok player.",
+  "author": "@muxinc",
+  "license": "MIT",
+  "homepage": "https://github.com/muxinc/tiktok-video-element#readme",
+  "bugs": {
+    "url": "https://github.com/muxinc/tiktok-video-element/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/muxinc/media-elements.git",
+    "directory": "packages/tiktok-video-element"
+  },
+  "files": [
+    "tiktok-video-element.d.ts",
+    "dist"
+  ],
+  "type": "module",
+  "types": "./dist/tiktok-video-element.d.ts",
+  "main": "./dist/tiktok-video-element.js",
+  "exports": {
+    ".": {
+      "types": "./dist/tiktok-video-element.d.ts",
+      "import": "./dist/tiktok-video-element.js",
+      "require": "./dist/cjs/tiktok-video-element.js",
+      "default": "./dist/tiktok-video-element.js"
+    },
+    "./react": {
+      "types": "./dist/react.d.ts",
+      "import": "./dist/react.js",
+      "require": "./dist/cjs/react.js",
+      "default": "./dist/react.js"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "react": [
+        "./dist/react.d.ts"
+      ],
+      "*": [
+        "./dist/tiktok-video-element.d.ts"
+      ]
+    }
+  },
+  "scripts": {
+    "lint": "eslint *.js",
+    "test": "wet run",
+    "serve": "wet serve",
+    "build:react": "build-react-wrapper",
+    "build": "run-s build:*"
+  },
+  "devDependencies": {
+    "build-react-wrapper": "^0.2.0",
+    "npm-run-all": "^4.1.5",
+    "wet-run": "^1.2.5"
+  },
+  "keywords": [
+    "tiktok",
+    "video",
+    "player",
+    "web component",
+    "custom element"
+  ]
+}

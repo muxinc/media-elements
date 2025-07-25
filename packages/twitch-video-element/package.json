@@ -1,0 +1,66 @@
+{
+  "name": "twitch-video-element",
+  "version": "0.1.2",
+  "description": "A custom element for the Twitch player with an API that matches the `<video>` API",
+  "author": "@muxinc",
+  "license": "MIT",
+  "homepage": "https://github.com/muxinc/media-elements#readme",
+  "bugs": {
+    "url": "https://github.com/muxinc/media-elements/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/muxinc/media-elements.git",
+    "directory": "packages/twitch-video-element"
+  },
+  "files": [
+    "twitch-video-element.d.ts",
+    "dist"
+  ],
+  "type": "module",
+  "types": "./dist/twitch-video-element.d.ts",
+  "main": "./dist/twitch-video-element.js",
+  "exports": {
+    ".": {
+      "types": "./dist/twitch-video-element.d.ts",
+      "import": "./dist/twitch-video-element.js",
+      "require": "./dist/cjs/twitch-video-element.js",
+      "default": "./dist/twitch-video-element.js"
+    },
+    "./react": {
+      "types": "./dist/react.d.ts",
+      "import": "./dist/react.js",
+      "require": "./dist/cjs/react.js",
+      "default": "./dist/react.js"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "react": [
+        "./dist/react.d.ts"
+      ],
+      "*": [
+        "./dist/twitch-video-element.d.ts"
+      ]
+    }
+  },
+  "scripts": {
+    "lint": "eslint *.js",
+    "test": "wet run",
+    "serve": "wet serve",
+    "build:react": "build-react-wrapper",
+    "build": "run-s build:*"
+  },
+  "devDependencies": {
+    "build-react-wrapper": "^0.2.2",
+    "npm-run-all": "^4.1.5",
+    "wet-run": "^1.2.5"
+  },
+  "keywords": [
+    "twitch",
+    "video",
+    "player",
+    "web component",
+    "custom element"
+  ]
+}

@@ -58,6 +58,18 @@ header {
 header nav {
   height: 5rem;
   display: flex;
+}
+
+.nav-section {
+  display: flex;
+}
+
+.left {
+  flex: 1;
+}
+
+.right {
+  flex: 1;
   justify-content: flex-end;
 }
 
@@ -192,14 +204,26 @@ aside nav a.active::before {
   background-color: var(--text-1);
 }
 
-.theme-toggle {
+.toggle {
   transition: none;
   box-shadow: none;
   background: none;
   border-radius: 0;
   border: none;
-  border-left: 1px solid var(--border-1);
   padding-inline: 2rem;
+  fill: var(--nav-icon);
+}
+
+.mute-toggle {
+  border-right: 1px solid var(--border-1);
+}
+
+.controls-toggle {
+  border-right: 1px solid var(--border-1);
+}
+
+.theme-toggle {
+  border-left: 1px solid var(--border-1);
 }
 
 #moon,

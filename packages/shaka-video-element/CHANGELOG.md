@@ -1,5 +1,28 @@
 # Changelog
 
+## [0.6.19](https://github.com/muxinc/media-elements/compare/shaka-video-element@0.6.18...shaka-video-element@0.6.19) (2025-07-14)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * build-react-wrapper bumped from ^0.2.1 to ^0.2.2
+
+## [0.6.18](https://github.com/muxinc/media-elements/compare/shaka-video-element@0.6.17...shaka-video-element@0.6.18) (2025-06-26)
+
+
+### Bug Fixes
+
+* upgrade dependencies ([#130](https://github.com/muxinc/media-elements/issues/130)) ([afb6797](https://github.com/muxinc/media-elements/commit/afb6797342db3be3d173957d44df49fd26ffafc5))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * build-react-wrapper bumped from ^0.2.0 to ^0.2.1
+
 ## [0.6.17](https://github.com/muxinc/media-elements/compare/shaka-video-element@0.6.16...shaka-video-element@0.6.17) (2025-06-09)
 
 

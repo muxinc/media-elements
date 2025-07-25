@@ -1,5 +1,138 @@
 # Changelog
 
+## [1.1.1](https://github.com/muxinc/media-elements/compare/nextjs@1.1.0...nextjs@1.1.1) (2025-07-16)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * vimeo-video-element bumped from ^1.5.2 to ^1.5.3
+
+## [1.1.0](https://github.com/muxinc/media-elements/compare/nextjs@1.0.2...nextjs@1.1.0) (2025-07-15)
+
+
+### Features
+
+* Create TikTok Video Element ([#133](https://github.com/muxinc/media-elements/issues/133)) ([#145](https://github.com/muxinc/media-elements/issues/145)) ([89cf6d3](https://github.com/muxinc/media-elements/commit/89cf6d393710da96108a038530867130fe73d4d3))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * tiktok-video-element bumped from ^0.0.1 to ^0.1.0
+    * twitch-video-element bumped from ^0.1.1 to ^0.1.2
+
+## [1.0.2](https://github.com/muxinc/media-elements/compare/nextjs@1.0.1...nextjs@1.0.2) (2025-07-14)
+
+
+### Bug Fixes
+
+* muted prop for react wrappers ([#143](https://github.com/muxinc/media-elements/issues/143)) ([d312f39](https://github.com/muxinc/media-elements/commit/d312f392a40602312f197fb793a7a8d41b7afa61))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * cloudflare-video-element bumped from ^1.3.2 to ^1.3.3
+    * dash-video-element bumped from ^0.1.5 to ^0.1.6
+    * hls-video-element bumped from ^1.5.5 to ^1.5.6
+    * jwplayer-video-element bumped from ^1.3.2 to ^1.3.3
+    * shaka-video-element bumped from ^0.6.18 to ^0.6.19
+    * spotify-audio-element bumped from ^1.0.1 to ^1.0.2
+    * twitch-video-element bumped from ^0.1.0 to ^0.1.1
+    * videojs-video-element bumped from ^1.4.2 to ^1.4.3
+    * vimeo-video-element bumped from ^1.5.1 to ^1.5.2
+    * wistia-video-element bumped from ^1.3.2 to ^1.3.3
+    * youtube-video-element bumped from ^1.6.0 to ^1.6.1
+
+## [1.0.1](https://github.com/muxinc/media-elements/compare/nextjs@1.0.0...nextjs@1.0.1) (2025-07-11)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * spotify-audio-element bumped from ^1.0.0 to ^1.0.1
+
+## [1.0.0](https://github.com/muxinc/media-elements/compare/nextjs@0.1.32...nextjs@1.0.0) (2025-07-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* remove attributes in favor of config property
+
+### Features
+
+* add twitch-video-element ([#137](https://github.com/muxinc/media-elements/issues/137)) ([3715889](https://github.com/muxinc/media-elements/commit/3715889f341695dc6882a5028198abfaf8425352))
+* use config instead of attributes ([#139](https://github.com/muxinc/media-elements/issues/139)) ([f4c8610](https://github.com/muxinc/media-elements/commit/f4c86102e1e07f3eb2d63fa5370bfb1b9061dc5d))
+
+
+### Bug Fixes
+
+* twitch video element version ([1b9b2be](https://github.com/muxinc/media-elements/commit/1b9b2beebb7601ed8a34ee87b7ea1349b08591a3))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * spotify-audio-element bumped from ^0.1.14 to ^1.0.0
+    * twitch-video-element bumped from ^0.0.1 to ^0.1.0
+
+## [0.1.32](https://github.com/muxinc/media-elements/compare/nextjs@0.1.31...nextjs@0.1.32) (2025-07-02)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * youtube-video-element bumped from ^1.5.3 to ^1.6.0
+
+## [0.1.31](https://github.com/muxinc/media-elements/compare/nextjs@0.1.30...nextjs@0.1.31) (2025-06-26)
+
+
+### Bug Fixes
+
+* **hls-video-element:** serialize config for SSR ([#128](https://github.com/muxinc/media-elements/issues/128)) ([80fc30e](https://github.com/muxinc/media-elements/commit/80fc30e45c1b28ffeaf3f940de072cdf46249576))
+* upgrade dependencies ([#130](https://github.com/muxinc/media-elements/issues/130)) ([afb6797](https://github.com/muxinc/media-elements/commit/afb6797342db3be3d173957d44df49fd26ffafc5))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * cloudflare-video-element bumped from ^1.3.1 to ^1.3.2
+    * dash-video-element bumped from ^0.1.4 to ^0.1.5
+    * hls-video-element bumped from ^1.5.4 to ^1.5.5
+    * jwplayer-video-element bumped from ^1.3.1 to ^1.3.2
+    * shaka-video-element bumped from ^0.6.17 to ^0.6.18
+    * spotify-audio-element bumped from ^0.1.13 to ^0.1.14
+    * videojs-video-element bumped from ^1.4.1 to ^1.4.2
+    * vimeo-video-element bumped from ^1.5.0 to ^1.5.1
+    * wistia-video-element bumped from ^1.3.1 to ^1.3.2
+    * youtube-video-element bumped from ^1.5.2 to ^1.5.3
+
+## [0.1.30](https://github.com/muxinc/media-elements/compare/nextjs@0.1.29...nextjs@0.1.30) (2025-06-26)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * youtube-video-element bumped from ^1.5.1 to ^1.5.2
+
+## [0.1.29](https://github.com/muxinc/media-elements/compare/nextjs@0.1.28...nextjs@0.1.29) (2025-06-23)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * vimeo-video-element bumped from ^1.4.1 to ^1.5.0
+
 ## [0.1.28](https://github.com/muxinc/media-elements/compare/nextjs@0.1.27...nextjs@0.1.28) (2025-06-09)
 
 

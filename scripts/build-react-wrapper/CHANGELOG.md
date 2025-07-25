@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.2.2](https://github.com/muxinc/media-elements/compare/build-react-wrapper@0.2.1...build-react-wrapper@0.2.2) (2025-07-14)
+
+
+### Bug Fixes
+
+* muted prop for react wrappers ([#143](https://github.com/muxinc/media-elements/issues/143)) ([d312f39](https://github.com/muxinc/media-elements/commit/d312f392a40602312f197fb793a7a8d41b7afa61))
+
+## [0.2.1](https://github.com/muxinc/media-elements/compare/build-react-wrapper@0.2.0...build-react-wrapper@0.2.1) (2025-06-26)
+
+
+### Bug Fixes
+
+* upgrade dependencies ([#130](https://github.com/muxinc/media-elements/issues/130)) ([afb6797](https://github.com/muxinc/media-elements/commit/afb6797342db3be3d173957d44df49fd26ffafc5))
+
 ## [0.2.0](https://github.com/muxinc/media-elements/compare/build-react-wrapper@0.1.8...build-react-wrapper@0.2.0) (2025-03-12)
 
 
