@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.1.2](https://github.com/muxinc/media-elements/compare/nextjs@1.1.1...nextjs@1.1.2) (2025-07-25)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * dash-video-element bumped from ^0.1.6 to ^0.2.0
+
 ## [1.1.1](https://github.com/muxinc/media-elements/compare/nextjs@1.1.0...nextjs@1.1.1) (2025-07-16)
 
 
