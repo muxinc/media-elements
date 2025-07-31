@@ -1,7 +1,7 @@
 // https://developers.tiktok.com/doc/embed-player
 
 const EMBED_BASE = 'https://www.tiktok.com/player/v1';
-const MATCH_SRC = /tiktok\.com\/(?:@[^/]+\/video\/)?(\d+)(?:\/([\w-]+))?/;
+const MATCH_SRC = /tiktok\.com\/(?:(?:@[\w.]+)|share)\/video\/(\d+)(?:\/([\w-]+))?/;
 
 const PlayerState = { INIT: -1, ENDED: 0, PLAYING: 1, PAUSED: 2, BUFFERING: 3 };
 
