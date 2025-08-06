@@ -8,6 +8,7 @@ export default class CustomVideoElement extends HTMLVideoElement {
   connectedCallback(): void;
   disconnectedCallback(): void;
   config: {
+    autoplay?: 0 | 1;
     cc_lang_pref?: string;
     cc_load_policy?: 1;
     color?: 'red' | 'white';

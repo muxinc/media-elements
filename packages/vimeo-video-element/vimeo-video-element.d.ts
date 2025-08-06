@@ -8,6 +8,7 @@ export default class CustomVideoElement extends HTMLVideoElement {
   connectedCallback(): void;
   disconnectedCallback(): void;
   config: {
+    autoplay?: boolean;
     airplay?: boolean;
     audio_tracks?: boolean;
     audiotrack?: string;
