@@ -127,36 +127,46 @@ class TwitchVideoElement extends (globalThis.HTMLElement ?? class {}) {
 
   async load() {
     if (this.#loadRequested) return;
+
     if (!this.shadowRoot) {
       this.attachShadow({ mode: 'open' });
     }
+
     const isFirstLoad = !this.#hasLoaded;
+
     if (this.#hasLoaded) {
       this.loadComplete = new PublicPromise();
     }
     this.#hasLoaded = true;
+
     // Wait 1 tick to allow other attributes to be set.
     await (this.#loadRequested = Promise.resolve());
     this.#loadRequested = null;
+
     this.#readyState = 0;
     this.dispatchEvent(new Event('emptied'));
+
     if (!this.src) {
       // Removes the <iframe> containing the player.
       this.shadowRoot.innerHTML = '';
       globalThis.removeEventListener('message', this.#onMessage);
       return;
     }
+
     this.dispatchEvent(new Event('loadstart'));
+
     let iframe = this.shadowRoot.querySelector('iframe');
     const attrs = namedNodeMapToObject(this.attributes);
-    
+
     if (isFirstLoad && iframe) {
       this.#config = JSON.parse(iframe.getAttribute('data-config') || '{}');
     }
+
     if (!iframe?.src || iframe.src !== serializeIframeUrl(attrs, this)) {
       this.shadowRoot.innerHTML = getTemplateHTML(attrs, this);
       iframe = this.shadowRoot.querySelector('iframe');
     }
+
     this.#iframe = iframe;
     globalThis.addEventListener('message', this.#onMessage);
   }
