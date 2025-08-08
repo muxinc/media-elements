@@ -155,6 +155,7 @@ class TikTokVideoElement extends (globalThis.HTMLElement ?? class {}) {
     }
   }
 
+
   get config() {
     return this.#config;
   }
@@ -164,6 +165,7 @@ class TikTokVideoElement extends (globalThis.HTMLElement ?? class {}) {
   }
 
   #onMessage = (event) => {
+    if (event.source !== this.#iframe?.contentWindow) return;
     const msg = event.data;
     if (!msg?.['x-tiktok-player']) return;
 
