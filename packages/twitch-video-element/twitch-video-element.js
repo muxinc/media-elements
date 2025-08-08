@@ -184,6 +184,10 @@ class TwitchVideoElement extends (globalThis.HTMLElement ?? class {}) {
     }
   }
 
+  getVideoPlaybackQuality() {
+    return this.#playerState.stats.videoStats;
+  }
+
   get src() {
     return this.getAttribute('src');
   }
