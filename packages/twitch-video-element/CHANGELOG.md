@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.4](https://github.com/muxinc/media-elements/compare/twitch-video-element@0.1.3...twitch-video-element@0.1.4) (2025-08-12)
+
+
+### Features
+
+* Add `getVideoPlaybackQuality()` ([#153](https://github.com/muxinc/media-elements/issues/153)) ([ff9b612](https://github.com/muxinc/media-elements/commit/ff9b6128bfaeaa91a773633f60f389376d7ec9e7))
+
 ## [0.1.3](https://github.com/muxinc/media-elements/compare/twitch-video-element@0.1.2...twitch-video-element@0.1.3) (2025-08-08)
 
 
