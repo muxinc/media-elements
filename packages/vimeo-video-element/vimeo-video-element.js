@@ -2,7 +2,7 @@
 import VimeoPlayerAPI from '@vimeo/player/dist/player.es.js';
 
 const EMBED_BASE = 'https://player.vimeo.com/video';
-const MATCH_SRC = /vimeo\.com\/(?:video\/)?(\d+)(?:\/([\w-]+))?/;
+const MATCH_SRC = /vimeo\.com\/(?:video\/|event\/)?(\d+)(?:\/([\w-]+))?/;
 
 function getTemplateHTML(attrs, props = {}) {
   const iframeAttrs = {
