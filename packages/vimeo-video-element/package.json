@@ -1,6 +1,6 @@
 {
   "name": "vimeo-video-element",
-  "version": "1.5.4",
+  "version": "1.5.5",
   "description": "A custom element for the Vimeo player with an API that matches the `<video>` API",
   "author": "@muxinc",
   "license": "MIT",
