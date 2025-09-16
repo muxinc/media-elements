@@ -1,4 +1,4 @@
-import { modeChanged as modeChanged, TextTrackList } from './text-track-list.js';
+import { modeChanged, TextTrackList } from './text-track-list.js';
 
 export const TextTrackKind = {
   subtitles: 'subtitles',
