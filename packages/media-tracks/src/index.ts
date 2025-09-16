@@ -10,8 +10,5 @@ export { AudioTrackList } from './audio-track-list.js';
 export { AudioRendition } from './audio-rendition.js';
 export { AudioRenditionList } from './audio-rendition-list.js';
 
-export { TextTrack, TextTrackKind } from './text-track.js';
-export { TextTrackList, addTextTrack, removeTextTrack, modeChanged } from './text-track-list.js';
-
 export { TrackEvent } from './track-event.js';
 export { RenditionEvent } from './rendition-event.js';

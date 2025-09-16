@@ -52,8 +52,7 @@
     "build": "run-s build:*"
   },
   "dependencies": {
-    "@vimeo/player": "2.29.0",
-    "media-tracks": "^0.3.3"
+    "@vimeo/player": "2.29.0"
   },
   "devDependencies": {
     "build-react-wrapper": "^0.2.2",

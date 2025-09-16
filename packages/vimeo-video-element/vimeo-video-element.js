@@ -1,6 +1,5 @@
 // https://github.com/vimeo/player.js
 import VimeoPlayerAPI from '@vimeo/player/dist/player.es.js';
-import { TextTrack, TextTrackList, addTextTrack } from 'media-tracks';
 const EMBED_BASE = 'https://player.vimeo.com/video';
 const MATCH_SRC = /vimeo\.com\/(?:video\/)?(\d+)(?:\/([\w-]+))?/;
 
@@ -217,21 +216,13 @@ class VimeoVideoElement extends (globalThis.HTMLElement ?? class {}) {
 
     this.api = new VimeoPlayerAPI(iframe);
 
-    this.textTracks = new TextTrackList();
-
+    const textTracksVideo = document.createElement('video');
+    this.textTracks = textTracksVideo.textTracks;
     this.api.getTextTracks().then((vimeoTracks) => {
       vimeoTracks.forEach((t) => {
-        const track = new TextTrack();
-        track.kind = t.kind;
-        track.label = t.label;
-        track.language = t.language;
-        track.mode = t.mode || 'disabled';
-        track._trackList = this.textTracks;
-
-        addTextTrack(this.textTracks, track);
+        textTracksVideo.addTextTrack(t.kind, t.label, t.language);
       });
     });
-
     this.textTracks.addEventListener('change', () => {
       const active = Array.from(this.textTracks).find((t) => t.mode === 'showing');
       if (active) {
@@ -240,7 +231,7 @@ class VimeoVideoElement extends (globalThis.HTMLElement ?? class {}) {
         this.api.disableTextTrack();
       }
     });
-    
+
     const onceLoaded = () => {
       this.api.off('loaded', onceLoaded);
       onLoaded();
