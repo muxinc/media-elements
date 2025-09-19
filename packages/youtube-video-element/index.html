@@ -3,10 +3,7 @@
   <head>
     <title>&lt;youtube-video&gt;</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css"
-  />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css" />
     <style>
       body {
         text-align: center;
@@ -21,28 +18,25 @@
     </style>
     <script type="module" src="./youtube-video-element.js"></script>
     <script type="module" src="https://cdn.jsdelivr.net/npm/media-chrome/+esm"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/media-chrome/dist/menu/+esm"></script>
   </head>
   <body>
     <h1>&lt;youtube-video&gt;</h1>
     <br />
 
-  <youtube-video id="yt1" muted controls src="https://www.youtube.com/watch?v=rubNgGj3pYo"></youtube-video>
+    <youtube-video id="yt1" muted controls src="https://www.youtube.com/watch?v=rubNgGj3pYo"></youtube-video>
 
-  <br>
+    <br />
 
     <button id="loadbtn">Load new clip</button>
 
-  <br>
+    <br />
 
     <h2>With <a href="https://github.com/muxinc/media-chrome" target="_blank">Media Chrome</a></h2>
 
-  <media-controller>
-    <youtube-video
-      id="yt2"
-      src="https://www.youtube.com/watch?v=H3KSKS3TTbc"
-      slot="media"
-      autopause
-    ></youtube-video>
+    <media-controller>
+      <youtube-video id="yt2" src="https://www.youtube.com/watch?v=rubNgGj3pYo" slot="media" autopause></youtube-video>
+      <media-captions-menu hidden anchor="auto"></media-captions-menu>
       <media-control-bar>
         <media-play-button></media-play-button>
         <media-seek-backward-button seek-offset="15"></media-seek-backward-button>
@@ -52,24 +46,25 @@
         <media-time-range></media-time-range>
         <media-time-display show-duration remaining></media-time-display>
         <media-playback-rate-button></media-playback-rate-button>
+        <media-captions-menu-button></media-captions-menu-button>
         <media-fullscreen-button></media-fullscreen-button>
       </media-control-bar>
-  </media-controller>
+    </media-controller>
 
-  <br>
-  <br>
+    <br />
+    <br />
 
     <script>
       const video = document.querySelector('#yt2');
 
-      window.addEventListener('load', function() {
+      window.addEventListener('load', function () {
         document.querySelector('#yt1').currentTime = 23;
       });
 
       loadbtn.onclick = () => {
         const video = document.querySelector('#yt1');
         video.config = {
-          start: 10
+          start: 10,
         };
         video.src = 'https://www.youtube.com/watch?v=uxsOYVWclA0';
       };

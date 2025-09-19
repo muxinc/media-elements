@@ -62,6 +62,7 @@ function serializeIframeUrl(attrs, props) {
     // https://developers.google.com/youtube/player_parameters#Parameters
     // origin: globalThis.location?.origin,
     enablejsapi: 1,
+    cc_load_policy: 1,
     showinfo: 0,
     rel: 0,
     iv_load_policy: 3,
@@ -112,10 +113,25 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
   isLoaded = false;
   #error = null;
   #config = null;
+  #textTracksVideo = null;
 
   constructor() {
     super();
     this.#upgradeProperty('config');
+    this.#textTracksVideo = document.createElement('video');
+    this.textTracks = this.#textTracksVideo.textTracks;
+
+    this.textTracks.addEventListener('change', () => {
+      const active = Array.from(this.textTracks).find((t) => t.mode === 'showing');
+  
+      if (active) {
+        this.api?.setOption('captions', 'track', {
+          languageCode: active.language
+        });
+      } else {
+        this.api?.setOption('captions', 'track', {});
+      }
+    });
   }
 
   get config() {
@@ -174,7 +190,8 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
     const YT = await loadScript(API_URL, API_GLOBAL, API_GLOBAL_READY);
     this.api = new YT.Player(iframe, {
       events: {
-        onReady: () => {
+        onReady: (event) => {
+          const player = event.target; //
           this.#readyState = 1; // HTMLMediaElement.HAVE_METADATA
           this.dispatchEvent(new Event('loadedmetadata'));
           this.dispatchEvent(new Event('durationchange'));
@@ -182,6 +199,19 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
           this.dispatchEvent(new Event('loadcomplete'));
           this.isLoaded = true;
           this.loadComplete.resolve();
+
+          player.addEventListener('onStateChange', (e) => {
+            if (e.data === YT.PlayerState.CUED || e.data === YT.PlayerState.PLAYING) {
+              const captionList = player.getOption('captions', 'tracklist') || [];
+
+              captionList.forEach((t) => {
+                if (![...this.textTracks].some((tt) => tt.language === t.languageCode)) {
+                  this.#textTracksVideo.addTextTrack('subtitles', t.displayName, t.languageCode);
+                  this.dispatchEvent(new Event('addtrack'));
+                }
+              });
+            }
+          });
         },
         onError: (error) => {
           console.error(error);
