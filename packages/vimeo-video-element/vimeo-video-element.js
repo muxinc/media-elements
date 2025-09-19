@@ -1,6 +1,5 @@
 // https://github.com/vimeo/player.js
 import VimeoPlayerAPI from '@vimeo/player/dist/player.es.js';
-
 const EMBED_BASE = 'https://player.vimeo.com/video';
 const MATCH_SRC = /vimeo\.com\/(?:video\/|event\/)?(\d+)(?:\/([\w-]+))?/;
 
@@ -216,6 +215,23 @@ class VimeoVideoElement extends (globalThis.HTMLElement ?? class {}) {
     }
 
     this.api = new VimeoPlayerAPI(iframe);
+
+    const textTracksVideo = document.createElement('video');
+    this.textTracks = textTracksVideo.textTracks;
+    this.api.getTextTracks().then((vimeoTracks) => {
+      vimeoTracks.forEach((t) => {
+        textTracksVideo.addTextTrack(t.kind, t.label, t.language);
+      });
+    });
+    this.textTracks.addEventListener('change', () => {
+      const active = Array.from(this.textTracks).find((t) => t.mode === 'showing');
+      if (active) {
+        this.api.enableTextTrack(active.language, active.kind);
+      } else {
+        this.api.disableTextTrack();
+      }
+    });
+
     const onceLoaded = () => {
       this.api.off('loaded', onceLoaded);
       onLoaded();
