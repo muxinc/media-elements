@@ -74,6 +74,9 @@ const HlsVideoMixin = (superclass) => {
 
       // Prefer using hls.js over native if it is supported.
       if (Hls.isSupported()) {
+        // Wait 1 tick to allow other attributes to be set.
+        await Promise.resolve();
+
         this.api = new Hls({
           // Mimic the media element with an Infinity duration for live streams.
           liveDurationInfinity: true,
@@ -82,9 +85,6 @@ const HlsVideoMixin = (superclass) => {
           // Custom configuration for hls.js.
           ...this.config,
         });
-
-        // Wait 1 tick to allow other attributes to be set.
-        await Promise.resolve();
 
         this.api.loadSource(this.src);
         this.api.attachMedia(this.nativeEl);
