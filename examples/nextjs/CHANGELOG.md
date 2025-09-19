@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.1.5](https://github.com/muxinc/media-elements/compare/nextjs@1.1.4...nextjs@1.1.5) (2025-09-19)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * hls-video-element bumped from ^1.5.7 to ^1.5.8
+
 ## [1.1.4](https://github.com/muxinc/media-elements/compare/nextjs@1.1.3...nextjs@1.1.4) (2025-08-25)
 
 
