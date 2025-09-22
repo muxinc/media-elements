@@ -5,6 +5,22 @@
 [1]: https://www.npmjs.com/package/vimeo-video-element?activeTab=versions
 
 
+## [1.5.5](https://github.com/muxinc/media-elements/compare/vimeo-video-element@1.5.4...vimeo-video-element@1.5.5) (2025-08-25)
+
+
+### Bug Fixes
+
+* update MATCH_SRC to include vimeo/event/:id URLs. ([#159](https://github.com/muxinc/media-elements/issues/159)) ([9db6656](https://github.com/muxinc/media-elements/commit/9db6656923b2ceb667258bf8171b5671a4f4033b))
+
+## [1.5.4](https://github.com/muxinc/media-elements/compare/vimeo-video-element@1.5.3...vimeo-video-element@1.5.4) (2025-08-08)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * build-react-wrapper bumped from ^0.2.2 to ^0.2.3
+
 ## [1.5.3](https://github.com/muxinc/media-elements/compare/vimeo-video-element@1.5.2...vimeo-video-element@1.5.3) (2025-07-16)
 
 
