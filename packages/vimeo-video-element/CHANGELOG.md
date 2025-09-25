@@ -5,6 +5,13 @@
 [1]: https://www.npmjs.com/package/vimeo-video-element?activeTab=versions
 
 
+## [1.6.0](https://github.com/muxinc/media-elements/compare/vimeo-video-element@1.5.5...vimeo-video-element@1.6.0) (2025-09-24)
+
+
+### Features
+
+* **vimeo:** add TextTrack support using Vimeo API and add media-tracks integration ([#163](https://github.com/muxinc/media-elements/issues/163)) ([fdf8c12](https://github.com/muxinc/media-elements/commit/fdf8c12b63b16a0d76a389b76a2b5a9ed4e153ba))
+
 ## [1.5.5](https://github.com/muxinc/media-elements/compare/vimeo-video-element@1.5.4...vimeo-video-element@1.5.5) (2025-08-25)
 
 
