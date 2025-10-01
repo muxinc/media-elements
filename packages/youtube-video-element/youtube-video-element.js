@@ -17,7 +17,7 @@ function getTemplateHTML(attrs, props = {}) {
     width: '100%',
     height: '100%',
     allow: 'accelerometer; fullscreen; autoplay; encrypted-media; gyroscope; picture-in-picture',
-    referrerpolicy: 'strict-origin-when-cross-origin',
+    referrerpolicy: props.config?.referrerpolicy ?? 'strict-origin-when-cross-origin',
   };
 
   if (props.config) {
