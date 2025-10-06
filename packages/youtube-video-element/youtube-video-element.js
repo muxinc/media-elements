@@ -118,20 +118,6 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
   constructor() {
     super();
     this.#upgradeProperty('config');
-    this.#textTracksVideo = document.createElement('video');
-    this.textTracks = this.#textTracksVideo.textTracks;
-
-    this.textTracks.addEventListener('change', () => {
-      const active = Array.from(this.textTracks).find((t) => t.mode === 'showing');
-  
-      if (active) {
-        this.api?.setOption('captions', 'track', {
-          languageCode: active.language
-        });
-      } else {
-        this.api?.setOption('captions', 'track', {});
-      }
-    });
   }
 
   get config() {
@@ -173,6 +159,14 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
       return;
     }
 
+    this.#textTracksVideo = document.createElement('video');
+    this.textTracks = this.#textTracksVideo.textTracks;
+
+    this.textTracks.addEventListener('change', () => {
+      const active = Array.from(this.textTracks).find((t) => t.mode === 'showing');
+      this.api?.setOption('captions', 'track', active ? { languageCode: active.language } : {});
+    });
+
     this.dispatchEvent(new Event('loadstart'));
 
     let iframe = this.shadowRoot.querySelector('iframe');
@@ -190,8 +184,7 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
     const YT = await loadScript(API_URL, API_GLOBAL, API_GLOBAL_READY);
     this.api = new YT.Player(iframe, {
       events: {
-        onReady: (event) => {
-          const player = event.target; //
+        onReady: () => {
           this.#readyState = 1; // HTMLMediaElement.HAVE_METADATA
           this.dispatchEvent(new Event('loadedmetadata'));
           this.dispatchEvent(new Event('durationchange'));
@@ -199,19 +192,6 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
           this.dispatchEvent(new Event('loadcomplete'));
           this.isLoaded = true;
           this.loadComplete.resolve();
-
-          player.addEventListener('onStateChange', (e) => {
-            if (e.data === YT.PlayerState.CUED || e.data === YT.PlayerState.PLAYING) {
-              const captionList = player.getOption('captions', 'tracklist') || [];
-
-              captionList.forEach((t) => {
-                if (![...this.textTracks].some((tt) => tt.language === t.languageCode)) {
-                  this.#textTracksVideo.addTextTrack('subtitles', t.displayName, t.languageCode);
-                  this.dispatchEvent(new Event('addtrack'));
-                }
-              });
-            }
-          });
         },
         onError: (error) => {
           console.error(error);
@@ -271,6 +251,16 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
         if (this.loop) {
           this.play();
         }
+      }
+      if (state === YT.PlayerState.CUED || state === YT.PlayerState.PLAYING) {
+        const captionList = this.api.getOption('captions', 'tracklist') || [];
+
+        captionList.forEach((t) => {
+          if (![...this.textTracks].some((tt) => tt.language === t.languageCode)) {
+            this.#textTracksVideo.addTextTrack('subtitles', t.displayName, t.languageCode);
+          }
+          this.textTracks = this.#textTracksVideo.textTracks;
+        });
       }
     });
 
