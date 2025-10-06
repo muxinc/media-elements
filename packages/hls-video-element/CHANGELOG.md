@@ -6,6 +6,22 @@
 
 
 
+## [1.5.8](https://github.com/muxinc/media-elements/compare/hls-video-element@1.5.7...hls-video-element@1.5.8) (2025-09-19)
+
+
+### Bug Fixes
+
+* race condition, config not being set ([#167](https://github.com/muxinc/media-elements/issues/167)) ([6b6e0ee](https://github.com/muxinc/media-elements/commit/6b6e0ee9308638aac89badcfbf339419d1490aa8))
+
+## [1.5.7](https://github.com/muxinc/media-elements/compare/hls-video-element@1.5.6...hls-video-element@1.5.7) (2025-08-08)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * build-react-wrapper bumped from ^0.2.2 to ^0.2.3
+
 ## [1.5.6](https://github.com/muxinc/media-elements/compare/hls-video-element@1.5.5...hls-video-element@1.5.6) (2025-07-14)
 
 

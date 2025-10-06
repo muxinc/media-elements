@@ -5,6 +5,20 @@
 [1]: https://www.npmjs.com/package/dash-video-element?activeTab=versions
 
 
+## [0.2.0](https://github.com/muxinc/media-elements/compare/dash-video-element@0.1.6...dash-video-element@0.2.0) (2025-08-08)
+
+
+### Features
+
+* : Enable multiple renditions in dash video element ([#148](https://github.com/muxinc/media-elements/issues/148)) ([2f5655c](https://github.com/muxinc/media-elements/commit/2f5655c2bf415132e180d7c05d0f9c0a431072ae))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * build-react-wrapper bumped from ^0.2.2 to ^0.2.3
+
 ## [0.1.6](https://github.com/muxinc/media-elements/compare/dash-video-element@0.1.5...dash-video-element@0.1.6) (2025-07-14)
 
 

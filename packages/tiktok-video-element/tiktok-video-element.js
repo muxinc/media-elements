@@ -1,7 +1,7 @@
 // https://developers.tiktok.com/doc/embed-player
 
 const EMBED_BASE = 'https://www.tiktok.com/player/v1';
-const MATCH_SRC = /tiktok\.com\/(?:@[^/]+\/video\/)?(\d+)(?:\/([\w-]+))?/;
+const MATCH_SRC = /tiktok\.com\/(?:player\/v1\/|share\/video\/|@[^/]+\/video\/)([0-9]+)/;
 
 const PlayerState = { INIT: -1, ENDED: 0, PLAYING: 1, PAUSED: 2, BUFFERING: 3 };
 
@@ -155,6 +155,7 @@ class TikTokVideoElement extends (globalThis.HTMLElement ?? class {}) {
     }
   }
 
+
   get config() {
     return this.#config;
   }
@@ -164,6 +165,7 @@ class TikTokVideoElement extends (globalThis.HTMLElement ?? class {}) {
   }
 
   #onMessage = (event) => {
+    if (event.source !== this.#iframe?.contentWindow) return;
     const msg = event.data;
     if (!msg?.['x-tiktok-player']) return;
 

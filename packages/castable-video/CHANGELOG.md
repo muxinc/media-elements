@@ -5,6 +5,13 @@
 [1]: https://www.npmjs.com/package/castable-video?activeTab=versions
 
 
+## [1.1.11](https://github.com/muxinc/media-elements/compare/castable-video@1.1.10...castable-video@1.1.11) (2025-09-24)
+
+
+### Bug Fixes
+
+* **castable-video:** Explicitly set TS segment format to prevent playback stalling ([#162](https://github.com/muxinc/media-elements/issues/162)) ([d9bbca3](https://github.com/muxinc/media-elements/commit/d9bbca34b6c1817fb1bc6c881ef692717051d141))
+
 ## [1.1.10](https://github.com/muxinc/media-elements/compare/castable-video@1.1.9...castable-video@1.1.10) (2025-06-09)
 
 
