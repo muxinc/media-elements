@@ -224,6 +224,16 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
           playFired = true;
           this.dispatchEvent(new Event('play'));
         }
+        const captionList = this.api.getOption('captions', 'tracklist') || [];
+
+        captionList.forEach((t) => {
+          if (![...this.textTracks].some((tt) => tt.language === t.languageCode)) {
+            this.#textTracksVideo.addTextTrack('subtitles', t.displayName, t.languageCode);
+          }
+          this.textTracks = this.#textTracksVideo.textTracks;
+        });
+
+        this.dispatchEvent(new Event('loadstart'));
       }
 
       if (state === YT.PlayerState.PLAYING) {
@@ -251,16 +261,6 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
         if (this.loop) {
           this.play();
         }
-      }
-      if (state === YT.PlayerState.CUED || state === YT.PlayerState.PLAYING) {
-        const captionList = this.api.getOption('captions', 'tracklist') || [];
-
-        captionList.forEach((t) => {
-          if (![...this.textTracks].some((tt) => tt.language === t.languageCode)) {
-            this.#textTracksVideo.addTextTrack('subtitles', t.displayName, t.languageCode);
-          }
-          this.textTracks = this.#textTracksVideo.textTracks;
-        });
       }
     });
 
