@@ -62,6 +62,7 @@ function serializeIframeUrl(attrs, props) {
     // https://developers.google.com/youtube/player_parameters#Parameters
     // origin: globalThis.location?.origin,
     enablejsapi: 1,
+    cc_load_policy: 1,
     showinfo: 0,
     rel: 0,
     iv_load_policy: 3,
@@ -112,6 +113,7 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
   isLoaded = false;
   #error = null;
   #config = null;
+  #textTracksVideo = null;
 
   constructor() {
     super();
@@ -156,6 +158,14 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
       oldApi?.destroy();
       return;
     }
+
+    this.#textTracksVideo = document.createElement('video');
+    this.textTracks = this.#textTracksVideo.textTracks;
+
+    this.textTracks.addEventListener('change', () => {
+      const active = Array.from(this.textTracks).find((t) => t.mode === 'showing');
+      this.api?.setOption('captions', 'track', active ? { languageCode: active.language } : {});
+    });
 
     this.dispatchEvent(new Event('loadstart'));
 
@@ -214,6 +224,16 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
           playFired = true;
           this.dispatchEvent(new Event('play'));
         }
+        const captionList = this.api.getOption('captions', 'tracklist') || [];
+
+        captionList.forEach((t) => {
+          if (![...this.textTracks].some((tt) => tt.language === t.languageCode)) {
+            this.#textTracksVideo.addTextTrack('subtitles', t.displayName, t.languageCode);
+          }
+          this.textTracks = this.#textTracksVideo.textTracks;
+        });
+
+        this.dispatchEvent(new Event('loadstart'));
       }
 
       if (state === YT.PlayerState.PLAYING) {
