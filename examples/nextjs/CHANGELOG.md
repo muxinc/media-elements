@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.1.7](https://github.com/muxinc/media-elements/compare/nextjs@1.1.6...nextjs@1.1.7) (2025-10-09)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * youtube-video-element bumped from ^1.6.2 to ^1.7.0
+
 ## [1.1.6](https://github.com/muxinc/media-elements/compare/nextjs@1.1.5...nextjs@1.1.6) (2025-09-24)
 
 
