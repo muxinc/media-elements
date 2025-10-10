@@ -217,6 +217,26 @@ const HlsVideoMixin = (superclass) => {
           }
         });
 
+        let lastFailedLevel = null;
+
+        this.api.on(Hls.Events.ERROR, (event, data) => {
+          if (data.type === Hls.ErrorTypes.NETWORK_ERROR && data.details === Hls.ErrorDetails.FRAG_LOAD_ERROR) {
+            lastFailedLevel = data.frag.level;
+          }
+        });
+
+        this.api.on(Hls.Events.LEVEL_SWITCHED, (event, data) => {
+          const newLevel = data.level;
+
+          if (lastFailedLevel !== null && newLevel < lastFailedLevel) {
+            console.warn(
+              `⚠️ hls.js downgraded quality from level ${lastFailedLevel} to ${newLevel} due to fragment load failure.`
+            );
+            this.videoRenditions.selectedIndex = newLevel;
+            lastFailedLevel = null;
+          }
+        });
+
         // hls.js doesn't support enabling multiple renditions.
         //
         // 1. if all renditions are enabled it's auto selection.
