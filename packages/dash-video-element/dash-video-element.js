@@ -25,6 +25,7 @@ class DashVideoElement extends MediaTracksMixin(CustomVideoElement) {
     const generateAllCues = async (totalThumbnails, thumbnailDuration) => {
       const promises = [];
 
+      const timescale = representation.timescale || 1;
       const startNumber = representation.startNumber || 1;
       const pto = representation.presentationTimeOffset
         ? representation.presentationTimeOffset / timescale
