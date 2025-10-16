@@ -356,6 +356,12 @@ class TwitchVideoElement extends (globalThis.HTMLElement ?? class {}) {
       }
 
       if (oldVolume !== this.#playerState.volume || oldMuted !== this.#playerState.muted) {
+        if (this.#playerState.volume !== undefined) {
+          this.#volume = this.#playerState.volume;
+        }
+        if (this.#playerState.muted !== undefined) {
+          this.#muted = this.#playerState.muted;
+        }
         this.dispatchEvent(new Event('volumechange'));
       }
 
