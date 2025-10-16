@@ -86,14 +86,6 @@ class DashVideoElement extends MediaTracksMixin(CustomVideoElement) {
     this.api = Dash.MediaPlayer().create();
     this.api.initialize(this.nativeEl, this.src, this.autoplay);
 
-    this.api.on(Dash.MediaPlayer.events.MANIFEST_LOADED, () => {
-      const imageReps = this.api.getRepresentationsByType("image")
-      imageReps.forEach(async (rep, idx) => {
-        if (idx > 0) return; // For now we only support one thumbnail track
-
-        this._initThumbnails(rep);
-      })
-    })
     this.api.on(Dash.MediaPlayer.events.STREAM_INITIALIZED, () => {
       const bitrateList = this.api.getRepresentationsByType('video');
 
@@ -123,12 +115,17 @@ class DashVideoElement extends MediaTracksMixin(CustomVideoElement) {
         }
       });
 
-      const imageReps = this.api.getRepresentationsByType("image")
-      imageReps.forEach(async (rep, idx) => {
-        if (idx > 0) return; // For now we only support one thumbnail track
+      // We don't support this for live streams.
+      // if we later want to support it we would also need to repeat this on Manifest update.
+      if (!this.api.isDynamic()) {
+        const imageReps = this.api.getRepresentationsByType("image")
+        imageReps.forEach(async (rep, idx) => {
+          // One MPD could provide alternative thumbnailt racks, for now we only support the first one.
+          if (idx > 0) return; 
 
-        this._initThumbnails(rep);
-      })
+          this._initThumbnails(rep);
+        })
+      }
     });
   }
 }
