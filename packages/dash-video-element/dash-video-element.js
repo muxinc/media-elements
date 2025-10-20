@@ -63,15 +63,16 @@ class DashVideoElement extends MediaTracksMixin(CustomVideoElement) {
     const { totalThumbnails, thumbnailDuration } = calculateThumbnailTimes(representation)
     const cues = await generateAllCues(totalThumbnails, thumbnailDuration);
 
+    // Only create track if it doesn't exist so we don't overwrite whatever is set on the html.
     let track = this.nativeEl.querySelector('track[label="thumbnails"]')
     if (!track) {
       track = createThumbnailTrack();
       this.nativeEl.appendChild(track);
+      const vttUrl = cuesToVttBlobUrl(cues);
+      track.src = vttUrl;
+  
+      track.dispatchEvent(new Event('change'));
     }
-    const vttUrl = cuesToVttBlobUrl(cues);
-    track.src = vttUrl;
-
-    track.dispatchEvent(new Event('change'));
   }
 
   async load() {
