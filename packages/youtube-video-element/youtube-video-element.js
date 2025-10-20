@@ -102,6 +102,7 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
     'poster',
     'preload',
     'src',
+    'volume',
   ];
 
   loadComplete = new PublicPromise();
@@ -319,6 +320,12 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
       case 'playsinline': {
         this.load();
       }
+      case 'volume': {
+        if (newValue !== null) {
+          this.volume = parseFloat(newValue);
+        }
+        break;
+      }
     }
   }
 
@@ -487,7 +494,11 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
   }
 
   get volume() {
-    if (!this.isLoaded) return 1;
+    if (!this.isLoaded) {
+      // Return the volume attribute value if set, otherwise default to 1
+      const volumeAttr = this.getAttribute('volume');
+      return volumeAttr !== null ? parseFloat(volumeAttr) : 1;
+    }
     return this.api?.getVolume() / 100;
   }
 
