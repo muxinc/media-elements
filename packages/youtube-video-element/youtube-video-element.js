@@ -17,8 +17,11 @@ function getTemplateHTML(attrs, props = {}) {
     width: '100%',
     height: '100%',
     allow: 'accelerometer; fullscreen; autoplay; encrypted-media; gyroscope; picture-in-picture',
-    referrerpolicy: props.config?.referrerpolicy ?? 'strict-origin-when-cross-origin',
   };
+
+  if (props.config?.referrerpolicy) {
+    iframeAttrs.referrerpolicy = props.config.referrerpolicy;
+  }
 
   if (props.config) {
     // Serialize YouTube config on iframe so it can be quickly accessed on first load.
