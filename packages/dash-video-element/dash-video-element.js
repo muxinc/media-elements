@@ -33,11 +33,11 @@ class DashVideoElement extends MediaTracksMixin(CustomVideoElement) {
       const tduration = representation.segmentDuration;
       for (let thIndex = 0; thIndex < totalThumbnails; thIndex++) {
         const startTime = calculateThumbnailStartTime({
-          thIndex: thIndex, 
-          thduration: thumbnailDuration, 
-          ttiles: totalThumbnails, 
-          tduration: tduration, 
-          startNumber: startNumber, 
+          thIndex: thIndex,
+          thduration: thumbnailDuration,
+          ttiles: totalThumbnails,
+          tduration: tduration,
+          startNumber: startNumber,
           pto: pto
         })
         const endTime = startTime + thumbnailDuration;
@@ -70,7 +70,7 @@ class DashVideoElement extends MediaTracksMixin(CustomVideoElement) {
       this.nativeEl.appendChild(track);
       const vttUrl = cuesToVttBlobUrl(cues);
       track.src = vttUrl;
-  
+
       track.dispatchEvent(new Event('change'));
     }
   }
@@ -121,8 +121,8 @@ class DashVideoElement extends MediaTracksMixin(CustomVideoElement) {
       if (!this.api.isDynamic()) {
         const imageReps = this.api.getRepresentationsByType("image")
         imageReps.forEach(async (rep, idx) => {
-          // One MPD could provide alternative thumbnailt racks, for now we only support the first one.
-          if (idx > 0) return; 
+          // One MPD could provide alternative thumbnail tracks, for now we only support the first one.
+          if (idx > 0) return;
 
           this._initThumbnails(rep);
         })
@@ -145,14 +145,17 @@ function calculateThumbnailTimes(representation) {
   const [htiles, vtiles] = essentialProp.value.split("x").map(Number);
   const ttiles = htiles * vtiles;
 
-  const duration = representation.segmentDuration
+  const periodDuration = representation.adaptation?.period?.duration || null;
+  const tileDuration = representation.segmentDuration;
   const timescale = representation.timescale || 1;
   /** Duration of a thumbnail tile */
-  const tduration = duration / timescale;
+  const tduration = tileDuration / timescale;
   /** Duration of an individual thumbnail within a tile */
   const thduration = tduration / ttiles;
-  /** How many thumbnails in a tile */
-  const totalThumbnails = Math.ceil(duration / thduration);
+  /** How many thumbnails in a period. 
+   * The guideline does not specify what to do if we don't have the period duration value
+   * so we default to however many we have in this tile */
+  const totalThumbnails = (periodDuration != null) ? Math.ceil(periodDuration / thduration) : Math.ceil(tileDuration / thduration)
 
   return { totalThumbnails: totalThumbnails, thumbnailDuration: thduration };
 }
