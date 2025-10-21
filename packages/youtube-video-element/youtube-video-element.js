@@ -319,6 +319,7 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
       case 'loop':
       case 'playsinline': {
         this.load();
+        break;
       }
       case 'volume': {
         if (newValue !== null) {
