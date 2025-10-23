@@ -189,6 +189,13 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
           this.#readyState = 1; // HTMLMediaElement.HAVE_METADATA
           this.dispatchEvent(new Event('loadedmetadata'));
           this.dispatchEvent(new Event('durationchange'));
+          
+          // Force the initial volume from attribute if set
+          const volumeAttr = this.getAttribute('volume');
+          if (volumeAttr !== null) {
+            this.api?.setVolume(parseFloat(volumeAttr) * 100);
+          }
+          
           this.dispatchEvent(new Event('volumechange'));
           this.dispatchEvent(new Event('loadcomplete'));
           this.isLoaded = true;
@@ -270,6 +277,8 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
     });
 
     this.api.addEventListener('onVolumeChange', () => {
+      const apiVolume = this.api?.getVolume() / 100;
+      this.setAttribute('volume', apiVolume);
       this.dispatchEvent(new Event('volumechange'));
     });
 
@@ -489,15 +498,20 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
 
   set volume(val) {
     if (this.volume == val) return;
+    this.setAttribute('volume', val);
     this.loadComplete.then(() => {
       this.api?.setVolume(val * 100);
     });
   }
 
   get volume() {
+    const volumeAttr = this.getAttribute('volume');
+    if (volumeAttr !== null) {
+      return parseFloat(volumeAttr);
+    }
+    
     if (!this.isLoaded) {
-      const volumeAttr = this.getAttribute('volume');
-      return volumeAttr !== null ? parseFloat(volumeAttr) : 1;
+      return 1;
     }
     return this.api?.getVolume() / 100;
   }
