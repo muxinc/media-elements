@@ -102,7 +102,6 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
     'poster',
     'preload',
     'src',
-    'volume',
   ];
 
   loadComplete = new PublicPromise();
@@ -115,6 +114,7 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
   #error = null;
   #config = null;
   #textTracksVideo = null;
+  #initialVolume = 1;
 
   constructor() {
     super();
@@ -190,10 +190,9 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
           this.dispatchEvent(new Event('loadedmetadata'));
           this.dispatchEvent(new Event('durationchange'));
           
-          // Force the initial volume from attribute if set
-          const volumeAttr = this.getAttribute('volume');
-          if (volumeAttr !== null) {
-            this.api?.setVolume(parseFloat(volumeAttr) * 100);
+          // Force the initial volume if it was set
+          if (this.#initialVolume !== 1) {
+            this.api?.setVolume(this.#initialVolume * 100);
           }
           
           this.dispatchEvent(new Event('volumechange'));
@@ -278,7 +277,7 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
 
     this.api.addEventListener('onVolumeChange', () => {
       const apiVolume = this.api?.getVolume() / 100;
-      this.setAttribute('volume', apiVolume);
+      this.#initialVolume = apiVolume;
       this.dispatchEvent(new Event('volumechange'));
     });
 
@@ -328,12 +327,6 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
       case 'loop':
       case 'playsinline': {
         this.load();
-        break;
-      }
-      case 'volume': {
-        if (newValue !== null) {
-          this.volume = parseFloat(newValue);
-        }
         break;
       }
     }
@@ -498,20 +491,15 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
 
   set volume(val) {
     if (this.volume == val) return;
-    this.setAttribute('volume', val);
+    this.#initialVolume = val;
     this.loadComplete.then(() => {
       this.api?.setVolume(val * 100);
     });
   }
 
   get volume() {
-    const volumeAttr = this.getAttribute('volume');
-    if (volumeAttr !== null) {
-      return parseFloat(volumeAttr);
-    }
-    
     if (!this.isLoaded) {
-      return 1;
+      return this.#initialVolume;
     }
     return this.api?.getVolume() / 100;
   }
