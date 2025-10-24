@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.7](https://github.com/muxinc/media-elements/compare/nextjs@1.1.6...nextjs@1.1.7) (2025-10-24)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * dash-video-element bumped from ^0.2.0 to ^0.3.0
+    * hls-video-element bumped from ^1.5.8 to ^1.5.9
+    * twitch-video-element bumped from ^0.1.4 to ^0.1.5
+    * youtube-video-element bumped from ^1.6.2 to ^1.7.0
+
 ## [1.1.6](https://github.com/muxinc/media-elements/compare/nextjs@1.1.5...nextjs@1.1.6) (2025-09-24)
 
 
