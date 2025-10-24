@@ -49,6 +49,7 @@ class WistiaVideoElement extends SuperVideoElement {
 
     const MATCH_SRC = /(?:wistia\.com|wi\.st)\/(?:medias|embed)\/(.*)$/i;
     const id = this.src.match(MATCH_SRC)[1];
+
     const options = {
       autoPlay: this.autoplay,
       preload: this.preload ?? 'metadata',
@@ -68,7 +69,6 @@ class WistiaVideoElement extends SuperVideoElement {
 
     const scriptUrl = 'https://fast.wistia.com/assets/external/E-v1.js';
     await loadScript(scriptUrl, 'Wistia');
-
     this.api = await new Promise((onReady) => {
       globalThis._wq.push({
         id: div.id,
@@ -104,7 +104,10 @@ class WistiaVideoElement extends SuperVideoElement {
     return this.api?.duration();
   }
 
-  play() {
+  async play() {
+    // Wait for load to complete before playing
+    await this.loadComplete;
+
     // wistia.play doesn't return a play promise.
     this.api.play();
     return new Promise((resolve) => this.addEventListener('playing', resolve));
