@@ -1,6 +1,7 @@
 // https://github.com/vimeo/player.js
 import VimeoPlayerAPI from '@vimeo/player/dist/player.es.js';
-const EMBED_BASE = 'https://player.vimeo.com/video';
+const EMBED_VIDEO_BASE = 'https://player.vimeo.com/video';
+const EMBED_EVENT_BASE = 'https://vimeo.com/event';
 const MATCH_SRC = /vimeo\.com\/(video\/|event\/)?(\d+)(?:\/([\w-]+))?/;
 
 function getTemplateHTML(attrs, props = {}) {
@@ -63,11 +64,11 @@ function serializeIframeUrl(attrs, props) {
 
   // Handle events
   if (urlType === 'event/') {
-    return `https://vimeo.com/event/${srcId}/embed?${serialize(params)}`;
+    return `${EMBED_EVENT_BASE}/${srcId}/embed?${serialize(params)}`;
   }
 
   // Handle videos
-  return `${EMBED_BASE}/${srcId}?${serialize(params)}`;
+  return `${EMBED_VIDEO_BASE}/${srcId}?${serialize(params)}`;
 }
 
 class VimeoVideoElement extends (globalThis.HTMLElement ?? class {}) {
