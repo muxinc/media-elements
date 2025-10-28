@@ -1,7 +1,8 @@
 // https://github.com/vimeo/player.js
 import VimeoPlayerAPI from '@vimeo/player/dist/player.es.js';
-const EMBED_BASE = 'https://player.vimeo.com/video';
-const MATCH_SRC = /vimeo\.com\/(?:video\/|event\/)?(\d+)(?:\/([\w-]+))?/;
+const EMBED_VIDEO_BASE = 'https://player.vimeo.com/video';
+const EMBED_EVENT_BASE = 'https://vimeo.com/event';
+const MATCH_SRC = /vimeo\.com\/(video\/|event\/)?(\d+)(?:\/([\w-]+))?/;
 
 function getTemplateHTML(attrs, props = {}) {
   const iframeAttrs = {
@@ -43,8 +44,9 @@ function serializeIframeUrl(attrs, props) {
   if (!attrs.src) return;
 
   const matches = attrs.src.match(MATCH_SRC);
-  const srcId = matches && matches[1];
-  const hParam = matches && matches[2];
+  const urlType = matches && matches[1]; // 'video/' or 'event/' or undefined
+  const srcId = matches && matches[2];
+  const hParam = matches && matches[3];
 
   const params = {
     // ?controls=true is enabled by default in the iframe
@@ -60,7 +62,13 @@ function serializeIframeUrl(attrs, props) {
     ...props.config,
   };
 
-  return `${EMBED_BASE}/${srcId}?${serialize(params)}`;
+  // Handle events
+  if (urlType === 'event/') {
+    return `${EMBED_EVENT_BASE}/${srcId}/embed?${serialize(params)}`;
+  }
+
+  // Handle videos
+  return `${EMBED_VIDEO_BASE}/${srcId}?${serialize(params)}`;
 }
 
 class VimeoVideoElement extends (globalThis.HTMLElement ?? class {}) {
