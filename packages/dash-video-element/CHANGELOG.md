@@ -5,6 +5,13 @@
 [1]: https://www.npmjs.com/package/dash-video-element?activeTab=versions
 
 
+## [0.3.0](https://github.com/muxinc/media-elements/compare/dash-video-element@0.2.0...dash-video-element@0.3.0) (2025-10-29)
+
+
+### Features
+
+* Add support for MPD Tiles of thumbnail images in &lt;dash-video/&gt; element ([#177](https://github.com/muxinc/media-elements/issues/177)) ([0b59b78](https://github.com/muxinc/media-elements/commit/0b59b786c0b7064fcee660aa17e373e08f9931d9))
+
 ## [0.2.0](https://github.com/muxinc/media-elements/compare/dash-video-element@0.1.6...dash-video-element@0.2.0) (2025-08-08)
 
 
