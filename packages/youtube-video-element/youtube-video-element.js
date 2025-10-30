@@ -114,6 +114,7 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
   #error = null;
   #config = null;
   #textTracksVideo = null;
+  #initialVolume = 1;
 
   constructor() {
     super();
@@ -188,6 +189,12 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
           this.#readyState = 1; // HTMLMediaElement.HAVE_METADATA
           this.dispatchEvent(new Event('loadedmetadata'));
           this.dispatchEvent(new Event('durationchange'));
+          
+          // Force the initial volume if it was set
+          if (this.#initialVolume !== 1) {
+            this.api?.setVolume(this.#initialVolume * 100);
+          }
+          
           this.dispatchEvent(new Event('volumechange'));
           this.dispatchEvent(new Event('loadcomplete'));
           this.isLoaded = true;
@@ -269,6 +276,8 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
     });
 
     this.api.addEventListener('onVolumeChange', () => {
+      const apiVolume = this.api?.getVolume() / 100;
+      this.#initialVolume = apiVolume;
       this.dispatchEvent(new Event('volumechange'));
     });
 
@@ -481,13 +490,16 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
 
   set volume(val) {
     if (this.volume == val) return;
+    this.#initialVolume = val;
     this.loadComplete.then(() => {
       this.api?.setVolume(val * 100);
     });
   }
 
   get volume() {
-    if (!this.isLoaded) return 1;
+    if (!this.isLoaded) {
+      return this.#initialVolume;
+    }
     return this.api?.getVolume() / 100;
   }
 
