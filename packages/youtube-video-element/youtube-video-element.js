@@ -11,13 +11,19 @@ const PLAYLIST_MATCH_SRC =
   /(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/.*?[?&]list=)([\w_-]+)/;
 
 function getTemplateHTML(attrs, props = {}) {
+  const { referrerpolicy, ...config } = props.config ?? {};
+
   const iframeAttrs = {
-    src: serializeIframeUrl(attrs, props),
+    src: serializeIframeUrl(attrs, { ...props, config }),
     frameborder: 0,
     width: '100%',
     height: '100%',
     allow: 'accelerometer; fullscreen; autoplay; encrypted-media; gyroscope; picture-in-picture',
   };
+
+  if (referrerpolicy) {
+    iframeAttrs.referrerpolicy = referrerpolicy;
+  }
 
   if (props.config) {
     // Serialize YouTube config on iframe so it can be quickly accessed on first load.

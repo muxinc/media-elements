@@ -22,5 +22,6 @@ export default class CustomVideoElement extends HTMLVideoElement {
     rel?: 0 | 1;
     start?: number;
     widget_referrer?: string;
+    referrerpolicy?: string;
   }
 }
