@@ -1,5 +1,5 @@
 import type { VideoTrack } from './video-track.js';
-import { TrackEvent } from './track-event.js';
+import { TrackEvent } from './change-event.js';
 import { getPrivate } from './utils.js';
 
 export function addVideoTrack(media: HTMLMediaElement, track: VideoTrack) {

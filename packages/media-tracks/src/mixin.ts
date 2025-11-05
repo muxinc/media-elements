@@ -6,7 +6,7 @@ import { VideoRenditionList } from './video-rendition-list.js';
 import { AudioRenditionList } from './audio-rendition-list.js';
 import { getPrivate } from './utils.js';
 
-import type { TrackEvent } from './track-event.js';
+import type { TrackEvent } from './change-event.js';
 
 declare interface MediaTracks {
   videoTracks: VideoTrackList;
