@@ -10,5 +10,5 @@ export { AudioTrackList } from './audio-track-list.js';
 export { AudioRendition } from './audio-rendition.js';
 export { AudioRenditionList } from './audio-rendition-list.js';
 
-export { TrackEvent } from './track-event.js';
+export { TrackEvent } from './change-event.js';
 export { RenditionEvent } from './rendition-event.js';
