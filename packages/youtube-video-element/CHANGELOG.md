@@ -5,6 +5,18 @@
 [1]: https://www.npmjs.com/package/youtube-video-element?activeTab=versions
 
 
+## [1.7.0](https://github.com/muxinc/media-elements/compare/youtube-video-element@1.6.2...youtube-video-element@1.7.0) (2025-11-07)
+
+
+### Features
+
+* **youtube:** add TextTrack support using Youtube API and add media-tracks integration ([#166](https://github.com/muxinc/media-elements/issues/166)) ([c76eae6](https://github.com/muxinc/media-elements/commit/c76eae6d349bd42b87b157ea02302d7015af4d7a))
+
+
+### Bug Fixes
+
+* correct commit message format for volumechange youtube ([#179](https://github.com/muxinc/media-elements/issues/179)) ([#188](https://github.com/muxinc/media-elements/issues/188)) ([eb8ff39](https://github.com/muxinc/media-elements/commit/eb8ff39d23f64072da8562aae2957c74d2491fa3))
+
 ## [1.6.2](https://github.com/muxinc/media-elements/compare/youtube-video-element@1.6.1...youtube-video-element@1.6.2) (2025-08-08)
 
 

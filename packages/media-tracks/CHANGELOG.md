@@ -5,6 +5,14 @@
 [1]: https://www.npmjs.com/package/media-tracks?activeTab=versions
 
 
+## [0.3.4](https://github.com/muxinc/media-elements/compare/media-tracks@0.3.3...media-tracks@0.3.4) (2025-11-07)
+
+
+### Bug Fixes
+
+* correct commit message format for volumechange youtube ([#179](https://github.com/muxinc/media-elements/issues/179)) ([#188](https://github.com/muxinc/media-elements/issues/188)) ([eb8ff39](https://github.com/muxinc/media-elements/commit/eb8ff39d23f64072da8562aae2957c74d2491fa3))
+* renaming track-event to change-event ([#186](https://github.com/muxinc/media-elements/issues/186)) ([6f620ef](https://github.com/muxinc/media-elements/commit/6f620efd6bae788028380e28f0e0e75275216c2b))
+
 ## [0.3.3](https://github.com/muxinc/media-elements/compare/media-tracks@0.3.2...media-tracks@0.3.3) (2024-06-07)
 
 

@@ -5,6 +5,13 @@
 [1]: https://www.npmjs.com/package/vimeo-video-element?activeTab=versions
 
 
+## [1.6.1](https://github.com/muxinc/media-elements/compare/vimeo-video-element@1.6.0...vimeo-video-element@1.6.1) (2025-11-07)
+
+
+### Bug Fixes
+
+* correct url generation for vimeo events ([#183](https://github.com/muxinc/media-elements/issues/183)) ([1d35378](https://github.com/muxinc/media-elements/commit/1d3537865cca673939562e48c37fa8c224278df4))
+
 ## [1.6.0](https://github.com/muxinc/media-elements/compare/vimeo-video-element@1.5.5...vimeo-video-element@1.6.0) (2025-09-24)
 
 
