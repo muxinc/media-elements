@@ -6,6 +6,20 @@
 
 
 
+## [1.5.9](https://github.com/muxinc/media-elements/compare/hls-video-element@1.5.8...hls-video-element@1.5.9) (2025-11-07)
+
+
+### Bug Fixes
+
+* hls auto level switch ([#176](https://github.com/muxinc/media-elements/issues/176)) ([6ed8d0a](https://github.com/muxinc/media-elements/commit/6ed8d0a7ccdc953d8e302149e45902c8434760a9))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * media-tracks bumped from ^0.3.3 to ^0.3.4
+
 ## [1.5.8](https://github.com/muxinc/media-elements/compare/hls-video-element@1.5.7...hls-video-element@1.5.8) (2025-09-19)
 
 

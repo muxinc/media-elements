@@ -1,6 +1,6 @@
 {
   "name": "wistia-video-element",
-  "version": "1.3.4",
+  "version": "1.3.5",
   "description": "A custom element for the Wistia player with an API that matches the `<video>` API",
   "author": "@muxinc",
   "license": "MIT",
