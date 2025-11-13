@@ -5,6 +5,13 @@
 [1]: https://www.npmjs.com/package/youtube-video-element?activeTab=versions
 
 
+## [1.8.0](https://github.com/muxinc/media-elements/compare/youtube-video-element@1.7.0...youtube-video-element@1.8.0) (2025-11-13)
+
+
+### Features
+
+* Add referrerPolicy support in youtube video ([#189](https://github.com/muxinc/media-elements/issues/189)) ([7345853](https://github.com/muxinc/media-elements/commit/734585340300f3c80b7f1775e6174ecba8720fda))
+
 ## [1.7.0](https://github.com/muxinc/media-elements/compare/youtube-video-element@1.6.2...youtube-video-element@1.7.0) (2025-11-07)
 
 
