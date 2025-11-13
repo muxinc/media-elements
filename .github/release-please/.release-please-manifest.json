@@ -1,5 +1,5 @@
 {
-  "examples/nextjs": "1.1.7",
+  "examples/nextjs": "1.1.8",
   "scripts/build-react-wrapper": "0.2.3",
   "packages/castable-video": "1.1.11",
   "packages/cloudflare-video-element": "1.3.4",
@@ -16,5 +16,5 @@
   "packages/videojs-video-element": "1.4.5",
   "packages/vimeo-video-element": "1.6.1",
   "packages/wistia-video-element": "1.3.5",
-  "packages/youtube-video-element": "1.7.0"
+  "packages/youtube-video-element": "1.8.0"
 }
