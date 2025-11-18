@@ -1,6 +1,6 @@
 {
   "name": "hls-video-element",
-  "version": "1.5.8",
+  "version": "1.5.9",
   "description": "Custom element (web component) for playing video using the HTTP Live Streaming (HLS) format. Uses HLS.js.",
   "author": "@muxinc",
   "license": "MIT",
@@ -54,7 +54,7 @@
   "dependencies": {
     "custom-media-element": "^1.4.5",
     "hls.js": "^1.6.5",
-    "media-tracks": "^0.3.3"
+    "media-tracks": "^0.3.4"
   },
   "devDependencies": {
     "build-react-wrapper": "^0.2.3",

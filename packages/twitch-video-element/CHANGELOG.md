@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.5](https://github.com/muxinc/media-elements/compare/twitch-video-element@0.1.4...twitch-video-element@0.1.5) (2025-11-07)
+
+
+### Bug Fixes
+
+* onVolumeChange returns stale value ([#175](https://github.com/muxinc/media-elements/issues/175)) ([dda4c06](https://github.com/muxinc/media-elements/commit/dda4c06c692f1a10fdcb642225cc20697c8cc40f))
+
 ## [0.1.4](https://github.com/muxinc/media-elements/compare/twitch-video-element@0.1.3...twitch-video-element@0.1.4) (2025-08-12)
 
 
