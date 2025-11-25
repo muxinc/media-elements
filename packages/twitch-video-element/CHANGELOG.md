@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.1.6](https://github.com/muxinc/media-elements/compare/twitch-video-element@0.1.5...twitch-video-element@0.1.6) (2025-11-25)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * build-react-wrapper bumped from ^0.2.3 to ^0.2.4
+
 ## [0.1.5](https://github.com/muxinc/media-elements/compare/twitch-video-element@0.1.4...twitch-video-element@0.1.5) (2025-11-07)
 
 

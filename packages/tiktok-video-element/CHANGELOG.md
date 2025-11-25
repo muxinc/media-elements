@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.1.2](https://github.com/muxinc/media-elements/compare/tiktok-video-element@0.1.1...tiktok-video-element@0.1.2) (2025-11-25)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * build-react-wrapper bumped from ^0.2.3 to ^0.2.4
+
 ## [0.1.1](https://github.com/muxinc/media-elements/compare/tiktok-video-element@0.1.0...tiktok-video-element@0.1.1) (2025-08-08)
 
 
