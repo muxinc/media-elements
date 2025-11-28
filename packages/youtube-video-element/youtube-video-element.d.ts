@@ -9,7 +9,7 @@ export default class CustomVideoElement extends HTMLVideoElement {
   disconnectedCallback(): void;
   config: {
     cc_lang_pref?: string;
-    cc_load_policy?: 1;
+    cc_load_policy?: 0 | 1;
     color?: 'red' | 'white';
     disablekb?: 0 | 1;
     enablejsapi?: 0 | 1;
