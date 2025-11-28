@@ -2,6 +2,7 @@
 import VimeoPlayerAPI from '@vimeo/player/dist/player.es.js';
 const EMBED_VIDEO_BASE = 'https://player.vimeo.com/video';
 const EMBED_EVENT_BASE = 'https://vimeo.com/event';
+const MATCH_SRC = /vimeo\.com\/(video\/|event\/)?(\d+)(?:\/([\w-]+))?/;
 
 function getTemplateHTML(attrs, props = {}) {
   const iframeAttrs = {
@@ -44,9 +45,9 @@ function serializeIframeUrl(attrs, props) {
   let url = new URL(attrs.src);
 
   // Extract pathname parts (ignoring a leading slash)
-  const parts = url.pathname.replace(/^\/+/, "").split("/");
-  const urlType = parts[0];
-  const srcId = parts[1];
+  const matches = attrs.src.match(MATCH_SRC);
+  const urlType = matches && matches[1]; // 'video/' or 'event/' or undefined
+  const srcId = matches && matches[2];
   const hParam = url.searchParams.get("h") || undefined;
   const params = {
     // ?controls=true is enabled by default in the iframe
