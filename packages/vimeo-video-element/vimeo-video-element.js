@@ -44,7 +44,6 @@ function serializeIframeUrl(attrs, props) {
   if (!attrs.src) return;
   let url = new URL(attrs.src);
 
-  // Extract pathname parts (ignoring a leading slash)
   const matches = attrs.src.match(MATCH_SRC);
   const urlType = matches && matches[1]; // 'video/' or 'event/' or undefined
   const srcId = matches && matches[2];
