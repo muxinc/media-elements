@@ -45,7 +45,7 @@ function serializeIframeUrl(attrs, props) {
 
   // Extract pathname parts (ignoring a leading slash)
   const parts = url.pathname.replace(/^\/+/, "").split("/");
-  const urlType = parts[0] + "/";
+  const urlType = parts[0];
   const srcId = parts[1];
   const hParam = url.searchParams.get("h") || undefined;
   const params = {
@@ -63,7 +63,7 @@ function serializeIframeUrl(attrs, props) {
   };
 
   // Handle events
-  if (urlType === 'event/') {
+  if (urlType === 'event') {
     return `${EMBED_EVENT_BASE}/${srcId}/embed?${serialize(params)}`;
   }
 
