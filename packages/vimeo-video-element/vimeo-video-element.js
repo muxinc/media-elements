@@ -63,7 +63,7 @@ function serializeIframeUrl(attrs, props) {
   };
 
   // Handle events
-  if (urlType === 'event') {
+  if (urlType === 'event/') {
     return `${EMBED_EVENT_BASE}/${srcId}/embed?${serialize(params)}`;
   }
 
