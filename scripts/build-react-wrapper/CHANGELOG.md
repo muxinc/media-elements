@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.4](https://github.com/muxinc/media-elements/compare/build-react-wrapper@0.2.3...build-react-wrapper@0.2.4) (2025-11-25)
+
+
+### Bug Fixes
+
+* Upgrade ce-la-react ([#192](https://github.com/muxinc/media-elements/issues/192)) ([e8b8c3d](https://github.com/muxinc/media-elements/commit/e8b8c3d01d918cbb3139b1c5aa92a6d723a6398d))
+
 ## [0.2.3](https://github.com/muxinc/media-elements/compare/build-react-wrapper@0.2.2...build-react-wrapper@0.2.3) (2025-08-08)
 
 

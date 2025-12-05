@@ -5,6 +5,15 @@
 [1]: https://www.npmjs.com/package/wistia-video-element?activeTab=versions
 
 
+## [1.3.6](https://github.com/muxinc/media-elements/compare/wistia-video-element@1.3.5...wistia-video-element@1.3.6) (2025-11-25)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * build-react-wrapper bumped from ^0.2.3 to ^0.2.4
+
 ## [1.3.5](https://github.com/muxinc/media-elements/compare/wistia-video-element@1.3.4...wistia-video-element@1.3.5) (2025-11-07)
 
 

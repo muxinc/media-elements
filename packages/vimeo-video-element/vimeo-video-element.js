@@ -42,12 +42,12 @@ function getTemplateHTML(attrs, props = {}) {
 
 function serializeIframeUrl(attrs, props) {
   if (!attrs.src) return;
+  let url = new URL(attrs.src);
 
   const matches = attrs.src.match(MATCH_SRC);
   const urlType = matches && matches[1]; // 'video/' or 'event/' or undefined
   const srcId = matches && matches[2];
-  const hParam = matches && matches[3];
-
+  const hParam = url.searchParams.get("h") || undefined;
   const params = {
     // ?controls=true is enabled by default in the iframe
     controls: attrs.controls === '' ? null : 0,

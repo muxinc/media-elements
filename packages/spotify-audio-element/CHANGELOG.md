@@ -5,6 +5,15 @@
 [1]: https://www.npmjs.com/package/spotify-audio-element?activeTab=versions
 
 
+## [1.0.4](https://github.com/muxinc/media-elements/compare/spotify-audio-element@1.0.3...spotify-audio-element@1.0.4) (2025-11-25)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * build-react-wrapper bumped from ^0.2.3 to ^0.2.4
+
 ## [1.0.3](https://github.com/muxinc/media-elements/compare/spotify-audio-element@1.0.2...spotify-audio-element@1.0.3) (2025-08-08)
 
 
