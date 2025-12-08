@@ -90,10 +90,15 @@ class VimeoVideoElement extends (globalThis.HTMLElement ?? class {}) {
   #progress = 0;
   #readyState = 0;
   #seeking = false;
+  #lastPlayedTime = 0;
   #volume = 1;
   #videoWidth = NaN;
   #videoHeight = NaN;
   #config = null;
+
+  #playedRanges = [];
+  #currentPlayedRange = null;
+  #RANGE_EPSILON = 0.5;
 
   constructor() {
     super();
@@ -148,6 +153,8 @@ class VimeoVideoElement extends (globalThis.HTMLElement ?? class {}) {
     this.#readyState = 0;
     this.#videoWidth = NaN;
     this.#videoHeight = NaN;
+    this.#playedRanges = [];
+    this.#currentPlayedRange = null;
     this.dispatchEvent(new Event('emptied'));
 
     let oldApi = this.api;
@@ -252,6 +259,9 @@ class VimeoVideoElement extends (globalThis.HTMLElement ?? class {}) {
       if (!this.#paused) return;
       this.#paused = false;
       this.dispatchEvent(new Event('play'));
+      if (this.#currentPlayedRange === null) {
+        this.#currentPlayedRange = { start: this.#currentTime, end: this.#currentTime };
+      }
     });
 
     this.api.on('playing', () => {
@@ -262,22 +272,67 @@ class VimeoVideoElement extends (globalThis.HTMLElement ?? class {}) {
 
     this.api.on('seeking', () => {
       this.#seeking = true;
+
+      if (this.#currentPlayedRange) {
+        this.#currentPlayedRange.end = this.#lastPlayedTime;
+        this.#addPlayedRange(this.#currentPlayedRange.start, this.#currentPlayedRange.end);
+        this.#currentPlayedRange = null;
+      }
+
       this.dispatchEvent(new Event('seeking'));
     });
 
-    this.api.on('seeked', () => {
+    this.api.on('seeked', async () => {
+      const seekTime = await this.api.getCurrentTime().catch(() => this.#currentTime);
+      const roundedSeek = Math.round(seekTime * 100) / 100;
+
+      this.#currentTime = roundedSeek;
+      this.#seeking = false;
+
+      if (!this.#paused) {
+        this.#currentPlayedRange = { start: roundedSeek, end: roundedSeek };
+      }
+
+      this.dispatchEvent(new Event('seeked'));
+    });
+    this.api.on('seeked', async () => {
       this.#seeking = false;
       this.dispatchEvent(new Event('seeked'));
+
+      const seekTime = await this.api.getCurrentTime().catch(() => this.#currentTime);
+
+      const lastPlayed = this.#currentTime;
+      if (this.#currentPlayedRange) {
+        this.#currentPlayedRange.end = lastPlayed;
+        this.#addPlayedRange(this.#currentPlayedRange.start, this.#currentPlayedRange.end);
+        this.#currentPlayedRange = null;
+      }
+
+      this.#currentTime = seekTime;
+
+      if (!this.#paused) {
+        this.#currentPlayedRange = { start: seekTime, end: seekTime };
+      }
     });
 
     this.api.on('pause', () => {
       this.#paused = true;
       this.dispatchEvent(new Event('pause'));
+      if (this.#currentPlayedRange !== null) {
+        this.#currentPlayedRange.end = this.#currentTime;
+        this.#addPlayedRange(this.#currentPlayedRange.start, this.#currentPlayedRange.end);
+        this.#currentPlayedRange = null;
+      }
     });
 
     this.api.on('ended', () => {
       this.#paused = true;
       this.dispatchEvent(new Event('ended'));
+      if (this.#currentPlayedRange !== null) {
+        this.#currentPlayedRange.end = this.#currentTime;
+        this.#addPlayedRange(this.#currentPlayedRange.start, this.#currentPlayedRange.end);
+        this.#currentPlayedRange = null;
+      }
     });
 
     this.api.on('ratechange', ({ playbackRate }) => {
@@ -298,10 +353,31 @@ class VimeoVideoElement extends (globalThis.HTMLElement ?? class {}) {
       this.dispatchEvent(new Event('durationchange'));
     });
 
-    this.api.on('timeupdate', ({ seconds }) => {
-      this.#currentTime = seconds;
-      this.dispatchEvent(new Event('timeupdate'));
-    });
+this.api.on('timeupdate', ({ seconds }) => {
+  const roundedSec = Math.round(seconds * 100) / 100;
+  this.#currentTime = roundedSec;
+
+  if (!this.#paused) {
+    this.#lastPlayedTime = roundedSec;
+
+    if (this.#currentPlayedRange === null) {
+      this.#currentPlayedRange = { start: roundedSec, end: roundedSec };
+    } else {
+      if (roundedSec - this.#currentPlayedRange.end > this.#RANGE_EPSILON) {
+        if (!this.#seeking) {
+          this.#addPlayedRange(this.#currentPlayedRange.start, this.#currentPlayedRange.end);
+          this.#currentPlayedRange = { start: roundedSec, end: roundedSec };
+        } else {
+          this.#currentPlayedRange.end = roundedSec;
+        }
+      } else {
+        this.#currentPlayedRange.end = roundedSec;
+      }
+    }
+  }
+
+  this.dispatchEvent(new Event('timeupdate'));
+});
 
     this.api.on('progress', ({ seconds }) => {
       this.#progress = seconds;
@@ -315,6 +391,44 @@ class VimeoVideoElement extends (globalThis.HTMLElement ?? class {}) {
     });
 
     await this.loadComplete;
+  }
+
+  #addPlayedRange(start, end) {
+    if (start >= end) return;
+
+    const newRanges = [];
+    let mergedStart = start;
+    let mergedEnd = end;
+    const EPS = this.#RANGE_EPSILON;
+
+    for (const r of this.#playedRanges) {
+      if (r.end + EPS < mergedStart) {
+        newRanges.push(r);
+      }
+      else if (r.start - EPS > mergedEnd) {
+        newRanges.push({ start: mergedStart, end: mergedEnd });
+        mergedStart = r.start;
+        mergedEnd = r.end;
+      }
+      else {
+        mergedStart = Math.min(mergedStart, r.start);
+        mergedEnd = Math.max(mergedEnd, r.end);
+      }
+    }
+
+    newRanges.push({ start: mergedStart, end: mergedEnd });
+    this.#playedRanges = newRanges.sort((a, b) => a.start - b.start);
+  }
+  get played() {
+    if (this.#currentPlayedRange !== null) {
+      this.#addPlayedRange(this.#currentPlayedRange.start, this.#currentPlayedRange.end);
+      this.#currentPlayedRange = null;
+    }
+    if (this.#playedRanges.length === 0) {
+      return createTimeRangesObj([[0, 0]]);
+    }
+    const ranges = this.#playedRanges.map(({ start, end }) => [start, end]);
+    return createTimeRangesObj(ranges);
   }
 
   async attributeChangedCallback(attrName, oldValue, newValue) {
