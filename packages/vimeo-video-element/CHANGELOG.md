@@ -5,6 +5,13 @@
 [1]: https://www.npmjs.com/package/vimeo-video-element?activeTab=versions
 
 
+## [1.6.3](https://github.com/muxinc/media-elements/compare/vimeo-video-element@1.6.2...vimeo-video-element@1.6.3) (2025-12-08)
+
+
+### Bug Fixes
+
+* support for unlisted Vimeo videos ([#195](https://github.com/muxinc/media-elements/issues/195)) ([37ed558](https://github.com/muxinc/media-elements/commit/37ed5589319debe1a75f105cdf70de2af5e20cef))
+
 ## [1.6.2](https://github.com/muxinc/media-elements/compare/vimeo-video-element@1.6.1...vimeo-video-element@1.6.2) (2025-11-25)
 
 
