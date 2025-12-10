@@ -353,31 +353,31 @@ class VimeoVideoElement extends (globalThis.HTMLElement ?? class {}) {
       this.dispatchEvent(new Event('durationchange'));
     });
 
-this.api.on('timeupdate', ({ seconds }) => {
-  const roundedSec = Math.round(seconds * 100) / 100;
-  this.#currentTime = roundedSec;
+    this.api.on('timeupdate', ({ seconds }) => {
+      const roundedSec = Math.round(seconds * 100) / 100;
+      this.#currentTime = roundedSec;
 
-  if (!this.#paused) {
-    this.#lastPlayedTime = roundedSec;
+      if (!this.#paused) {
+        this.#lastPlayedTime = roundedSec;
 
-    if (this.#currentPlayedRange === null) {
-      this.#currentPlayedRange = { start: roundedSec, end: roundedSec };
-    } else {
-      if (roundedSec - this.#currentPlayedRange.end > this.#RANGE_EPSILON) {
-        if (!this.#seeking) {
-          this.#addPlayedRange(this.#currentPlayedRange.start, this.#currentPlayedRange.end);
+        if (this.#currentPlayedRange === null) {
           this.#currentPlayedRange = { start: roundedSec, end: roundedSec };
         } else {
-          this.#currentPlayedRange.end = roundedSec;
+          if (roundedSec - this.#currentPlayedRange.end > this.#RANGE_EPSILON) {
+            if (!this.#seeking) {
+              this.#addPlayedRange(this.#currentPlayedRange.start, this.#currentPlayedRange.end);
+              this.#currentPlayedRange = { start: roundedSec, end: roundedSec };
+            } else {
+              this.#currentPlayedRange.end = roundedSec;
+            }
+          } else {
+            this.#currentPlayedRange.end = roundedSec;
+          }
         }
-      } else {
-        this.#currentPlayedRange.end = roundedSec;
       }
-    }
-  }
 
-  this.dispatchEvent(new Event('timeupdate'));
-});
+      this.dispatchEvent(new Event('timeupdate'));
+    });
 
     this.api.on('progress', ({ seconds }) => {
       this.#progress = seconds;
@@ -404,13 +404,11 @@ this.api.on('timeupdate', ({ seconds }) => {
     for (const r of this.#playedRanges) {
       if (r.end + EPS < mergedStart) {
         newRanges.push(r);
-      }
-      else if (r.start - EPS > mergedEnd) {
+      } else if (r.start - EPS > mergedEnd) {
         newRanges.push({ start: mergedStart, end: mergedEnd });
         mergedStart = r.start;
         mergedEnd = r.end;
-      }
-      else {
+      } else {
         mergedStart = Math.min(mergedStart, r.start);
         mergedEnd = Math.max(mergedEnd, r.end);
       }
