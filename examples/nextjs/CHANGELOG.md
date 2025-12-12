@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.11](https://github.com/muxinc/media-elements/compare/nextjs@1.1.10...nextjs@1.1.11) (2025-12-12)
+
+
+### Bug Fixes
+
+* updating nextjs and react ([#201](https://github.com/muxinc/media-elements/issues/201)) ([081a0c9](https://github.com/muxinc/media-elements/commit/081a0c9ee1df4562172162277855f04bf66542f6))
+
 ## [1.1.10](https://github.com/muxinc/media-elements/compare/nextjs@1.1.9...nextjs@1.1.10) (2025-12-08)
 
 

@@ -1,5 +1,5 @@
 {
-  "examples/nextjs": "1.1.10",
+  "examples/nextjs": "1.1.11",
   "scripts/build-react-wrapper": "0.2.4",
   "packages/castable-video": "1.1.11",
   "packages/cloudflare-video-element": "1.3.5",
