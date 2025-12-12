@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.1.10](https://github.com/muxinc/media-elements/compare/nextjs@1.1.9...nextjs@1.1.10) (2025-12-08)
+
+
+### Bug Fixes
+
+* updating nextjs and react ([#198](https://github.com/muxinc/media-elements/issues/198)) ([5c3117e](https://github.com/muxinc/media-elements/commit/5c3117e60579e9567a8a268428ee295c52c2a2f4))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * vimeo-video-element bumped from ^1.6.2 to ^1.6.3
+
 ## [1.1.9](https://github.com/muxinc/media-elements/compare/nextjs@1.1.8...nextjs@1.1.9) (2025-11-25)
 
 
