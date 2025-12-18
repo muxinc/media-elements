@@ -10,6 +10,40 @@ const VIDEO_MATCH_SRC =
 const PLAYLIST_MATCH_SRC =
   /(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/.*?[?&]list=)([\w_-]+)/;
 
+/**
+ * Parses the `t` parameter from a YouTube URL and converts it to seconds.
+ * Supports formats like: t=171, t=171s, t=2m51s, t=2m
+ * @param {string} url - The YouTube URL
+ * @returns {number|undefined} - The start time in seconds, or undefined if not found
+ */
+function parseStartTime(url) {
+  if (!url) return;
+  
+  // Match t parameter: t=171, t=171s, t=2m51s, t=2m, etc.
+  const tMatch = url.match(/[?&]t=([\dms]+)/i);
+  if (!tMatch) return;
+  
+  const tValue = tMatch[1].toLowerCase();
+  let totalSeconds = 0;
+  let hasValue = false;
+  
+  // Parse minutes (e.g., "2m" or "2m51s")
+  const minutesMatch = tValue.match(/(\d+)m/);
+  if (minutesMatch) {
+    totalSeconds += parseInt(minutesMatch[1], 10) * 60;
+    hasValue = true;
+  }
+  
+  // Parse seconds (e.g., "171s" or "51s" or just "171")
+  const secondsMatch = tValue.match(/(\d+)s?$/);
+  if (secondsMatch) {
+    totalSeconds += parseInt(secondsMatch[1], 10);
+    hasValue = true;
+  }
+  
+  return hasValue ? totalSeconds : undefined;
+}
+
 function getTemplateHTML(attrs, props = {}) {
 
   const iframeAttrs = {
@@ -72,6 +106,7 @@ function serializeIframeUrl(attrs, props) {
     rel: 0,
     iv_load_policy: 3,
     modestbranding: 1,
+    start: parseStartTime(attrs.src),
     ...props.config,
   };
 
