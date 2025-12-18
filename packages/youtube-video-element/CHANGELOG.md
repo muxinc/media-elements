@@ -5,6 +5,18 @@
 [1]: https://www.npmjs.com/package/youtube-video-element?activeTab=versions
 
 
+## [1.9.0](https://github.com/muxinc/media-elements/compare/youtube-video-element@1.8.1...youtube-video-element@1.9.0) (2025-12-18)
+
+
+### Features
+
+* add support for youtube t parameter ([#197](https://github.com/muxinc/media-elements/issues/197)) ([b183151](https://github.com/muxinc/media-elements/commit/b1831517a2b5b0b20ab4ffa7ad4ffbbf1e541b5c))
+
+
+### Bug Fixes
+
+* Update cc_load_policy type to allow 0 or 1 ([#194](https://github.com/muxinc/media-elements/issues/194)) ([2952dde](https://github.com/muxinc/media-elements/commit/2952dde80a96b1b3c3b9cdcdf95654d79032bcf6))
+
 ## [1.8.1](https://github.com/muxinc/media-elements/compare/youtube-video-element@1.8.0...youtube-video-element@1.8.1) (2025-11-25)
 
 

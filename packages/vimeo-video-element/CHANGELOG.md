@@ -5,6 +5,13 @@
 [1]: https://www.npmjs.com/package/vimeo-video-element?activeTab=versions
 
 
+## [1.6.4](https://github.com/muxinc/media-elements/compare/vimeo-video-element@1.6.3...vimeo-video-element@1.6.4) (2025-12-18)
+
+
+### Bug Fixes
+
+* support both path and query string formats for unlisted video hash ([#203](https://github.com/muxinc/media-elements/issues/203)) ([106bd26](https://github.com/muxinc/media-elements/commit/106bd26e605f3e51a126a404df8ba7c4790a570b))
+
 ## [1.6.3](https://github.com/muxinc/media-elements/compare/vimeo-video-element@1.6.2...vimeo-video-element@1.6.3) (2025-12-08)
 
 
