@@ -1,6 +1,6 @@
 {
   "name": "vimeo-video-element",
-  "version": "1.6.0",
+  "version": "1.6.3",
   "description": "A custom element for the Vimeo player with an API that matches the `<video>` API",
   "author": "@muxinc",
   "license": "MIT",
@@ -55,7 +55,7 @@
     "@vimeo/player": "2.29.0"
   },
   "devDependencies": {
-    "build-react-wrapper": "^0.2.3",
+    "build-react-wrapper": "^0.2.4",
     "npm-run-all": "^4.1.5",
     "wet-run": "^1.2.5"
   },

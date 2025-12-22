@@ -10,7 +10,42 @@ const VIDEO_MATCH_SRC =
 const PLAYLIST_MATCH_SRC =
   /(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/.*?[?&]list=)([\w_-]+)/;
 
+/**
+ * Parses the `t` parameter from a YouTube URL and converts it to seconds.
+ * Supports formats like: t=171, t=171s, t=2m51s, t=2m
+ * @param {string} url - The YouTube URL
+ * @returns {number|undefined} - The start time in seconds, or undefined if not found
+ */
+function parseStartTime(url) {
+  if (!url) return;
+  
+  // Match t parameter: t=171, t=171s, t=2m51s, t=2m, etc.
+  const tMatch = url.match(/[?&]t=([\dms]+)/i);
+  if (!tMatch) return;
+  
+  const tValue = tMatch[1].toLowerCase();
+  let totalSeconds = 0;
+  let hasValue = false;
+  
+  // Parse minutes (e.g., "2m" or "2m51s")
+  const minutesMatch = tValue.match(/(\d+)m/);
+  if (minutesMatch) {
+    totalSeconds += parseInt(minutesMatch[1], 10) * 60;
+    hasValue = true;
+  }
+  
+  // Parse seconds (e.g., "171s" or "51s" or just "171")
+  const secondsMatch = tValue.match(/(\d+)s?$/);
+  if (secondsMatch) {
+    totalSeconds += parseInt(secondsMatch[1], 10);
+    hasValue = true;
+  }
+  
+  return hasValue ? totalSeconds : undefined;
+}
+
 function getTemplateHTML(attrs, props = {}) {
+
   const iframeAttrs = {
     src: serializeIframeUrl(attrs, props),
     frameborder: 0,
@@ -18,6 +53,10 @@ function getTemplateHTML(attrs, props = {}) {
     height: '100%',
     allow: 'accelerometer; fullscreen; autoplay; encrypted-media; gyroscope; picture-in-picture',
   };
+
+  if (props.config?.referrerpolicy) {
+    iframeAttrs.referrerpolicy = props.config.referrerpolicy;
+  }
 
   if (props.config) {
     // Serialize YouTube config on iframe so it can be quickly accessed on first load.
@@ -67,6 +106,7 @@ function serializeIframeUrl(attrs, props) {
     rel: 0,
     iv_load_policy: 3,
     modestbranding: 1,
+    start: parseStartTime(attrs.src),
     ...props.config,
   };
 
@@ -114,6 +154,7 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
   #error = null;
   #config = null;
   #textTracksVideo = null;
+  #initialVolume = 1;
 
   constructor() {
     super();
@@ -188,6 +229,12 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
           this.#readyState = 1; // HTMLMediaElement.HAVE_METADATA
           this.dispatchEvent(new Event('loadedmetadata'));
           this.dispatchEvent(new Event('durationchange'));
+          
+          // Force the initial volume if it was set
+          if (this.#initialVolume !== 1) {
+            this.api?.setVolume(this.#initialVolume * 100);
+          }
+          
           this.dispatchEvent(new Event('volumechange'));
           this.dispatchEvent(new Event('loadcomplete'));
           this.isLoaded = true;
@@ -269,6 +316,8 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
     });
 
     this.api.addEventListener('onVolumeChange', () => {
+      const apiVolume = this.api?.getVolume() / 100;
+      this.#initialVolume = apiVolume;
       this.dispatchEvent(new Event('volumechange'));
     });
 
@@ -481,13 +530,16 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
 
   set volume(val) {
     if (this.volume == val) return;
+    this.#initialVolume = val;
     this.loadComplete.then(() => {
       this.api?.setVolume(val * 100);
     });
   }
 
   get volume() {
-    if (!this.isLoaded) return 1;
+    if (!this.isLoaded) {
+      return this.#initialVolume;
+    }
     return this.api?.getVolume() / 100;
   }
 

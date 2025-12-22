@@ -1,5 +1,5 @@
 import type { AudioTrack } from './audio-track.js';
-import { TrackEvent } from './track-event.js';
+import { TrackEvent } from './change-event.js';
 import { getPrivate } from './utils.js';
 
 export function addAudioTrack(media: HTMLMediaElement, track: AudioTrack) {
