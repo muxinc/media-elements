@@ -1,5 +1,5 @@
 // https://dev.twitch.tv/docs/embed/video-and-clips/
-
+import { MediaPlayedRangesMixin } from '@media-elements/media-played-ranges-mixin';
 const EMBED_BASE = 'https://player.twitch.tv';
 const MATCH_VIDEO = /(?:www\.|go\.)?twitch\.tv\/(?:videos?\/|\?video=)(\d+)($|\?)/;
 const MATCH_CHANNEL = /(?:www\.|go\.)?twitch\.tv\/([a-zA-Z0-9_]+)($|\?)/;
@@ -94,7 +94,7 @@ function serializeIframeUrl(attrs, props) {
   return '';
 }
 
-class TwitchVideoElement extends (globalThis.HTMLElement ?? class {}) {
+class TwitchVideoElement extends MediaPlayedRangesMixin(globalThis.HTMLElement ?? class {}) {
   static getTemplateHTML = getTemplateHTML;
   static shadowRootOptions = { mode: 'open' };
   static observedAttributes = ['autoplay', 'controls', 'loop', 'muted', 'playsinline', 'preload', 'src'];
@@ -241,8 +241,7 @@ class TwitchVideoElement extends (globalThis.HTMLElement ?? class {}) {
   }
 
   get currentTime() {
-    if (!this.#playerState.currentTime) return this.#currentTime;
-    return this.#playerState.currentTime;
+    return Number(this.#playerState.currentTime ?? this.#currentTime ?? 0);
   }
 
   set currentTime(val) {
@@ -327,12 +326,21 @@ class TwitchVideoElement extends (globalThis.HTMLElement ?? class {}) {
         this.dispatchEvent(new Event('loadedmetadata'));
       } else if (data.eventName === 'seek') {
         this.#seeking = true;
+        this.onSeeking();
         this.dispatchEvent(new Event('seeking'));
+      } else if (data.eventName === 'play') {
+        this.#paused = false;
+        const t = this.#playerState.currentTime ?? this.#currentTime;
+        this.onPlaybackStart({ time: t });
+        this.dispatchEvent(new Event('play'));
+      } else if (data.eventName === 'pause') {
+        this.#paused = true;
+        this.onPlaybackStop();
+        this.dispatchEvent(new Event('pause'));
+      } else if (data.eventName === 'ended') {
+        this.onPlaybackStop();
+        this.dispatchEvent(new Event('ended'));
       } else if (data.eventName === 'playing') {
-        if (this.#seeking) {
-          this.#seeking = false;
-          this.dispatchEvent(new Event('seeked'));
-        }
         this.#readyState = 3; // HTMLMediaElement.HAVE_FUTURE_DATA
         this.dispatchEvent(new Event('playing'));
       } else {
@@ -353,6 +361,12 @@ class TwitchVideoElement extends (globalThis.HTMLElement ?? class {}) {
 
       if (oldCurrentTime !== this.#playerState.currentTime) {
         this.dispatchEvent(new Event('timeupdate'));
+      }
+      if (this.#seeking && oldCurrentTime !== this.#playerState.currentTime) {
+        this.#seeking = false;
+        const t = this.#playerState.currentTime ?? this.#currentTime;
+        this.onSeeked({ time: t });
+        this.dispatchEvent(new Event('seeked'));
       }
 
       if (oldVolume !== this.#playerState.volume || oldMuted !== this.#playerState.muted) {

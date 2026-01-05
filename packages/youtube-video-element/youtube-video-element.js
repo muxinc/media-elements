@@ -1,5 +1,5 @@
 // https://developers.google.com/youtube/iframe_api_reference
-
+import { MediaPlayedRangesMixin } from '@media-elements/media-played-ranges-mixin';
 const EMBED_BASE = 'https://www.youtube.com/embed';
 const EMBED_BASE_NOCOOKIE = 'https://www.youtube-nocookie.com/embed';
 const API_URL = 'https://www.youtube.com/iframe_api';
@@ -129,7 +129,7 @@ function serializeIframeUrl(attrs, props) {
   return `${embedBase}?${serialize(extendedParams)}`;
 }
 
-class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
+class YoutubeVideoElement extends MediaPlayedRangesMixin(globalThis.HTMLElement ?? class {}) {
   static getTemplateHTML = getTemplateHTML;
   static shadowRootOptions = { mode: 'open' };
   static observedAttributes = [
@@ -270,6 +270,7 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
         if (!playFired) {
           playFired = true;
           this.dispatchEvent(new Event('play'));
+          this.onPlaybackStart({ time: this.currentTime });
         }
         const captionList = this.api.getOption('captions', 'tracklist') || [];
 
@@ -287,6 +288,7 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
         if (this.seeking) {
           this.#seeking = false;
           this.#seekComplete?.resolve();
+          this.onSeeked({ time: this.currentTime });
           this.dispatchEvent(new Event('seeked'));
         }
         this.#readyState = 3; // HTMLMediaElement.HAVE_FUTURE_DATA
@@ -295,14 +297,17 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
         const diff = Math.abs(this.currentTime - lastCurrentTime);
         if (!this.seeking && diff > 0.1) {
           this.#seeking = true;
+          this.onSeeking();
           this.dispatchEvent(new Event('seeking'));
         }
         playFired = false;
+        this.onPlaybackStop();
         this.dispatchEvent(new Event('pause'));
       }
       if (state === YT.PlayerState.ENDED) {
         playFired = false;
         this.dispatchEvent(new Event('pause'));
+        this.onPlaybackStop();
         this.dispatchEvent(new Event('ended'));
 
         if (this.loop) {

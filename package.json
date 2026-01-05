@@ -17,6 +17,7 @@
   "workspaces": [
     "scripts/*",
     "packages/custom-media-element",
+    "packages/media-played-ranges-mixin",
     "packages/super-media-element",
     "packages/media-tracks",
     "packages/castable-video",
