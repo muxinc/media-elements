@@ -1,5 +1,5 @@
 // https://developer.spotify.com/documentation/embeds/tutorials/using-the-iframe-api
-import { MediaPlayedRangesMixin } from '@media-elements/media-played-ranges-mixin';
+
 const EMBED_BASE = 'https://open.spotify.com';
 const MATCH_SRC = /open\.spotify\.com\/(\w+)\/(\w+)/i;
 // todo: remove loading script and directly communicate with iframe
@@ -57,7 +57,7 @@ function serializeIframeUrl(attrs, props) {
   return `${EMBED_BASE}/embed/${type}/${metaId}${videoPath}?${serialize(params)}`;
 }
 
-class SpotifyAudioElement extends MediaPlayedRangesMixin(globalThis.HTMLElement ?? class {}) {
+class SpotifyAudioElement extends (globalThis.HTMLElement ?? class {}) {
   static getTemplateHTML = getTemplateHTML;
   static shadowRootOptions = { mode: 'open' };
   static observedAttributes = [
@@ -154,49 +154,28 @@ class SpotifyAudioElement extends MediaPlayedRangesMixin(globalThis.HTMLElement 
           return;
         }
 
-        const data = event.data;
-        const currentTime = data.position / 1000;
-        const duration = data.duration / 1000;
-
-        const prevTime = this.#currentTime;
-        const timeDelta = Math.abs(currentTime - prevTime);
-
-        // Detect seek BEFORE updating currentTime
-        if (timeDelta > 0.2) {
-          if (!this.#seeking) {
-            this.#seeking = true;
-            this.onSeeking();
-            this.dispatchEvent(new Event('seeking'));
-          }
-        } else if (this.#seeking) {
-          this.#seeking = false;
-          this.onSeeked({ time: currentTime });
-          this.dispatchEvent(new Event('seeked'));
-        }
-
-        if (duration !== this.#duration) {
+        if (event.data.duration / 1000 !== this.#duration) {
           this.#closeToEnded = false;
-          this.#duration = duration;
+          this.#duration = event.data.duration / 1000;
           this.dispatchEvent(new Event('durationchange'));
         }
 
-        if (currentTime !== this.#currentTime) {
+        if (event.data.position / 1000 !== this.#currentTime) {
+          this.#seeking = false;
           this.#closeToEnded = false;
-          this.#currentTime = currentTime;
+          this.#currentTime = event.data.position / 1000;
           this.dispatchEvent(new Event('timeupdate'));
         }
 
-        if (!this.#paused && data.isPaused) {
+        if (!this.#isWaiting && !this.#paused && event.data.isPaused) {
           this.#paused = true;
           this.dispatchEvent(new Event('pause'));
-          this.onPlaybackStop();
           return;
         }
 
-        if (this.#paused && !data.isPaused) {
+        if (this.#paused && (event.data.isBuffering || !event.data.isPaused)) {
           this.#paused = false;
           this.dispatchEvent(new Event('play'));
-          this.onPlaybackStart({ time: this.#currentTime });
 
           this.#isWaiting = event.data.isBuffering;
 
@@ -321,7 +300,6 @@ class SpotifyAudioElement extends MediaPlayedRangesMixin(globalThis.HTMLElement 
     this.dispatchEvent(new Event('timeupdate'));
     this.#currentTime = oldTime;
 
-    this.onSeeking();
     this.loadComplete.then(() => {
       this.api?.seek(val);
     });

@@ -5,6 +5,15 @@ export function MediaPlayedRangesMixin(Base) {
     _RANGE_EPSILON = 0.5;
     _seeking = false;
 
+    connectedCallback() {
+      if (super.connectedCallback) super.connectedCallback();
+      this.addEventListener('play', () => this.onPlaybackStart({ time: this.currentTime }));
+      this.addEventListener('pause', () => this.onPlaybackStop({ time: this.currentTime }));
+      this.addEventListener('ended', () => this.onPlaybackStop({ time: this.currentTime }));
+      this.addEventListener('seeking', () => this.onSeeking());
+      this.addEventListener('seeked', () => this.onSeeked({ time: this.currentTime }));
+    }
+
     onPlaybackStart(param = {}) {
       this._seeking = false;
       const { time } = param;
@@ -23,17 +32,13 @@ export function MediaPlayedRangesMixin(Base) {
     onSeeked(param = {}) {
       this._seeking = false;
       const { time } = param;
-
       const t = typeof time === 'number' ? time : this.currentTime;
-
       this._currentPlayedRange = { start: t, end: t };
     }
 
     onPlaybackStop(param = {}) {
       const { time } = param;
-
       const t = typeof time === 'number' ? time : this.currentTime;
-
       this._commitCurrentRange(t);
     }
 
@@ -53,7 +58,6 @@ export function MediaPlayedRangesMixin(Base) {
       if (start >= end) return;
 
       const EPS = this._RANGE_EPSILON;
-
       const allRanges = [...this._playedRanges, { start, end }];
 
       allRanges.sort((a, b) => a.start - b.start);

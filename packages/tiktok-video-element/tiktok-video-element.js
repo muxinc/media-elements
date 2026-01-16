@@ -1,6 +1,5 @@
 // https://developers.tiktok.com/doc/embed-player
 
-import { MediaPlayedRangesMixin } from '@media-elements/media-played-ranges-mixin';
 const EMBED_BASE = 'https://www.tiktok.com/player/v1';
 const MATCH_SRC = /tiktok\.com\/(?:player\/v1\/|share\/video\/|@[^/]+\/video\/)([0-9]+)/;
 
@@ -68,7 +67,7 @@ function serializeIframeUrl(attrs, props = {}) {
   return `${EMBED_BASE}/${srcId}?${serialize(params)}`;
 }
 
-class TikTokVideoElement extends MediaPlayedRangesMixin(globalThis.HTMLElement ?? class {}) {
+class TikTokVideoElement extends (globalThis.HTMLElement ?? class {}) {
   static getTemplateHTML = getTemplateHTML;
   static shadowRootOptions = { mode: 'open' };
   static get observedAttributes() {
@@ -85,7 +84,6 @@ class TikTokVideoElement extends MediaPlayedRangesMixin(globalThis.HTMLElement ?
   #volume = 100;
   #duration = 0;
   #iframe;
-  #seeking = false;
 
   constructor() {
     super();
@@ -181,50 +179,15 @@ class TikTokVideoElement extends MediaPlayedRangesMixin(globalThis.HTMLElement ?
 
         const eventType = EventMap[msg.value];
         if (eventType) this.dispatchEvent(new Event(eventType));
-        if (!this.#paused) {
-          this.onPlaybackStart(this.#currentTime);
-        } else {
-          this.onPlaybackStop();
-        }
         break;
       }
 
-      case 'onCurrentTime': {
-        const prevTime = this.#currentTime;
-        const newTime = msg.value.currentTime;
-        const delta = newTime - prevTime;
-
-        if (!this.#paused && (delta > 5 || delta < -0.2)) {
-          if (!this.#seeking) {
-            this.#seeking = true;
-            this.onSeeking();
-            this.dispatchEvent(new Event('seeking'));
-          }
-        } else if (this.#seeking) {
-          this.#seeking = false;
-          this.onSeeked({ time: newTime });
-          this.dispatchEvent(new Event('seeked'));
-        }
-        this.#currentTime = newTime;
+      case 'onCurrentTime':
+        this.#currentTime = msg.value.currentTime;
         this.#duration = msg.value.duration;
-
         this.dispatchEvent(new Event('durationchange'));
         this.dispatchEvent(new Event('timeupdate'));
-
-        if (!this.#paused) {
-          const prevEnd = this._currentPlayedRange?.end ?? 0;
-          const jump = Math.abs(this.#currentTime - prevEnd);
-          if (!this._currentPlayedRange || (this.#seeking && jump > 0.5)) {
-            this._currentPlayedRange = { start: this.#currentTime, end: this.#currentTime };
-            this._playedRanges.push(this._currentPlayedRange);
-          } else {
-            if (this.#currentTime >= prevEnd || prevEnd - this.#currentTime < 0.3) {
-              this._currentPlayedRange.end = this.#currentTime;
-            }
-          }
-        }
         break;
-      }
 
       case 'onVolumeChange':
         this.#volume = msg.value;

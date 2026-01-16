@@ -269,8 +269,7 @@ class YoutubeVideoElement extends MediaPlayedRangesMixin(globalThis.HTMLElement 
       ) {
         if (!playFired) {
           playFired = true;
-          this.dispatchEvent(new Event('play'));
-          this.onPlaybackStart({ time: this.currentTime });
+          this.dispatchEvent(new Event('play'));   
         }
         const captionList = this.api.getOption('captions', 'tracklist') || [];
 
@@ -288,7 +287,6 @@ class YoutubeVideoElement extends MediaPlayedRangesMixin(globalThis.HTMLElement 
         if (this.seeking) {
           this.#seeking = false;
           this.#seekComplete?.resolve();
-          this.onSeeked({ time: this.currentTime });
           this.dispatchEvent(new Event('seeked'));
         }
         this.#readyState = 3; // HTMLMediaElement.HAVE_FUTURE_DATA
@@ -297,17 +295,15 @@ class YoutubeVideoElement extends MediaPlayedRangesMixin(globalThis.HTMLElement 
         const diff = Math.abs(this.currentTime - lastCurrentTime);
         if (!this.seeking && diff > 0.1) {
           this.#seeking = true;
-          this.onSeeking();
           this.dispatchEvent(new Event('seeking'));
         }
         playFired = false;
-        this.onPlaybackStop();
         this.dispatchEvent(new Event('pause'));
       }
       if (state === YT.PlayerState.ENDED) {
         playFired = false;
         this.dispatchEvent(new Event('pause'));
-        this.onPlaybackStop();
+
         this.dispatchEvent(new Event('ended'));
 
         if (this.loop) {

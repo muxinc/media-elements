@@ -6,6 +6,11 @@ export interface PlayedRange {
 export interface MediaPlayedRangesMixinHost {
   currentTime: number;
   paused: boolean;
+  addEventListener(
+    type: string,
+    listener: EventListenerOrEventListenerObject,
+    options?: boolean | AddEventListenerOptions
+  ): void;
 }
 
 export type Constructor<T = {}> = new (...args: any[]) => T;
@@ -31,11 +36,6 @@ export function MediaPlayedRangesMixin<
 
     /** Whether the media is currently seeking */
     _seeking: boolean;
-
-    onPlaybackStart(param?: PlaybackEventParam): void;
-    onSeeking(): void;
-    onSeeked(param?: PlaybackEventParam): void;
-    onPlaybackStop(param?: PlaybackEventParam): void;
 
     addPlayedRange(start: number, end: number): void;
 

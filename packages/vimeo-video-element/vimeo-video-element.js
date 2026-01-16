@@ -157,8 +157,6 @@ class VimeoVideoElement extends MediaPlayedRangesMixin(globalThis.HTMLElement ??
     this.#readyState = 0;
     this.#videoWidth = NaN;
     this.#videoHeight = NaN;
-    this._playedRanges = [];
-    this._currentPlayedRange = null;
     this.dispatchEvent(new Event('emptied'));
 
     let oldApi = this.api;
@@ -263,7 +261,6 @@ class VimeoVideoElement extends MediaPlayedRangesMixin(globalThis.HTMLElement ??
       if (!this.#paused) return;
       this.#paused = false;
       this.dispatchEvent(new Event('play'));
-      this.onPlaybackStart({ time: this.#currentTime });
     });
 
     this.api.on('playing', () => {
@@ -280,11 +277,7 @@ class VimeoVideoElement extends MediaPlayedRangesMixin(globalThis.HTMLElement ??
 
     this.api.on('seeked', async () => {
       this.#seeking = false;
-
-      const t = await this.api.getCurrentTime().catch(() => this.#currentTime);
-      this.#currentTime = t;
-      this.onSeeked({ time: t });
-
+      this.#currentTime = await this.api.getCurrentTime().catch(() => this.#currentTime);
       this.dispatchEvent(new Event('seeked'));
     });
 
@@ -292,14 +285,12 @@ class VimeoVideoElement extends MediaPlayedRangesMixin(globalThis.HTMLElement ??
       this.#paused = true;
       this.dispatchEvent(new Event('pause'));
       this.#paused = true;
-      this.onPlaybackStop();
     });
 
     this.api.on('ended', () => {
       this.#paused = true;
       this.dispatchEvent(new Event('ended'));
       this.#paused = true;
-      this.onPlaybackStop();
     });
 
     this.api.on('ratechange', ({ playbackRate }) => {
