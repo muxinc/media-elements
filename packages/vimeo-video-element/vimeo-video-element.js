@@ -284,13 +284,11 @@ class VimeoVideoElement extends MediaPlayedRangesMixin(globalThis.HTMLElement ??
     this.api.on('pause', () => {
       this.#paused = true;
       this.dispatchEvent(new Event('pause'));
-      this.#paused = true;
     });
 
     this.api.on('ended', () => {
       this.#paused = true;
       this.dispatchEvent(new Event('ended'));
-      this.#paused = true;
     });
 
     this.api.on('ratechange', ({ playbackRate }) => {

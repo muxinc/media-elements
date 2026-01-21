@@ -269,7 +269,7 @@ class YoutubeVideoElement extends MediaPlayedRangesMixin(globalThis.HTMLElement 
       ) {
         if (!playFired) {
           playFired = true;
-          this.dispatchEvent(new Event('play'));   
+          this.dispatchEvent(new Event('play'));
         }
         const captionList = this.api.getOption('captions', 'tracklist') || [];
 
