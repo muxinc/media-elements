@@ -1,5 +1,5 @@
 // https://github.com/vimeo/player.js
-import { MediaPlayedRangesMixin } from '@media-elements/media-played-ranges-mixin';
+import { MediaPlayedRangesMixin } from 'media-played-ranges-mixin';
 import VimeoPlayerAPI from '@vimeo/player/dist/player.es.js';
 const EMBED_VIDEO_BASE = 'https://player.vimeo.com/video';
 const EMBED_EVENT_BASE = 'https://vimeo.com/event';

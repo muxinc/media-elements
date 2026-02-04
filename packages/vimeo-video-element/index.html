@@ -20,11 +20,16 @@
 <script type="importmap">
   {
     "imports": {
-      "@vimeo/player/": "https://cdn.jsdelivr.net/npm/@vimeo/player/"
+      "media-played-ranges-mixin": "https://cdn.jsdelivr.net/npm/media-played-ranges-mixin@0.1.0/+esm",
+      "@vimeo/player/": "https://cdn.jsdelivr.net/npm/@vimeo/player/",
+      "vimeo-video-element": "./vimeo-video-element.js"
     }
   }
 </script>
-<script type="module" src="./vimeo-video-element.js"></script>
+
+<script type="module">
+  import 'vimeo-video-element';
+</script>
 <script type="module" src="https://cdn.jsdelivr.net/npm/media-chrome/+esm"></script>
 <script type="module" src="https://cdn.jsdelivr.net/npm/media-chrome/dist/menu/+esm"></script>
 

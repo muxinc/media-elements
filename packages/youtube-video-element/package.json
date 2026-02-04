@@ -62,5 +62,8 @@
     "player",
     "web component",
     "custom element"
-  ]
+  ],
+  "dependencies": {
+    "media-played-ranges-mixin": "^0.1.0"
+  }
 }

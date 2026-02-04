@@ -1,5 +1,5 @@
 {
-  "name": "@media-elements/media-played-ranges-mixin",
+  "name": "media-played-ranges-mixin",
   "version": "0.1.0",
   "description": "Mixin to track played ranges for media elements",
   "author": "@muxinc",
