@@ -36,6 +36,7 @@ export default class CustomVideoElement extends HTMLVideoElement {
     responsive?: boolean;
     speed?: boolean;
     start_time?: number;
+    referrerpolicy?: string;
     text_track?: string;
     title?: boolean;
     transcript?: boolean;

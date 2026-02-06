@@ -19,6 +19,10 @@ function getTemplateHTML(attrs, props = {}) {
     iframeAttrs['data-config'] = JSON.stringify(props.config);
   }
 
+  if (props.config?.referrerpolicy) {
+    iframeAttrs.referrerpolicy = props.config.referrerpolicy;
+  }
+
   return /*html*/`
     <style>
       :host {
