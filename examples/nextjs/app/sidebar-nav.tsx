@@ -1,7 +1,7 @@
 'use client'
 
 import { usePathname } from 'next/navigation'
-import Link from 'next/link';
+import Link from './link';
 
 export default function SidebarNav() {
   const pathname = usePathname()
@@ -24,6 +24,9 @@ export default function SidebarNav() {
         <Link className={`link ${pathname === '/youtube-video' ? 'active' : ''}`} href="/youtube-video">youtube-video</Link>
       </li>
       <li>
+        <Link className={`link ${pathname === '/tiktok-video' ? 'active' : ''}`} href="/tiktok-video">tiktok-video</Link>
+      </li>
+      <li>
         <Link className={`link ${pathname === '/vimeo-video' ? 'active' : ''}`} href="/vimeo-video">vimeo-video</Link>
       </li>
       <li>
@@ -37,6 +40,9 @@ export default function SidebarNav() {
       </li>
       <li>
         <Link className={`link ${pathname === '/videojs-video' ? 'active' : ''}`} href="/videojs-video">videojs-video</Link>
+      </li>
+      <li>
+        <Link className={`link ${pathname === '/twitch-video' ? 'active' : ''}`} href="/twitch-video">twitch-video</Link>
       </li>
       <li>
         <Link className={`link ${pathname === '/spotify-audio' ? 'active' : ''}`} href="/spotify-audio">spotify-audio</Link>

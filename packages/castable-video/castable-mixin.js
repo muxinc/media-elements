@@ -146,6 +146,9 @@ export const CastableMediaMixin = (superclass) =>
         if (isFragmentedMP4) {
           mediaInfo.hlsSegmentFormat = chrome.cast.media.HlsSegmentFormat.FMP4;
           mediaInfo.hlsVideoSegmentFormat = chrome.cast.media.HlsVideoSegmentFormat.FMP4;
+        } else if (segmentFormat?.includes('ts')) {
+          mediaInfo.hlsSegmentFormat = chrome.cast.media.HlsSegmentFormat.TS;
+          mediaInfo.hlsVideoSegmentFormat = chrome.cast.media.HlsVideoSegmentFormat.TS;
         }
       }
 

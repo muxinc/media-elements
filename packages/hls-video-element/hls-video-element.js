@@ -6,9 +6,16 @@ const HlsVideoMixin = (superclass) => {
   return class HlsVideo extends superclass {
     static shadowRootOptions = { ...superclass.shadowRootOptions };
 
-    static getTemplateHTML = (attrs) => {
+    static getTemplateHTML = (attrs, props = {}) => {
       const { src, ...rest } = attrs; // eslint-disable-line no-unused-vars
-      return superclass.getTemplateHTML(rest);
+      // Serialize hls.js config in script tag so it can be quickly accessed on first load.
+      // Required for React SSR because the custom element is initialized long before React client render.
+      return `
+        <script type="application/json" id="config">
+          ${JSON.stringify(props.config || {})}
+        </script>
+        ${superclass.getTemplateHTML(rest)}
+      `;
     };
 
     #airplaySourceEl = null;
@@ -53,14 +60,23 @@ const HlsVideoMixin = (superclass) => {
     }
 
     async load() {
+      const isFirstLoad = !this.api;
+
       this.#destroy();
 
       if (!this.src) {
         return;
       }
 
+      if (isFirstLoad && !this.#config) {
+        this.#config = JSON.parse(this.shadowRoot.getElementById('config')?.textContent || '{}');
+      }
+
       // Prefer using hls.js over native if it is supported.
       if (Hls.isSupported()) {
+        // Wait 1 tick to allow other attributes to be set.
+        await Promise.resolve();
+
         this.api = new Hls({
           // Mimic the media element with an Infinity duration for live streams.
           liveDurationInfinity: true,
@@ -69,9 +85,6 @@ const HlsVideoMixin = (superclass) => {
           // Custom configuration for hls.js.
           ...this.config,
         });
-
-        // Wait 1 tick to allow other attributes to be set.
-        await Promise.resolve();
 
         this.api.loadSource(this.src);
         this.api.attachMedia(this.nativeEl);
@@ -201,6 +214,26 @@ const HlsVideoMixin = (superclass) => {
             if (rendition.id && !levelIds.includes(rendition.id)) {
               videoTrack.removeRendition(rendition);
             }
+          }
+        });
+
+        let lastFailedLevel = null;
+
+        this.api.on(Hls.Events.ERROR, (event, data) => {
+          if (data.type === Hls.ErrorTypes.NETWORK_ERROR && data.details === Hls.ErrorDetails.FRAG_LOAD_ERROR) {
+            lastFailedLevel = data.frag.level;
+          }
+        });
+
+        this.api.on(Hls.Events.LEVEL_SWITCHED, (event, data) => {
+          const newLevel = data.level;
+
+          if (lastFailedLevel !== null && newLevel < lastFailedLevel) {
+            console.warn(
+              `⚠️ hls.js downgraded quality from level ${lastFailedLevel} to ${newLevel} due to fragment load failure.`
+            );
+            this.videoRenditions.selectedIndex = newLevel;
+            lastFailedLevel = null;
           }
         });
 

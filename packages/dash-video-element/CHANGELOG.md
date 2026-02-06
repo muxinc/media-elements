@@ -5,6 +5,66 @@
 [1]: https://www.npmjs.com/package/dash-video-element?activeTab=versions
 
 
+## [0.3.1](https://github.com/muxinc/media-elements/compare/dash-video-element@0.3.0...dash-video-element@0.3.1) (2025-11-25)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * build-react-wrapper bumped from ^0.2.3 to ^0.2.4
+
+## [0.3.0](https://github.com/muxinc/media-elements/compare/dash-video-element@0.2.0...dash-video-element@0.3.0) (2025-11-07)
+
+
+### Features
+
+* Add support for MPD Tiles of thumbnail images in &lt;dash-video/&gt; element ([#177](https://github.com/muxinc/media-elements/issues/177)) ([0b59b78](https://github.com/muxinc/media-elements/commit/0b59b786c0b7064fcee660aa17e373e08f9931d9))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * media-tracks bumped from ^0.3.3 to ^0.3.4
+
+## [0.2.0](https://github.com/muxinc/media-elements/compare/dash-video-element@0.1.6...dash-video-element@0.2.0) (2025-08-08)
+
+
+### Features
+
+* : Enable multiple renditions in dash video element ([#148](https://github.com/muxinc/media-elements/issues/148)) ([2f5655c](https://github.com/muxinc/media-elements/commit/2f5655c2bf415132e180d7c05d0f9c0a431072ae))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * build-react-wrapper bumped from ^0.2.2 to ^0.2.3
+
+## [0.1.6](https://github.com/muxinc/media-elements/compare/dash-video-element@0.1.5...dash-video-element@0.1.6) (2025-07-14)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * build-react-wrapper bumped from ^0.2.1 to ^0.2.2
+
+## [0.1.5](https://github.com/muxinc/media-elements/compare/dash-video-element@0.1.4...dash-video-element@0.1.5) (2025-06-26)
+
+
+### Bug Fixes
+
+* upgrade dependencies ([#130](https://github.com/muxinc/media-elements/issues/130)) ([afb6797](https://github.com/muxinc/media-elements/commit/afb6797342db3be3d173957d44df49fd26ffafc5))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * build-react-wrapper bumped from ^0.2.0 to ^0.2.1
+
 ## [0.1.4](https://github.com/muxinc/media-elements/compare/dash-video-element@0.1.3...dash-video-element@0.1.4) (2025-06-09)
 
 

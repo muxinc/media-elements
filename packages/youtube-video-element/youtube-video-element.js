@@ -1,13 +1,51 @@
 // https://developers.google.com/youtube/iframe_api_reference
 
 const EMBED_BASE = 'https://www.youtube.com/embed';
+const EMBED_BASE_NOCOOKIE = 'https://www.youtube-nocookie.com/embed';
 const API_URL = 'https://www.youtube.com/iframe_api';
 const API_GLOBAL = 'YT';
 const API_GLOBAL_READY = 'onYouTubeIframeAPIReady';
-const MATCH_SRC =
-  /(?:youtu\.be\/|youtube\.com\/(?:shorts\/|embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})/;
+const VIDEO_MATCH_SRC =
+  /(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=|shorts\/|live\/))((\w|-){11})/;
+const PLAYLIST_MATCH_SRC =
+  /(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/.*?[?&]list=)([\w_-]+)/;
+
+/**
+ * Parses the `t` parameter from a YouTube URL and converts it to seconds.
+ * Supports formats like: t=171, t=171s, t=2m51s, t=2m
+ * @param {string} url - The YouTube URL
+ * @returns {number|undefined} - The start time in seconds, or undefined if not found
+ */
+function parseStartTime(url) {
+  if (!url) return;
+  
+  // Match t parameter: t=171, t=171s, t=2m51s, t=2m, etc.
+  const tMatch = url.match(/[?&]t=([\dms]+)/i);
+  if (!tMatch) return;
+  
+  const tValue = tMatch[1].toLowerCase();
+  let totalSeconds = 0;
+  let hasValue = false;
+  
+  // Parse minutes (e.g., "2m" or "2m51s")
+  const minutesMatch = tValue.match(/(\d+)m/);
+  if (minutesMatch) {
+    totalSeconds += parseInt(minutesMatch[1], 10) * 60;
+    hasValue = true;
+  }
+  
+  // Parse seconds (e.g., "171s" or "51s" or just "171")
+  const secondsMatch = tValue.match(/(\d+)s?$/);
+  if (secondsMatch) {
+    totalSeconds += parseInt(secondsMatch[1], 10);
+    hasValue = true;
+  }
+  
+  return hasValue ? totalSeconds : undefined;
+}
 
 function getTemplateHTML(attrs, props = {}) {
+
   const iframeAttrs = {
     src: serializeIframeUrl(attrs, props),
     frameborder: 0,
@@ -15,6 +53,10 @@ function getTemplateHTML(attrs, props = {}) {
     height: '100%',
     allow: 'accelerometer; fullscreen; autoplay; encrypted-media; gyroscope; picture-in-picture',
   };
+
+  if (props.config?.referrerpolicy) {
+    iframeAttrs.referrerpolicy = props.config.referrerpolicy;
+  }
 
   if (props.config) {
     // Serialize YouTube config on iframe so it can be quickly accessed on first load.
@@ -44,8 +86,9 @@ function getTemplateHTML(attrs, props = {}) {
 function serializeIframeUrl(attrs, props) {
   if (!attrs.src) return;
 
-  const matches = attrs.src.match(MATCH_SRC);
-  const srcId = matches && matches[1];
+  const embedBase = attrs.src.includes('-nocookie')
+    ? EMBED_BASE_NOCOOKIE
+    : EMBED_BASE;
 
   const params = {
     // ?controls=true is enabled by default in the iframe
@@ -58,14 +101,32 @@ function serializeIframeUrl(attrs, props) {
     // https://developers.google.com/youtube/player_parameters#Parameters
     // origin: globalThis.location?.origin,
     enablejsapi: 1,
+    cc_load_policy: 1,
     showinfo: 0,
     rel: 0,
     iv_load_policy: 3,
     modestbranding: 1,
+    start: parseStartTime(attrs.src),
     ...props.config,
   };
 
-  return `${EMBED_BASE}/${srcId}?${serialize(params)}`;
+  // If the src is a video, we use the video ID.
+  if (VIDEO_MATCH_SRC.test(attrs.src)) {
+    const matches = attrs.src.match(VIDEO_MATCH_SRC);
+    const srcId = matches && matches[1];
+    return `${embedBase}/${srcId}?${serialize(params)}`;
+  }
+
+  // Otherwise, we use the playlist ID.
+  const matches = attrs.src.match(PLAYLIST_MATCH_SRC);
+  const playlistId = matches && matches[1];
+  const extendedParams = {
+    listType: 'playlist',
+    list: playlistId,
+    ...params
+  }
+  
+  return `${embedBase}?${serialize(extendedParams)}`;
 }
 
 class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
@@ -92,6 +153,8 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
   isLoaded = false;
   #error = null;
   #config = null;
+  #textTracksVideo = null;
+  #initialVolume = 1;
 
   constructor() {
     super();
@@ -137,6 +200,14 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
       return;
     }
 
+    this.#textTracksVideo = document.createElement('video');
+    this.textTracks = this.#textTracksVideo.textTracks;
+
+    this.textTracks.addEventListener('change', () => {
+      const active = Array.from(this.textTracks).find((t) => t.mode === 'showing');
+      this.api?.setOption('captions', 'track', active ? { languageCode: active.language } : {});
+    });
+
     this.dispatchEvent(new Event('loadstart'));
 
     let iframe = this.shadowRoot.querySelector('iframe');
@@ -158,6 +229,12 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
           this.#readyState = 1; // HTMLMediaElement.HAVE_METADATA
           this.dispatchEvent(new Event('loadedmetadata'));
           this.dispatchEvent(new Event('durationchange'));
+          
+          // Force the initial volume if it was set
+          if (this.#initialVolume !== 1) {
+            this.api?.setVolume(this.#initialVolume * 100);
+          }
+          
           this.dispatchEvent(new Event('volumechange'));
           this.dispatchEvent(new Event('loadcomplete'));
           this.isLoaded = true;
@@ -194,6 +271,16 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
           playFired = true;
           this.dispatchEvent(new Event('play'));
         }
+        const captionList = this.api.getOption('captions', 'tracklist') || [];
+
+        captionList.forEach((t) => {
+          if (![...this.textTracks].some((tt) => tt.language === t.languageCode)) {
+            this.#textTracksVideo.addTextTrack('subtitles', t.displayName, t.languageCode);
+          }
+          this.textTracks = this.#textTracksVideo.textTracks;
+        });
+
+        this.dispatchEvent(new Event('loadstart'));
       }
 
       if (state === YT.PlayerState.PLAYING) {
@@ -229,6 +316,8 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
     });
 
     this.api.addEventListener('onVolumeChange', () => {
+      const apiVolume = this.api?.getVolume() / 100;
+      this.#initialVolume = apiVolume;
       this.dispatchEvent(new Event('volumechange'));
     });
 
@@ -441,13 +530,16 @@ class YoutubeVideoElement extends (globalThis.HTMLElement ?? class {}) {
 
   set volume(val) {
     if (this.volume == val) return;
+    this.#initialVolume = val;
     this.loadComplete.then(() => {
       this.api?.setVolume(val * 100);
     });
   }
 
   get volume() {
-    if (!this.isLoaded) return 1;
+    if (!this.isLoaded) {
+      return this.#initialVolume;
+    }
     return this.api?.getVolume() / 100;
   }
 

@@ -1,8 +1,8 @@
 // https://github.com/vimeo/player.js
 import VimeoPlayerAPI from '@vimeo/player/dist/player.es.js';
-
-const EMBED_BASE = 'https://player.vimeo.com/video';
-const MATCH_SRC = /vimeo\.com\/(?:video\/)?(\d+)(?:\/([\w-]+))?/;
+const EMBED_VIDEO_BASE = 'https://player.vimeo.com/video';
+const EMBED_EVENT_BASE = 'https://vimeo.com/event';
+const MATCH_SRC = /vimeo\.com\/(video\/|event\/)?(\d+)(?:\/([\w-]+))?/;
 
 function getTemplateHTML(attrs, props = {}) {
   const iframeAttrs = {
@@ -46,11 +46,12 @@ function getTemplateHTML(attrs, props = {}) {
 
 function serializeIframeUrl(attrs, props) {
   if (!attrs.src) return;
+  let url = new URL(attrs.src);
 
   const matches = attrs.src.match(MATCH_SRC);
-  const srcId = matches && matches[1];
-  const hParam = matches && matches[2];
-
+  const urlType = matches?.[1]; // 'video/' or 'event/' or undefined
+  const srcId = matches?.[2];
+  const hParam = url.searchParams.get("h") || matches?.[3];
   const params = {
     // ?controls=true is enabled by default in the iframe
     controls: attrs.controls === '' ? null : 0,
@@ -62,10 +63,16 @@ function serializeIframeUrl(attrs, props) {
     transparent: false,
     autopause: attrs.autopause,
     h: hParam, // This param is required when the video is Unlisted.
-    ...props.config
+    ...props.config,
   };
 
-  return `${EMBED_BASE}/${srcId}?${serialize(params)}`;
+  // Handle events
+  if (urlType === 'event/') {
+    return `${EMBED_EVENT_BASE}/${srcId}/embed?${serialize(params)}`;
+  }
+
+  // Handle videos
+  return `${EMBED_VIDEO_BASE}/${srcId}?${serialize(params)}`;
 }
 
 class VimeoVideoElement extends (globalThis.HTMLElement ?? class {}) {
@@ -103,6 +110,22 @@ class VimeoVideoElement extends (globalThis.HTMLElement ?? class {}) {
   constructor() {
     super();
     this.#upgradeProperty('config');
+  }
+
+  requestFullscreen() {
+    return this.api?.requestFullscreen?.();
+  }
+
+  exitFullscreen() {
+    return this.api?.exitFullscreen?.();
+  }
+
+  requestPictureInPicture() {
+    return this.api?.requestPictureInPicture?.();
+  }
+
+  exitPictureInPicture() {
+    return this.api?.exitPictureInPicture?.();
   }
 
   get config() {
@@ -204,6 +227,23 @@ class VimeoVideoElement extends (globalThis.HTMLElement ?? class {}) {
     }
 
     this.api = new VimeoPlayerAPI(iframe);
+
+    const textTracksVideo = document.createElement('video');
+    this.textTracks = textTracksVideo.textTracks;
+    this.api.getTextTracks().then((vimeoTracks) => {
+      vimeoTracks.forEach((t) => {
+        textTracksVideo.addTextTrack(t.kind, t.label, t.language);
+      });
+    });
+    this.textTracks.addEventListener('change', () => {
+      const active = Array.from(this.textTracks).find((t) => t.mode === 'showing');
+      if (active) {
+        this.api.enableTextTrack(active.language, active.kind);
+      } else {
+        this.api.disableTextTrack();
+      }
+    });
+
     const onceLoaded = () => {
       this.api.off('loaded', onceLoaded);
       onLoaded();
@@ -402,7 +442,7 @@ class VimeoVideoElement extends (globalThis.HTMLElement ?? class {}) {
     if (this.currentTime == val) return;
     this.#currentTime = val;
     this.loadComplete.then(() => {
-      this.api?.setCurrentTime(val);
+      this.api?.setCurrentTime(val).catch(() => {});
     });
   }
 
@@ -432,7 +472,7 @@ class VimeoVideoElement extends (globalThis.HTMLElement ?? class {}) {
     if (this.muted == val) return;
     this.#muted = val;
     this.loadComplete.then(() => {
-      this.api?.setMuted(val);
+      this.api?.setMuted(val).catch(() => {});
     });
   }
 
@@ -444,7 +484,7 @@ class VimeoVideoElement extends (globalThis.HTMLElement ?? class {}) {
     if (this.playbackRate == val) return;
     this.#playbackRate = val;
     this.loadComplete.then(() => {
-      this.api?.setPlaybackRate(val);
+      this.api?.setPlaybackRate(val).catch(() => {});
     });
   }
 
@@ -474,7 +514,7 @@ class VimeoVideoElement extends (globalThis.HTMLElement ?? class {}) {
     if (this.volume == val) return;
     this.#volume = val;
     this.loadComplete.then(() => {
-      this.api?.setVolume(val);
+      this.api?.setVolume(val).catch(() => {});
     });
   }
 
@@ -575,11 +615,11 @@ function createTimeRanges(start, end) {
 function createTimeRangesObj(ranges) {
   Object.defineProperties(ranges, {
     start: {
-      value: i => ranges[i][0]
+      value: (i) => ranges[i][0],
     },
     end: {
-      value: i => ranges[i][1]
-    }
+      value: (i) => ranges[i][1],
+    },
   });
   return ranges;
 }

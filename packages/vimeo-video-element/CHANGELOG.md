@@ -5,6 +5,89 @@
 [1]: https://www.npmjs.com/package/vimeo-video-element?activeTab=versions
 
 
+## [1.6.3](https://github.com/muxinc/media-elements/compare/vimeo-video-element@1.6.2...vimeo-video-element@1.6.3) (2025-12-08)
+
+
+### Bug Fixes
+
+* support for unlisted Vimeo videos ([#195](https://github.com/muxinc/media-elements/issues/195)) ([37ed558](https://github.com/muxinc/media-elements/commit/37ed5589319debe1a75f105cdf70de2af5e20cef))
+
+## [1.6.2](https://github.com/muxinc/media-elements/compare/vimeo-video-element@1.6.1...vimeo-video-element@1.6.2) (2025-11-25)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * build-react-wrapper bumped from ^0.2.3 to ^0.2.4
+
+## [1.6.1](https://github.com/muxinc/media-elements/compare/vimeo-video-element@1.6.0...vimeo-video-element@1.6.1) (2025-11-07)
+
+
+### Bug Fixes
+
+* correct url generation for vimeo events ([#183](https://github.com/muxinc/media-elements/issues/183)) ([1d35378](https://github.com/muxinc/media-elements/commit/1d3537865cca673939562e48c37fa8c224278df4))
+
+## [1.6.0](https://github.com/muxinc/media-elements/compare/vimeo-video-element@1.5.5...vimeo-video-element@1.6.0) (2025-09-24)
+
+
+### Features
+
+* **vimeo:** add TextTrack support using Vimeo API and add media-tracks integration ([#163](https://github.com/muxinc/media-elements/issues/163)) ([fdf8c12](https://github.com/muxinc/media-elements/commit/fdf8c12b63b16a0d76a389b76a2b5a9ed4e153ba))
+
+## [1.5.5](https://github.com/muxinc/media-elements/compare/vimeo-video-element@1.5.4...vimeo-video-element@1.5.5) (2025-08-25)
+
+
+### Bug Fixes
+
+* update MATCH_SRC to include vimeo/event/:id URLs. ([#159](https://github.com/muxinc/media-elements/issues/159)) ([9db6656](https://github.com/muxinc/media-elements/commit/9db6656923b2ceb667258bf8171b5671a4f4033b))
+
+## [1.5.4](https://github.com/muxinc/media-elements/compare/vimeo-video-element@1.5.3...vimeo-video-element@1.5.4) (2025-08-08)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * build-react-wrapper bumped from ^0.2.2 to ^0.2.3
+
+## [1.5.3](https://github.com/muxinc/media-elements/compare/vimeo-video-element@1.5.2...vimeo-video-element@1.5.3) (2025-07-16)
+
+
+### Bug Fixes
+
+* vimeo setter error due to nil value ([42ab3e7](https://github.com/muxinc/media-elements/commit/42ab3e72a46662fb597e3150adad66396fbc3639))
+
+## [1.5.2](https://github.com/muxinc/media-elements/compare/vimeo-video-element@1.5.1...vimeo-video-element@1.5.2) (2025-07-14)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * build-react-wrapper bumped from ^0.2.1 to ^0.2.2
+
+## [1.5.1](https://github.com/muxinc/media-elements/compare/vimeo-video-element@1.5.0...vimeo-video-element@1.5.1) (2025-06-26)
+
+
+### Bug Fixes
+
+* upgrade dependencies ([#130](https://github.com/muxinc/media-elements/issues/130)) ([afb6797](https://github.com/muxinc/media-elements/commit/afb6797342db3be3d173957d44df49fd26ffafc5))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * build-react-wrapper bumped from ^0.2.0 to ^0.2.1
+
+## [1.5.0](https://github.com/muxinc/media-elements/compare/vimeo-video-element@1.4.1...vimeo-video-element@1.5.0) (2025-06-23)
+
+
+### Features
+
+* Vimeo fullscreen & PiP via API to avoid Apple iframe restriction ([#122](https://github.com/muxinc/media-elements/issues/122)) ([bff8f09](https://github.com/muxinc/media-elements/commit/bff8f09e9f4799986c29b11b96df5117efb9b74a))
+
 ## [1.4.1](https://github.com/muxinc/media-elements/compare/vimeo-video-element@1.4.0...vimeo-video-element@1.4.1) (2025-03-14)
 
 

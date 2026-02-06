@@ -7,6 +7,13 @@ function createVideoElement() {
   ></youtube-video>`);
 }
 
+function createPlaylistElement() {
+  return fixture(`<youtube-video  
+    src="https://www.youtube.com/playlist?list=PLRfhDHeBTBJ7MU5DX4P_oBIRN457ah9lA"
+    muted
+  ></youtube-video>`);
+}
+
 test('has default video props', async function (t) {
   const video = await createVideoElement();
 
@@ -121,6 +128,126 @@ test('play promise', async function (t) {
     console.warn(error);
   }
   t.ok(!video.paused, 'is playing after video.play()');
+});
+
+test('playlist', async function (t) {
+  const playlist = await createPlaylistElement();
+  await playlist.loadComplete;
+
+  t.equal(playlist.paused, true, 'is paused on initialization');
+  t.ok(!playlist.ended, 'is not ended');
+  t.ok(playlist.muted, 'is muted');
+
+  if (playlist.duration == null || Number.isNaN(playlist.duration)) {
+    await promisify(playlist.addEventListener.bind(playlist))('durationchange');
+  }
+
+  t.ok(playlist.duration > 0, `has a duration of ${playlist.duration}`);
+});
+
+test('t parameter - basic seconds', async function (t) {
+  const video = await fixture(`<youtube-video
+    src="https://www.youtube.com/watch?v=H3KSKS3TTbc&t=171"
+    muted
+  ></youtube-video>`);
+  
+  await video.loadComplete;
+  
+  const iframe = video.shadowRoot.querySelector('iframe');
+  const iframeUrl = new URL(iframe.src);
+  const startParam = iframeUrl.searchParams.get('start');
+  
+  t.equal(startParam, '171', 'start parameter is set to 171 seconds');
+});
+
+test('t parameter - youtu.be format', async function (t) {
+  const video = await fixture(`<youtube-video
+    src="https://youtu.be/H3KSKS3TTbc?t=171"
+    muted
+  ></youtube-video>`);
+  
+  await video.loadComplete;
+  
+  const iframe = video.shadowRoot.querySelector('iframe');
+  const iframeUrl = new URL(iframe.src);
+  const startParam = iframeUrl.searchParams.get('start');
+  
+  t.equal(startParam, '171', 'start parameter is set to 171 seconds from youtu.be URL');
+});
+
+test('t parameter - with seconds suffix', async function (t) {
+  const video = await fixture(`<youtube-video
+    src="https://www.youtube.com/watch?v=H3KSKS3TTbc&t=171s"
+    muted
+  ></youtube-video>`);
+  
+  await video.loadComplete;
+  
+  const iframe = video.shadowRoot.querySelector('iframe');
+  const iframeUrl = new URL(iframe.src);
+  const startParam = iframeUrl.searchParams.get('start');
+  
+  t.equal(startParam, '171', 'start parameter is set to 171 seconds from t=171s');
+});
+
+test('t parameter - minutes and seconds', async function (t) {
+  const video = await fixture(`<youtube-video
+    src="https://www.youtube.com/watch?v=H3KSKS3TTbc&t=2m51s"
+    muted
+  ></youtube-video>`);
+  
+  await video.loadComplete;
+  
+  const iframe = video.shadowRoot.querySelector('iframe');
+  const iframeUrl = new URL(iframe.src);
+  const startParam = iframeUrl.searchParams.get('start');
+  
+  t.equal(startParam, '171', 'start parameter is set to 171 seconds from t=2m51s (2*60 + 51)');
+});
+
+test('t parameter - minutes only', async function (t) {
+  const video = await fixture(`<youtube-video
+    src="https://www.youtube.com/watch?v=H3KSKS3TTbc&t=3m"
+    muted
+  ></youtube-video>`);
+  
+  await video.loadComplete;
+  
+  const iframe = video.shadowRoot.querySelector('iframe');
+  const iframeUrl = new URL(iframe.src);
+  const startParam = iframeUrl.searchParams.get('start');
+  
+  t.equal(startParam, '180', 'start parameter is set to 180 seconds from t=3m (3*60)');
+});
+
+test('t parameter - no t parameter', async function (t) {
+  const video = await fixture(`<youtube-video
+    src="https://www.youtube.com/watch?v=H3KSKS3TTbc"
+    muted
+  ></youtube-video>`);
+  
+  await video.loadComplete;
+  
+  const iframe = video.shadowRoot.querySelector('iframe');
+  const iframeUrl = new URL(iframe.src);
+  const startParam = iframeUrl.searchParams.get('start');
+  
+  t.equal(startParam, null, 'start parameter is not set when t parameter is absent');
+});
+
+test('t parameter - case insensitive', async function (t) {
+  const video = await fixture(`<youtube-video
+    src="https://www.youtube.com/watch?v=H3KSKS3TTbc&T=171"
+    muted
+  ></youtube-video>`);
+  
+  await video.loadComplete;
+  
+  const iframe = video.shadowRoot.querySelector('iframe');
+  const iframeUrl = new URL(iframe.src);
+  const startParam = iframeUrl.searchParams.get('start');
+  
+  t.equal(startParam, '171', 'start parameter is set from uppercase T parameter');
 });
 
 function delay(ms) {

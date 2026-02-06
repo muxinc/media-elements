@@ -5,6 +5,49 @@
 [1]: https://www.npmjs.com/package/wistia-video-element?activeTab=versions
 
 
+## [1.3.6](https://github.com/muxinc/media-elements/compare/wistia-video-element@1.3.5...wistia-video-element@1.3.6) (2025-11-25)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * build-react-wrapper bumped from ^0.2.3 to ^0.2.4
+
+## [1.3.5](https://github.com/muxinc/media-elements/compare/wistia-video-element@1.3.4...wistia-video-element@1.3.5) (2025-11-07)
+
+
+### Bug Fixes
+
+* race condition between play() and load() ([#180](https://github.com/muxinc/media-elements/issues/180)) ([969321e](https://github.com/muxinc/media-elements/commit/969321e454c5bc266eea63b4d020ac9899a130cd))
+
+## [1.3.4](https://github.com/muxinc/media-elements/compare/wistia-video-element@1.3.3...wistia-video-element@1.3.4) (2025-08-08)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * build-react-wrapper bumped from ^0.2.2 to ^0.2.3
+
+## [1.3.3](https://github.com/muxinc/media-elements/compare/wistia-video-element@1.3.2...wistia-video-element@1.3.3) (2025-07-14)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * build-react-wrapper bumped from ^0.2.1 to ^0.2.2
+
+## [1.3.2](https://github.com/muxinc/media-elements/compare/wistia-video-element@1.3.1...wistia-video-element@1.3.2) (2025-06-26)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * build-react-wrapper bumped from ^0.2.0 to ^0.2.1
+
 ## [1.3.1](https://github.com/muxinc/media-elements/compare/wistia-video-element@1.3.0...wistia-video-element@1.3.1) (2025-03-12)
 
 

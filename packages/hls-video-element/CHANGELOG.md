@@ -6,6 +6,69 @@
 
 
 
+## [1.5.10](https://github.com/muxinc/media-elements/compare/hls-video-element@1.5.9...hls-video-element@1.5.10) (2025-11-25)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * build-react-wrapper bumped from ^0.2.3 to ^0.2.4
+
+## [1.5.9](https://github.com/muxinc/media-elements/compare/hls-video-element@1.5.8...hls-video-element@1.5.9) (2025-11-07)
+
+
+### Bug Fixes
+
+* hls auto level switch ([#176](https://github.com/muxinc/media-elements/issues/176)) ([6ed8d0a](https://github.com/muxinc/media-elements/commit/6ed8d0a7ccdc953d8e302149e45902c8434760a9))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * media-tracks bumped from ^0.3.3 to ^0.3.4
+
+## [1.5.8](https://github.com/muxinc/media-elements/compare/hls-video-element@1.5.7...hls-video-element@1.5.8) (2025-09-19)
+
+
+### Bug Fixes
+
+* race condition, config not being set ([#167](https://github.com/muxinc/media-elements/issues/167)) ([6b6e0ee](https://github.com/muxinc/media-elements/commit/6b6e0ee9308638aac89badcfbf339419d1490aa8))
+
+## [1.5.7](https://github.com/muxinc/media-elements/compare/hls-video-element@1.5.6...hls-video-element@1.5.7) (2025-08-08)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * build-react-wrapper bumped from ^0.2.2 to ^0.2.3
+
+## [1.5.6](https://github.com/muxinc/media-elements/compare/hls-video-element@1.5.5...hls-video-element@1.5.6) (2025-07-14)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * build-react-wrapper bumped from ^0.2.1 to ^0.2.2
+
+## [1.5.5](https://github.com/muxinc/media-elements/compare/hls-video-element@1.5.4...hls-video-element@1.5.5) (2025-06-26)
+
+
+### Bug Fixes
+
+* **hls-video-element:** serialize config for SSR ([#128](https://github.com/muxinc/media-elements/issues/128)) ([80fc30e](https://github.com/muxinc/media-elements/commit/80fc30e45c1b28ffeaf3f940de072cdf46249576))
+* upgrade dependencies ([#130](https://github.com/muxinc/media-elements/issues/130)) ([afb6797](https://github.com/muxinc/media-elements/commit/afb6797342db3be3d173957d44df49fd26ffafc5))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * build-react-wrapper bumped from ^0.2.0 to ^0.2.1
+
 ## [1.5.4](https://github.com/muxinc/media-elements/compare/hls-video-element@1.5.3...hls-video-element@1.5.4) (2025-06-09)
 
 

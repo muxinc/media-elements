@@ -1,5 +1,33 @@
 # Changelog
 
+## [0.2.4](https://github.com/muxinc/media-elements/compare/build-react-wrapper@0.2.3...build-react-wrapper@0.2.4) (2025-11-25)
+
+
+### Bug Fixes
+
+* Upgrade ce-la-react ([#192](https://github.com/muxinc/media-elements/issues/192)) ([e8b8c3d](https://github.com/muxinc/media-elements/commit/e8b8c3d01d918cbb3139b1c5aa92a6d723a6398d))
+
+## [0.2.3](https://github.com/muxinc/media-elements/compare/build-react-wrapper@0.2.2...build-react-wrapper@0.2.3) (2025-08-08)
+
+
+### Bug Fixes
+
+* update ce-la-react 0.3.1 ([#157](https://github.com/muxinc/media-elements/issues/157)) ([966f1d7](https://github.com/muxinc/media-elements/commit/966f1d7d689f57b8aeea42d63467d22b390efb4e))
+
+## [0.2.2](https://github.com/muxinc/media-elements/compare/build-react-wrapper@0.2.1...build-react-wrapper@0.2.2) (2025-07-14)
+
+
+### Bug Fixes
+
+* muted prop for react wrappers ([#143](https://github.com/muxinc/media-elements/issues/143)) ([d312f39](https://github.com/muxinc/media-elements/commit/d312f392a40602312f197fb793a7a8d41b7afa61))
+
+## [0.2.1](https://github.com/muxinc/media-elements/compare/build-react-wrapper@0.2.0...build-react-wrapper@0.2.1) (2025-06-26)
+
+
+### Bug Fixes
+
+* upgrade dependencies ([#130](https://github.com/muxinc/media-elements/issues/130)) ([afb6797](https://github.com/muxinc/media-elements/commit/afb6797342db3be3d173957d44df49fd26ffafc5))
+
 ## [0.2.0](https://github.com/muxinc/media-elements/compare/build-react-wrapper@0.1.8...build-react-wrapper@0.2.0) (2025-03-12)
 
 

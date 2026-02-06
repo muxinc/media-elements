@@ -12,12 +12,9 @@ export default function Page() {
       <section>
         <Player
           as={DashVideo}
-          className="video"
-          src="https://player.vimeo.com/external/648359100.mpd?s=a4419a2e2113cc24a87aef2f93ef69a8e4c8fb0c"
-          poster="https://image.mux.com/jtWZbHQ013SLyISc9LbIGn8f4c3lWan00qOkoPMZEXmcU/thumbnail.webp?time=0"
-          controls
-          playsInline
-        ></Player>
+          src="https://dash.akamaized.net/akamai/bbb_30fps/bbb_30fps.mpd"
+          poster="https://image.mux.com/Sc89iWAyNkhJ3P1rQ02nrEdCFTnfT01CZ2KmaEcxXfB008/thumbnail.webp?time=13"
+        />
       </section>
     </>
   );

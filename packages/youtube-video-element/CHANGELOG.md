@@ -5,6 +5,75 @@
 [1]: https://www.npmjs.com/package/youtube-video-element?activeTab=versions
 
 
+## [1.8.1](https://github.com/muxinc/media-elements/compare/youtube-video-element@1.8.0...youtube-video-element@1.8.1) (2025-11-25)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * build-react-wrapper bumped from ^0.2.3 to ^0.2.4
+
+## [1.8.0](https://github.com/muxinc/media-elements/compare/youtube-video-element@1.7.0...youtube-video-element@1.8.0) (2025-11-13)
+
+
+### Features
+
+* Add referrerPolicy support in youtube video ([#189](https://github.com/muxinc/media-elements/issues/189)) ([7345853](https://github.com/muxinc/media-elements/commit/734585340300f3c80b7f1775e6174ecba8720fda))
+
+## [1.7.0](https://github.com/muxinc/media-elements/compare/youtube-video-element@1.6.2...youtube-video-element@1.7.0) (2025-11-07)
+
+
+### Features
+
+* **youtube:** add TextTrack support using Youtube API and add media-tracks integration ([#166](https://github.com/muxinc/media-elements/issues/166)) ([c76eae6](https://github.com/muxinc/media-elements/commit/c76eae6d349bd42b87b157ea02302d7015af4d7a))
+
+
+### Bug Fixes
+
+* correct commit message format for volumechange youtube ([#179](https://github.com/muxinc/media-elements/issues/179)) ([#188](https://github.com/muxinc/media-elements/issues/188)) ([eb8ff39](https://github.com/muxinc/media-elements/commit/eb8ff39d23f64072da8562aae2957c74d2491fa3))
+
+## [1.6.2](https://github.com/muxinc/media-elements/compare/youtube-video-element@1.6.1...youtube-video-element@1.6.2) (2025-08-08)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * build-react-wrapper bumped from ^0.2.2 to ^0.2.3
+
+## [1.6.1](https://github.com/muxinc/media-elements/compare/youtube-video-element@1.6.0...youtube-video-element@1.6.1) (2025-07-14)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * build-react-wrapper bumped from ^0.2.1 to ^0.2.2
+
+## [1.6.0](https://github.com/muxinc/media-elements/compare/youtube-video-element@1.5.3...youtube-video-element@1.6.0) (2025-07-02)
+
+
+### Features
+
+* **youtube-video:** add playlist support ([#134](https://github.com/muxinc/media-elements/issues/134)) ([34f7469](https://github.com/muxinc/media-elements/commit/34f7469b4b8204d92346ccb911c6a734632621d3))
+
+## [1.5.3](https://github.com/muxinc/media-elements/compare/youtube-video-element@1.5.2...youtube-video-element@1.5.3) (2025-06-26)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * build-react-wrapper bumped from ^0.2.0 to ^0.2.1
+
+## [1.5.2](https://github.com/muxinc/media-elements/compare/youtube-video-element@1.5.1...youtube-video-element@1.5.2) (2025-06-26)
+
+
+### Bug Fixes
+
+* **youtube-video-element:** support -nocookie ([#125](https://github.com/muxinc/media-elements/issues/125)) ([159199d](https://github.com/muxinc/media-elements/commit/159199d819273b201c7ce370801724b4167d7949))
+
 ## [1.5.1](https://github.com/muxinc/media-elements/compare/youtube-video-element@1.5.0...youtube-video-element@1.5.1) (2025-03-14)
 
 
