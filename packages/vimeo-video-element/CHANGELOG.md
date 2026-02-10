@@ -5,6 +5,18 @@
 [1]: https://www.npmjs.com/package/vimeo-video-element?activeTab=versions
 
 
+## [1.7.0](https://github.com/muxinc/media-elements/compare/vimeo-video-element@1.6.3...vimeo-video-element@1.7.0) (2026-02-10)
+
+
+### Features
+
+* Add played ranges tracking to iframe based media elements ([#199](https://github.com/muxinc/media-elements/issues/199)) ([f15c263](https://github.com/muxinc/media-elements/commit/f15c2635cc75cd0df954b1037d13c32269a1243c))
+
+
+### Bug Fixes
+
+* support both path and query string formats for unlisted video hash ([#203](https://github.com/muxinc/media-elements/issues/203)) ([106bd26](https://github.com/muxinc/media-elements/commit/106bd26e605f3e51a126a404df8ba7c4790a570b))
+
 ## [1.6.3](https://github.com/muxinc/media-elements/compare/vimeo-video-element@1.6.2...vimeo-video-element@1.6.3) (2025-12-08)
 
 

@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.2.0](https://github.com/muxinc/media-elements/compare/nextjs@1.1.11...nextjs@1.2.0) (2026-02-10)
+
+
+### Features
+
+* Add played ranges tracking to iframe based media elements ([#199](https://github.com/muxinc/media-elements/issues/199)) ([f15c263](https://github.com/muxinc/media-elements/commit/f15c2635cc75cd0df954b1037d13c32269a1243c))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * vimeo-video-element bumped from ^1.6.3 to ^1.7.0
+    * youtube-video-element bumped from ^1.8.1 to ^1.9.0
+
 ## [1.1.11](https://github.com/muxinc/media-elements/compare/nextjs@1.1.10...nextjs@1.1.11) (2025-12-12)
 
 
