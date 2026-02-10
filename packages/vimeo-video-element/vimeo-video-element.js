@@ -1,4 +1,5 @@
 // https://github.com/vimeo/player.js
+import { MediaPlayedRangesMixin } from 'media-played-ranges-mixin';
 import VimeoPlayerAPI from '@vimeo/player/dist/player.es.js';
 const EMBED_VIDEO_BASE = 'https://player.vimeo.com/video';
 const EMBED_EVENT_BASE = 'https://vimeo.com/event';
@@ -47,7 +48,7 @@ function serializeIframeUrl(attrs, props) {
   const matches = attrs.src.match(MATCH_SRC);
   const urlType = matches?.[1]; // 'video/' or 'event/' or undefined
   const srcId = matches?.[2];
-  const hParam = url.searchParams.get("h") || matches?.[3];
+  const hParam = url.searchParams.get('h') || matches?.[3];
   const params = {
     // ?controls=true is enabled by default in the iframe
     controls: attrs.controls === '' ? null : 0,
@@ -71,7 +72,7 @@ function serializeIframeUrl(attrs, props) {
   return `${EMBED_VIDEO_BASE}/${srcId}?${serialize(params)}`;
 }
 
-class VimeoVideoElement extends (globalThis.HTMLElement ?? class {}) {
+class VimeoVideoElement extends MediaPlayedRangesMixin(globalThis.HTMLElement ?? class {}) {
   static getTemplateHTML = getTemplateHTML;
   static shadowRootOptions = { mode: 'open' };
   static observedAttributes = [
@@ -270,11 +271,13 @@ class VimeoVideoElement extends (globalThis.HTMLElement ?? class {}) {
 
     this.api.on('seeking', () => {
       this.#seeking = true;
+      this.onSeeking();
       this.dispatchEvent(new Event('seeking'));
     });
 
-    this.api.on('seeked', () => {
+    this.api.on('seeked', async () => {
       this.#seeking = false;
+      this.#currentTime = await this.api.getCurrentTime().catch(() => this.#currentTime);
       this.dispatchEvent(new Event('seeked'));
     });
 
@@ -307,7 +310,10 @@ class VimeoVideoElement extends (globalThis.HTMLElement ?? class {}) {
     });
 
     this.api.on('timeupdate', ({ seconds }) => {
-      this.#currentTime = seconds;
+      const currentTime = Math.round(seconds * 100) / 100;
+      this.#currentTime = currentTime;
+
+
       this.dispatchEvent(new Event('timeupdate'));
     });
 

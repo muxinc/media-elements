@@ -1,0 +1,45 @@
+{
+  "name": "media-played-ranges-mixin",
+  "version": "0.1.0",
+  "description": "Mixin to track played ranges for media elements",
+  "author": "@muxinc",
+  "license": "MIT",
+  "homepage": "https://github.com/muxinc/media-elements#readme",
+  "bugs": {
+    "url": "https://github.com/muxinc/media-elements/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/muxinc/media-elements.git",
+    "directory": "packages/media-played-ranges-mixin"
+  },
+  "files": [
+    "index.d.ts",
+    "dist"
+  ],
+  "type": "module",
+  "types": "./dist/index.d.ts",
+  "main": "./dist/index.js",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build:esm": "esbuild --format=esm --outfile=dist/index.js index.js && cp index.d.ts dist/",
+    "build": "run-s build:esm",
+    "clean": "rm -rf dist"
+  },
+  "keywords": [
+    "media",
+    "mixin",
+    "played-ranges",
+    "web-component"
+  ],
+  "devDependencies": {
+    "esbuild": "^0.24.0",
+    "npm-run-all": "^4.1.5"
+  }
+}

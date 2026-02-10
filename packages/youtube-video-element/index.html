@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
     <title>&lt;youtube-video&gt;</title>
@@ -16,7 +16,17 @@
         background: #000;
       }
     </style>
-    <script type="module" src="./youtube-video-element.js"></script>
+    <script type="importmap">
+      {
+        "imports": {
+          "media-played-ranges-mixin": "https://cdn.jsdelivr.net/npm/media-played-ranges-mixin@0.1.0/+esm",
+          "youtube-video-element": "./youtube-video-element.js"
+        }
+      }
+    </script>
+    <script type="module">
+      import 'youtube-video-element';
+    </script>
     <script type="module" src="https://cdn.jsdelivr.net/npm/media-chrome/+esm"></script>
     <script type="module" src="https://cdn.jsdelivr.net/npm/media-chrome/dist/menu/+esm"></script>
   </head>

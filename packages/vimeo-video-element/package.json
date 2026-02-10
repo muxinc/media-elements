@@ -52,7 +52,8 @@
     "build": "run-s build:*"
   },
   "dependencies": {
-    "@vimeo/player": "2.29.0"
+    "@vimeo/player": "2.29.0",
+    "media-played-ranges-mixin": "^0.1.0"
   },
   "devDependencies": {
     "build-react-wrapper": "^0.2.4",
