@@ -53,6 +53,7 @@
   },
   "dependencies": {
     "custom-media-element": "^1.4.5",
+    "media-tracks": "^0.3.3",
     "shaka-player": "~4.15.4"
   },
   "devDependencies": {
