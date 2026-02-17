@@ -32,11 +32,14 @@
     {
       "imports": {
         "custom-media-element": "https://cdn.jsdelivr.net/npm/custom-media-element@1.2/+esm",
-        "media-tracks": "https://cdn.jsdelivr.net/npm/media-tracks@0.3/+esm"
+        "media-tracks": "https://cdn.jsdelivr.net/npm/media-tracks@0.3/+esm",
+        "shaka-player": "https://cdn.jsdelivr.net/npm/shaka-player@4.15/+esm"
       }
     }
   </script>
+  <script type="module" src="./shaka-video-element.js"></script>
   <script type="module" src="https://cdn.jsdelivr.net/npm/media-chrome/+esm"></script>
+  <script type="module" src="https://cdn.jsdelivr.net/npm/media-chrome/menu/+esm"></script>
 </head>
 <body>
   <h1>&lt;shaka-video&gt;</h1>
@@ -56,7 +59,7 @@
 
   <nav>
     <nav>
-      <button id="loadbtn">Load new clip</button>
+  <button id="loadbtn">Load new clip</button>
     </nav>
     <nav>
       <input id="qualityselected" value="N/A" readonly size="5">
@@ -169,6 +172,9 @@
     >
       <track default kind="metadata" label="thumbnails" src="https://image.mux.com/O6LdRc0112FEJXH00bGsN9Q31yu5EIVHTgjTKRkKtEq1k/storyboard.vtt">
     </shaka-video>
+    <media-rendition-menu anchor="auto" hidden>
+      <div slot="header">Quality</div>
+    </media-rendition-menu>
     <media-loading-indicator slot="centered-chrome" no-auto-hide></media-loading-indicator>
     <media-control-bar>
       <media-play-button></media-play-button>
@@ -178,6 +184,7 @@
       <media-volume-range></media-volume-range>
       <media-time-range></media-time-range>
       <media-time-display show-duration remaining></media-time-display>
+      <media-rendition-menu-button></media-rendition-menu-button>
       <media-playback-rate-button></media-playback-rate-button>
       <media-pip-button></media-pip-button>
       <media-fullscreen-button></media-fullscreen-button>

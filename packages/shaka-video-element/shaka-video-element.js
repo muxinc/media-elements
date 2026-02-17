@@ -99,6 +99,7 @@ class ShakaVideoElement extends MediaTracksMixin(CustomVideoElement) {
         variant.videoBandwidth ?? variant.bandwidth
       );
       rendition.id = `${index}`;
+      rendition.label = `${variant.height}p`;
     }
 
     // Set up audio tracks.
@@ -124,11 +125,11 @@ class ShakaVideoElement extends MediaTracksMixin(CustomVideoElement) {
         const variantTracks = this.api.getVariantTracks();
         const variantTrack = variantTracks[selectedIndex];
         if (variantTrack) {
-          this.api.configure('abr.enabled', false);
+          this.api.configure({ abr: { enabled: false } });
           this.api.selectVariantTrack(variantTrack, true);
         }
       } else {
-        this.api.configure('abr.enabled', true);
+        this.api.configure({ abr: { enabled: true } });
       }
     };
 
