@@ -1,6 +1,6 @@
 {
   "name": "shaka-video-element",
-  "version": "0.6.21",
+  "version": "0.7.0",
   "description": "Custom element (web component) for Shaka Player",
   "author": "@muxinc",
   "license": "MIT",
