@@ -1,5 +1,5 @@
 {
-  "examples/nextjs": "1.1.11",
+  "examples/nextjs": "1.2.0",
   "scripts/build-react-wrapper": "0.2.4",
   "packages/castable-video": "1.1.11",
   "packages/cloudflare-video-element": "1.3.5",
@@ -8,13 +8,13 @@
   "packages/hls-video-element": "1.5.10",
   "packages/jwplayer-video-element": "1.3.5",
   "packages/media-tracks": "0.3.4",
-  "packages/shaka-video-element": "0.6.21",
+  "packages/shaka-video-element": "0.7.0",
   "packages/spotify-audio-element": "1.0.4",
   "packages/super-media-element": "1.4.2",
   "packages/tiktok-video-element": "0.1.2",
   "packages/twitch-video-element": "0.1.6",
   "packages/videojs-video-element": "1.4.6",
-  "packages/vimeo-video-element": "1.6.3",
+  "packages/vimeo-video-element": "1.7.0",
   "packages/wistia-video-element": "1.3.6",
-  "packages/youtube-video-element": "1.8.1"
+  "packages/youtube-video-element": "1.9.0"
 }

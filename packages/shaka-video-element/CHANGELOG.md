@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.0](https://github.com/muxinc/media-elements/compare/shaka-video-element@0.6.21...shaka-video-element@0.7.0) (2026-02-17)
+
+
+### Features
+
+* add renditions for Shaka video element ([#210](https://github.com/muxinc/media-elements/issues/210)) ([138d359](https://github.com/muxinc/media-elements/commit/138d3591910cf0925f32da09fc611ef8cc496a2b))
+
 ## [0.6.21](https://github.com/muxinc/media-elements/compare/shaka-video-element@0.6.20...shaka-video-element@0.6.21) (2025-11-25)
 
 
