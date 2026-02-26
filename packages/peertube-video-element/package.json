@@ -1,5 +1,5 @@
 {
-  "name": "@celluloid/peertube-video-element",
+  "name": "peertube-video-element",
   "version": "1.0.0",
   "description": "A custom element for the PeerTube player with an API that matches the `<video>` API",
   "author": "@muxinc",
