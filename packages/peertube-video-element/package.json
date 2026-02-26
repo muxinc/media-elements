@@ -1,0 +1,72 @@
+{
+  "name": "@celluloid/peertube-video-element",
+  "version": "1.0.0",
+  "description": "A custom element for the PeerTube player with an API that matches the `<video>` API",
+  "author": "@muxinc",
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/muxinc/media-elements#readme",
+  "bugs": {
+    "url": "https://github.com/muxinc/media-elements/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/muxinc/media-elements.git",
+    "directory": "packages/peertube-video-element"
+  },
+  "files": [
+    "peertube-video-element.d.ts",
+    "dist"
+  ],
+  "type": "module",
+  "types": "./dist/peertube-video-element.d.ts",
+  "main": "./dist/peertube-video-element.js",
+  "exports": {
+    ".": {
+      "types": "./dist/peertube-video-element.d.ts",
+      "import": "./dist/peertube-video-element.js",
+      "require": "./dist/cjs/peertube-video-element.js",
+      "default": "./dist/peertube-video-element.js"
+    },
+    "./react": {
+      "types": "./dist/react.d.ts",
+      "import": "./dist/react.js",
+      "require": "./dist/cjs/react.js",
+      "default": "./dist/react.js"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "react": [
+        "./dist/react.d.ts"
+      ],
+      "*": [
+        "./dist/peertube-video-element.d.ts"
+      ]
+    }
+  },
+  "scripts": {
+    "lint": "eslint *.js",
+    "test": "wet run",
+    "serve": "wet serve --cors",
+    "build:react": "build-react-wrapper",
+    "build": "run-s build:*"
+  },
+  "dependencies": {
+    "media-played-ranges-mixin": "^0.1.0"
+  },
+  "devDependencies": {
+    "build-react-wrapper": "^0.2.4",
+    "npm-run-all": "^4.1.5",
+    "wet-run": "^1.2.5"
+  },
+  "keywords": [
+    "peertube",
+    "video",
+    "player",
+    "web component",
+    "custom element"
+  ]
+}

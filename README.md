@@ -21,3 +21,4 @@ A collection of HTMLMediaElement compatible elements and add-ons.
 | [`<jwplayer-video>`](packages/jwplayer-video-element)                                | A custom video element for JW Player.                                          |
 | [`<twitch-video>`](packages/twitch-video-element)                                    | A custom video element for Twitch player.                                      |
 | [`<cloudflare-video>`](packages/cloudflare-video-element)                            | A custom video element for Cloudflare Stream.                                  |
+| [`<peertube-video>`](packages/peertube-video-element)                                | A custom video element for PeerTube player.                                    |
