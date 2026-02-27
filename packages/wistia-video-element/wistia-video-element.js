@@ -28,9 +28,37 @@ if (templateShadowDOM) {
   `;
 }
 
+function upgradeProperty(el, prop) {
+  // This is a pattern to update property values that are set before
+  // the custom element is upgraded.
+  // https://web.dev/custom-elements-best-practices/#make-properties-lazy
+  if (Object.hasOwn(el, prop)) {
+    const value = el[prop];
+    // Delete the set property from this instance.
+    delete el[prop];
+    // Set the value again via the (prototype) setter on this class.
+    el[prop] = value;
+  }
+}
+
 class WistiaVideoElement extends SuperVideoElement {
   static template = templateShadowDOM;
   static skipAttributes = ['src'];
+
+  #config = null;
+
+  constructor() {
+    super();
+    upgradeProperty(this, 'config');
+  }
+
+  get config() {
+    return this.#config;
+  }
+
+  set config(value) {
+    this.#config = value;
+  }
 
   get nativeEl() {
     return this.api?.elem() ?? this.querySelector('video');
@@ -58,6 +86,7 @@ class WistiaVideoElement extends SuperVideoElement {
       chromeless: !this.controls,
       playButton: this.controls,
       muted: this.defaultMuted,
+      ...(this.#config ?? {}),
     };
 
     // Sadly the setup/render will not work in the shadow DOM.
@@ -119,14 +148,16 @@ async function loadScript(src, globalName) {
   if (!globalName) return import(/* webpackIgnore: true */ src);
   if (loadScriptCache[src]) return loadScriptCache[src];
   if (self[globalName]) return self[globalName];
-  return (loadScriptCache[src] = new Promise((resolve, reject) => {
+  const promise = new Promise((resolve, reject) => {
     const script = document.createElement('script');
     script.defer = true;
     script.src = src;
     script.onload = () => resolve(self[globalName]);
     script.onerror = reject;
     document.head.append(script);
-  }));
+  });
+  loadScriptCache[src] = promise;
+  return promise;
 }
 
 let idCounter = 0;

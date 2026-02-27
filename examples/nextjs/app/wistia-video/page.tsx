@@ -13,6 +13,9 @@ export default function Page() {
         <Player
           as={WistiaVideo}
           src="https://wesleyluyten.wistia.com/medias/oifkgmxnkb"
+          config={{
+            playerColor: '#f5f6f7',
+          }}
         />
       </section>
     </>
