@@ -184,6 +184,12 @@ class TwitchVideoElement extends (globalThis.HTMLElement ?? class {}) {
     }
   }
 
+  disconnectedCallback() {
+    globalThis.removeEventListener('message', this.#onMessage);
+    this.#iframe = null;
+    this.#hasLoaded = false;
+  }
+
   getVideoPlaybackQuality() {
     return this.#playerState.stats.videoStats;
   }

@@ -1,5 +1,5 @@
 import { CustomVideoElement } from 'custom-media-element';
-import { MediaTracksMixin } from 'media-tracks';
+import { MediaTracksMixin, cleanupMediaTracks } from 'media-tracks';
 import './server-safe-globals.js';
 import shaka from 'shaka-player';
 
@@ -28,12 +28,24 @@ class ShakaVideoElement extends MediaTracksMixin(CustomVideoElement) {
 
     if (shaka.Player.isBrowserSupported()) {
       this.api = new shaka.Player();
-      // Listen for error events.
       this.api.addEventListener('error', onErrorEvent);
     } else {
-      // This browser does not have the minimum set of APIs we need.
       console.error('Browser does not support Shaka Player');
     }
+  }
+
+  disconnectedCallback() {
+    this.#removeTracksListeners();
+    this.#removeAllMediaTracks();
+
+    if (this.api) {
+      this.api.removeEventListener('error', onErrorEvent);
+      this.api.destroy();
+      this.api = null;
+    }
+
+    super.disconnectedCallback();
+    cleanupMediaTracks(this);
   }
 
   attributeChangedCallback(attrName, oldValue, newValue) {
@@ -72,7 +84,7 @@ class ShakaVideoElement extends MediaTracksMixin(CustomVideoElement) {
 
   #addMediaTracks() {
     this.#removeAllMediaTracks();
-    
+
     const variantTracks = this.api.getVariantTracks();
 
     let videoTrack = this.videoTracks.getTrackById('main');
@@ -114,51 +126,62 @@ class ShakaVideoElement extends MediaTracksMixin(CustomVideoElement) {
     }
   }
 
+  #onSwitchRendition = () => {
+    const selectedIndex = this.videoRenditions.selectedIndex;
+
+    if (selectedIndex >= 0) {
+      const variantTracks = this.api.getVariantTracks();
+      const variantTrack = variantTracks[selectedIndex];
+      if (variantTrack) {
+        this.api.configure({ abr: { enabled: false } });
+        this.api.selectVariantTrack(variantTrack, true);
+      }
+    } else {
+      this.api.configure({ abr: { enabled: true } });
+    }
+  };
+
+  #onAudioTrackChange = () => {
+    const enabledTrack = [...this.audioTracks].find((t) => t.enabled);
+    if (enabledTrack) {
+      const audioLanguages = this.api.getAudioLanguagesAndRoles();
+      const audio = audioLanguages[+enabledTrack.id];
+      if (audio) {
+        this.api.selectAudioLanguage(audio.language, audio.role);
+      }
+    }
+  };
+
+  #onTracksChanged = () => {
+    const videoTrack = this.videoTracks[this.videoTracks.selectedIndex ?? 0];
+    if (!videoTrack) return;
+
+    const variantTracks = this.api.getVariantTracks();
+    const variantIds = variantTracks.map((_, i) => `${i}`);
+
+    for (const rendition of this.videoRenditions) {
+      if (rendition.id && !variantIds.includes(rendition.id)) {
+        videoTrack.removeRendition(rendition);
+      }
+    }
+  };
+
   #initTracksListeners() {
     if (this.#hasTracksInit) return;
     this.#hasTracksInit = true;
 
-    const switchRendition = () => {
-      const selectedIndex = this.videoRenditions.selectedIndex;
+    this.videoRenditions?.addEventListener('change', this.#onSwitchRendition);
+    this.audioTracks.addEventListener('change', this.#onAudioTrackChange);
+    this.api.addEventListener('trackschanged', this.#onTracksChanged);
+  }
 
-      if (selectedIndex >= 0) {
-        const variantTracks = this.api.getVariantTracks();
-        const variantTrack = variantTracks[selectedIndex];
-        if (variantTrack) {
-          this.api.configure({ abr: { enabled: false } });
-          this.api.selectVariantTrack(variantTrack, true);
-        }
-      } else {
-        this.api.configure({ abr: { enabled: true } });
-      }
-    };
+  #removeTracksListeners() {
+    if (!this.#hasTracksInit) return;
+    this.#hasTracksInit = false;
 
-    this.videoRenditions?.addEventListener('change', switchRendition);
-
-    this.audioTracks.addEventListener('change', () => {
-      const enabledTrack = [...this.audioTracks].find((t) => t.enabled);
-      if (enabledTrack) {
-        const audioLanguages = this.api.getAudioLanguagesAndRoles();
-        const audio = audioLanguages[+enabledTrack.id];
-        if (audio) {
-          this.api.selectAudioLanguage(audio.language, audio.role);
-        }
-      }
-    });
-
-    this.api.addEventListener('trackschanged', () => {
-      const videoTrack = this.videoTracks[this.videoTracks.selectedIndex ?? 0];
-      if (!videoTrack) return;
-
-      const variantTracks = this.api.getVariantTracks();
-      const variantIds = variantTracks.map((_, i) => `${i}`);
-
-      for (const rendition of this.videoRenditions) {
-        if (rendition.id && !variantIds.includes(rendition.id)) {
-          videoTrack.removeRendition(rendition);
-        }
-      }
-    });
+    this.videoRenditions?.removeEventListener('change', this.#onSwitchRendition);
+    this.audioTracks.removeEventListener('change', this.#onAudioTrackChange);
+    this.api?.removeEventListener('trackschanged', this.#onTracksChanged);
   }
 
   async load() {

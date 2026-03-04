@@ -226,6 +226,12 @@ class SpotifyAudioElement extends (globalThis.HTMLElement ?? class {}) {
     }
   }
 
+  disconnectedCallback() {
+    this.api = null;
+    this.#isInit = false;
+    this.#hasLoaded = false;
+  }
+
   async play() {
     this.#paused = false;
     this.#isWaiting = true;

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+
+<title>HLS Video Element - Mount / Unmount</title>
+<meta name="viewport" content="width=device-width">
+
+<style>
+  body {
+    margin: 20px auto;
+    max-width: 800px;
+    font-family: system-ui, sans-serif;
+  }
+
+  button {
+    padding: 8px 16px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  #root {
+    margin-top: 16px;
+    min-height: 100px;
+    border: 2px dashed #ccc;
+    padding: 8px;
+  }
+
+  #root:empty::after {
+    content: '(unmounted)';
+    color: #999;
+    display: block;
+    text-align: center;
+    padding: 40px;
+  }
+
+  hls-video {
+    display: block;
+    width: 100%;
+  }
+
+  #count {
+    font-variant-numeric: tabular-nums;
+  }
+</style>
+
+<h1>HLS Video Element - Mount / Unmount</h1>
+
+<p>
+  <button id="mount">Mount</button>
+  <button id="unmount">Unmount</button>
+  <span id="count">Cycles: 0</span>
+</p>
+
+<div id="root"></div>
+
+<script type="importmap">
+  {
+    "imports": {
+      "custom-media-element": "../../custom-media-element/dist/custom-media-element.js",
+      "media-tracks": "../../media-tracks/dist/index.js",
+      "media-tracks/": "../../media-tracks/dist/",
+      "hls.js/": "https://cdn.jsdelivr.net/npm/hls.js@1.6/"
+    }
+  }
+</script>
+
+<script type="module">
+  import '../hls-video-element.js';
+
+  const root = document.getElementById('root');
+  let video = null;
+  let cycles = 0;
+
+  function mount() {
+    if (video) return;
+
+    video = document.createElement('hls-video');
+    video.src = 'https://stream.mux.com/O6LdRc0112FEJXH00bGsN9Q31yu5EIVHTgjTKRkKtEq1k.m3u8';
+    video.poster = 'https://image.mux.com/O6LdRc0112FEJXH00bGsN9Q31yu5EIVHTgjTKRkKtEq1k/thumbnail.webp';
+    video.controls = true;
+    video.muted = true;
+    video.crossOrigin = '';
+    video.playsInline = true;
+
+    console.log('mounted');
+
+    root.appendChild(video);
+  }
+
+  function unmount() {
+    if (!video) return;
+
+    video.remove();
+    video = null;
+    cycles++;
+    document.getElementById('count').textContent = `Cycles: ${cycles}`;
+    console.log('unmounted', `(cycle ${cycles})`);
+  }
+
+  document.getElementById('mount').addEventListener('click', mount);
+  document.getElementById('unmount').addEventListener('click', unmount);
+
+  // Start unmounted for memory snapshot baseline.
+</script>

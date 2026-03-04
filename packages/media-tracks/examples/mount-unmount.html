@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+
+<title>Media Tracks - Mount / Unmount</title>
+<meta name="viewport" content="width=device-width">
+
+<style>
+  body {
+    margin: 20px auto;
+    max-width: 800px;
+    font-family: system-ui, sans-serif;
+  }
+
+  button {
+    padding: 8px 16px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  #root {
+    margin-top: 16px;
+    min-height: 100px;
+    border: 2px dashed #ccc;
+    padding: 8px;
+  }
+
+  #root:empty::after {
+    content: '(unmounted)';
+    color: #999;
+    display: block;
+    text-align: center;
+    padding: 40px;
+  }
+
+  video {
+    display: block;
+    width: 100%;
+  }
+
+  #count {
+    font-variant-numeric: tabular-nums;
+  }
+</style>
+
+<h1>Media Tracks - Mount / Unmount</h1>
+
+<p>
+  <button id="mount">Mount</button>
+  <button id="unmount">Unmount</button>
+  <span id="count">Cycles: 0</span>
+</p>
+
+<div id="root"></div>
+
+<script type="module">
+  import '../dist/polyfill.js';
+
+  const root = document.getElementById('root');
+  let video = null;
+  let cycles = 0;
+
+  function mount() {
+    if (video) return;
+
+    video = document.createElement('video');
+    video.src = 'https://stream.mux.com/O6LdRc0112FEJXH00bGsN9Q31yu5EIVHTgjTKRkKtEq1k/medium.mp4';
+    video.poster = 'https://image.mux.com/O6LdRc0112FEJXH00bGsN9Q31yu5EIVHTgjTKRkKtEq1k/thumbnail.webp';
+    video.controls = true;
+    video.muted = true;
+    video.crossOrigin = '';
+    video.playsInline = true;
+
+    // Exercise the media-tracks API so tracks/renditions get initialized.
+    const vt = video.videoTracks;
+    const at = video.audioTracks;
+    const vr = video.videoRenditions;
+    const ar = video.audioRenditions;
+
+    // Add a track so the internal lists are populated.
+    video.addVideoTrack('main', 'Main', 'en');
+    video.addAudioTrack('main', 'Main', 'en');
+
+    console.log('mounted', { videoTracks: vt.length, audioTracks: at.length });
+
+    root.appendChild(video);
+  }
+
+  function unmount() {
+    if (!video) return;
+
+    video.remove();
+    video = null;
+    cycles++;
+    document.getElementById('count').textContent = `Cycles: ${cycles}`;
+    console.log('unmounted', `(cycle ${cycles})`);
+  }
+
+  document.getElementById('mount').addEventListener('click', mount);
+  document.getElementById('unmount').addEventListener('click', unmount);
+
+  // Start unmounted for memory snapshot baseline.
+</script>

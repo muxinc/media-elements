@@ -97,6 +97,13 @@ class WistiaVideoElement extends SuperVideoElement {
     super.attributeChangedCallback(attrName, oldValue, newValue);
   }
 
+  disconnectedCallback() {
+    this.api?.remove();
+    this.api = null;
+    this.querySelector('.wistia_embed')?.remove();
+    super.disconnectedCallback();
+  }
+
   // Override some methods w/ defaults if the video element is not ready yet when called.
   // Some methods require the Wistia API instead of the native video element API.
 

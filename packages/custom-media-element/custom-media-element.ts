@@ -267,6 +267,7 @@ export function CustomMediaMixin<T extends Constructor<HTMLElement>>(superclass:
     #nativeEl: HTMLVideoElement | HTMLAudioElement | null = null;
     #childMap = new Map<MediaChild, MediaChild>();
     #childObserver?: MutationObserver;
+    #slotChangeHandler = () => this.#syncMediaChildren();
 
     get: ((prop: string) => any) | undefined;
     set: ((prop: string, val: any) => void) | undefined;
@@ -343,7 +344,7 @@ export function CustomMediaMixin<T extends Constructor<HTMLElement>>(superclass:
       }
 
       this.#childObserver = new MutationObserver(this.#syncMediaChildAttribute.bind(this));
-      this.shadowRoot!.addEventListener('slotchange', () => this.#syncMediaChildren());
+      this.shadowRoot!.addEventListener('slotchange', this.#slotChangeHandler);
       this.#syncMediaChildren();
 
       for (const type of (this.constructor as typeof CustomMedia).Events) {
@@ -447,6 +448,21 @@ export function CustomMediaMixin<T extends Constructor<HTMLElement>>(superclass:
 
     connectedCallback(): void {
       this.#init();
+    }
+
+    disconnectedCallback(): void {
+      this.#childObserver?.disconnect();
+
+      this.shadowRoot?.removeEventListener('slotchange', this.#slotChangeHandler);
+
+      for (const type of (this.constructor as typeof CustomMedia).Events) {
+        this.shadowRoot?.removeEventListener(type, this, true);
+      }
+
+      this.#childMap.forEach((clone) => clone.remove());
+      this.#childMap.clear();
+
+      this.#isInit = false;
     }
   };
 }

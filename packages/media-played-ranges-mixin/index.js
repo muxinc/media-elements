@@ -5,13 +5,30 @@ export function MediaPlayedRangesMixin(Base) {
     _RANGE_EPSILON = 0.5;
     _seeking = false;
 
+    #onPlay = () => this.onPlaybackStart({ time: this.currentTime });
+    #onPause = () => this.onPlaybackStop({ time: this.currentTime });
+    #onEnded = () => this.onPlaybackStop({ time: this.currentTime });
+    #onSeeking = () => this.onSeeking();
+    #onSeeked = () => this.onSeeked({ time: this.currentTime });
+
     connectedCallback() {
       if (super.connectedCallback) super.connectedCallback();
-      this.addEventListener('play', () => this.onPlaybackStart({ time: this.currentTime }));
-      this.addEventListener('pause', () => this.onPlaybackStop({ time: this.currentTime }));
-      this.addEventListener('ended', () => this.onPlaybackStop({ time: this.currentTime }));
-      this.addEventListener('seeking', () => this.onSeeking());
-      this.addEventListener('seeked', () => this.onSeeked({ time: this.currentTime }));
+      this.addEventListener('play', this.#onPlay);
+      this.addEventListener('pause', this.#onPause);
+      this.addEventListener('ended', this.#onEnded);
+      this.addEventListener('seeking', this.#onSeeking);
+      this.addEventListener('seeked', this.#onSeeked);
+    }
+
+    disconnectedCallback() {
+      this.removeEventListener('play', this.#onPlay);
+      this.removeEventListener('pause', this.#onPause);
+      this.removeEventListener('ended', this.#onEnded);
+      this.removeEventListener('seeking', this.#onSeeking);
+      this.removeEventListener('seeked', this.#onSeeked);
+      this._playedRanges = [];
+      this._currentPlayedRange = null;
+      if (super.disconnectedCallback) super.disconnectedCallback();
     }
 
     onPlaybackStart(param = {}) {

@@ -108,6 +108,15 @@ class VimeoVideoElement extends MediaPlayedRangesMixin(globalThis.HTMLElement ??
   #videoHeight = NaN;
   #config = null;
 
+  #onTextTrackChange = () => {
+    const active = Array.from(this.textTracks).find((t) => t.mode === 'showing');
+    if (active) {
+      this.api?.enableTextTrack(active.language, active.kind);
+    } else {
+      this.api?.disableTextTrack();
+    }
+  };
+
   constructor() {
     super();
     this.#upgradeProperty('config');
@@ -236,14 +245,7 @@ class VimeoVideoElement extends MediaPlayedRangesMixin(globalThis.HTMLElement ??
         textTracksVideo.addTextTrack(t.kind, t.label, t.language);
       });
     });
-    this.textTracks.addEventListener('change', () => {
-      const active = Array.from(this.textTracks).find((t) => t.mode === 'showing');
-      if (active) {
-        this.api.enableTextTrack(active.language, active.kind);
-      } else {
-        this.api.disableTextTrack();
-      }
-    });
+    this.textTracks.addEventListener('change', this.#onTextTrackChange);
 
     const onceLoaded = () => {
       this.api.off('loaded', onceLoaded);
@@ -356,6 +358,14 @@ class VimeoVideoElement extends MediaPlayedRangesMixin(globalThis.HTMLElement ??
         break;
       }
     }
+  }
+
+  disconnectedCallback() {
+    this.api?.destroy();
+    this.api = null;
+    this.#isInit = false;
+    this.#hasLoaded = false;
+    if (super.disconnectedCallback) super.disconnectedCallback();
   }
 
   async play() {

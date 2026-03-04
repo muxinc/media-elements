@@ -1,5 +1,5 @@
 import { CustomVideoElement } from 'custom-media-element';
-import { MediaTracksMixin } from 'media-tracks';
+import { MediaTracksMixin, cleanupMediaTracks } from 'media-tracks';
 
 class DashVideoElement extends MediaTracksMixin(CustomVideoElement) {
   static shadowRootOptions = { ...CustomVideoElement.shadowRootOptions };
@@ -10,6 +10,29 @@ class DashVideoElement extends MediaTracksMixin(CustomVideoElement) {
   };
 
   #apiInit;
+  #thumbnailBlobUrl = null;
+
+  disconnectedCallback() {
+    this.#removeTracksListeners();
+    this.#removeAllMediaTracks();
+    this.#destroy();
+    super.disconnectedCallback();
+    cleanupMediaTracks(this);
+  }
+
+  #destroy() {
+    if (this.#thumbnailBlobUrl) {
+      URL.revokeObjectURL(this.#thumbnailBlobUrl);
+      this.#thumbnailBlobUrl = null;
+    }
+
+    if (this.api) {
+      this.api.destroy();
+      this.api = null;
+    }
+
+    this.#apiInit = false;
+  }
 
   attributeChangedCallback(attrName, oldValue, newValue) {
     if (attrName !== 'src') {
@@ -68,11 +91,39 @@ class DashVideoElement extends MediaTracksMixin(CustomVideoElement) {
     if (!track) {
       track = createThumbnailTrack();
       this.nativeEl.appendChild(track);
-      const vttUrl = cuesToVttBlobUrl(cues);
-      track.src = vttUrl;
+      this.#thumbnailBlobUrl = cuesToVttBlobUrl(cues);
+      track.src = this.#thumbnailBlobUrl;
 
       track.dispatchEvent(new Event('change'));
     }
+  }
+
+  #onRenditionChange = () => {
+    const selected = this.videoRenditions[this.videoRenditions.selectedIndex];
+
+    if (selected?.id) {
+      this.api.updateSettings({ streaming: { abr: { autoSwitchBitrate: { video: false } } } });
+      this.api.setRepresentationForTypeById('video', selected.id, true);
+    } else {
+      this.api.updateSettings({ streaming: { abr: { autoSwitchBitrate: { video: true } } } });
+    }
+  };
+
+  #removeAllMediaTracks = () => {
+    for (const videoTrack of this.videoTracks) {
+      this.removeVideoTrack(videoTrack);
+    }
+    for (const audioTrack of this.audioTracks) {
+      this.removeAudioTrack(audioTrack);
+    }
+  };
+
+  #initTracksListeners() {
+    this.videoRenditions.addEventListener('change', this.#onRenditionChange);
+  }
+
+  #removeTracksListeners() {
+    this.videoRenditions?.removeEventListener('change', this.#onRenditionChange);
   }
 
   async load() {
@@ -105,16 +156,7 @@ class DashVideoElement extends MediaTracksMixin(CustomVideoElement) {
         rendition.id = rep.id;
       });
 
-      this.videoRenditions.addEventListener('change', () => {
-        const selected = this.videoRenditions[this.videoRenditions.selectedIndex];
-
-        if (selected?.id) {
-          this.api.updateSettings({ streaming: { abr: { autoSwitchBitrate: { video: false } } } });
-          this.api.setRepresentationForTypeById('video', selected.id, true);
-        } else {
-          this.api.updateSettings({ streaming: { abr: { autoSwitchBitrate: { video: true } } } });
-        }
-      });
+      this.#initTracksListeners();
 
       // We don't support this for live streams.
       // if we later want to support it we would also need to repeat this on Manifest update.

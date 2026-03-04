@@ -115,6 +115,21 @@ class CloudflareVideoElement extends (globalThis.HTMLElement ?? class {}) {
   #isInit;
   #readyState = 0;
 
+  #onApiEvent = (evt) => {
+    switch (evt.type) {
+      case 'loadedmetadata':
+        this.#readyState = 1; // HTMLMediaElement.HAVE_METADATA
+        break;
+      case 'loadeddata':
+        this.#readyState = 2; // HTMLMediaElement.HAVE_CURRENT_DATA
+        break;
+      case 'playing':
+        this.#readyState = 3; // HTMLMediaElement.HAVE_FUTURE_DATA
+        break;
+    }
+    this.dispatchEvent(new Event(evt.type));
+  };
+
   async load() {
     if (this.#loadRequested) return;
 
@@ -165,24 +180,10 @@ class CloudflareVideoElement extends (globalThis.HTMLElement ?? class {}) {
 
       this.api = Stream(iframe);
 
-      this.api.addEventListener('loadedmetadata', () => {
-        this.#readyState = 1; // HTMLMediaElement.HAVE_METADATA
-      });
-
-      this.api.addEventListener('loadeddata', () => {
-        this.#readyState = 2; // HTMLMediaElement.HAVE_CURRENT_DATA
-      });
-
-      this.api.addEventListener('playing', () => {
-        this.#readyState = 3; // HTMLMediaElement.HAVE_FUTURE_DATA
-      });
-
       // The video events are dispatched on the api instance.
       // This makes it possible to add event listeners before the element is upgraded.
       for (let type of VideoEvents) {
-        this.api.addEventListener(type, (evt) => {
-          this.dispatchEvent(new Event(evt.type));
-        });
+        this.api.addEventListener(type, this.#onApiEvent);
       }
     }
 
@@ -192,6 +193,16 @@ class CloudflareVideoElement extends (globalThis.HTMLElement ?? class {}) {
     });
 
     await this.loadComplete;
+  }
+
+  disconnectedCallback() {
+    if (this.api) {
+      for (let type of VideoEvents) {
+        this.api.removeEventListener(type, this.#onApiEvent);
+      }
+      this.api = null;
+    }
+    this.#isInit = false;
   }
 
   async attributeChangedCallback(attrName, oldValue, newValue) {

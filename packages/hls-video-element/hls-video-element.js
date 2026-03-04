@@ -1,5 +1,5 @@
 import { CustomVideoElement } from 'custom-media-element';
-import { MediaTracksMixin } from 'media-tracks';
+import { MediaTracksMixin, cleanupMediaTracks } from 'media-tracks';
 import Hls from 'hls.js/dist/hls.mjs';
 
 const HlsVideoMixin = (superclass) => {
@@ -20,6 +20,7 @@ const HlsVideoMixin = (superclass) => {
 
     #airplaySourceEl = null;
     #config = null;
+    #hasTracksInit = false;
 
     constructor() {
       super();
@@ -42,6 +43,13 @@ const HlsVideoMixin = (superclass) => {
       if (attrName === 'src' && oldValue != newValue) {
         this.load();
       }
+    }
+
+    disconnectedCallback() {
+      this.#removeTracksListeners();
+      this.#destroy();
+      super.disconnectedCallback();
+      cleanupMediaTracks(this);
     }
 
     #destroy() {
@@ -158,7 +166,7 @@ const HlsVideoMixin = (superclass) => {
               console.warn('Autoplay failed:', err);
             });
           }
-          removeAllMediaTracks();
+          this.#removeAllMediaTracks();
 
           let videoTrack = this.videoTracks.getTrackById('main');
 
@@ -194,73 +202,7 @@ const HlsVideoMixin = (superclass) => {
           }
         });
 
-        this.audioTracks.addEventListener('change', () => {
-          // Cast to number, hls.js uses numeric id's.
-          const audioTrackId = +[...this.audioTracks].find((t) => t.enabled)?.id;
-          const availableIds = this.api.audioTracks.map((t) => t.id);
-          if (audioTrackId != this.api.audioTrack && availableIds.includes(audioTrackId)) {
-            this.api.audioTrack = audioTrackId;
-          }
-        });
-
-        // Fired when a level is removed after calling `removeLevel()`
-        this.api.on(Hls.Events.LEVELS_UPDATED, (event, data) => {
-          const videoTrack = this.videoTracks[this.videoTracks.selectedIndex ?? 0];
-          if (!videoTrack) return;
-
-          const levelIds = data.levels.map((l) => levelIdMap.get(l));
-
-          for (const rendition of this.videoRenditions) {
-            if (rendition.id && !levelIds.includes(rendition.id)) {
-              videoTrack.removeRendition(rendition);
-            }
-          }
-        });
-
-        let lastFailedLevel = null;
-
-        this.api.on(Hls.Events.ERROR, (event, data) => {
-          if (data.type === Hls.ErrorTypes.NETWORK_ERROR && data.details === Hls.ErrorDetails.FRAG_LOAD_ERROR) {
-            lastFailedLevel = data.frag.level;
-          }
-        });
-
-        this.api.on(Hls.Events.LEVEL_SWITCHED, (event, data) => {
-          const newLevel = data.level;
-
-          if (lastFailedLevel !== null && newLevel < lastFailedLevel) {
-            console.warn(
-              `⚠️ hls.js downgraded quality from level ${lastFailedLevel} to ${newLevel} due to fragment load failure.`
-            );
-            this.videoRenditions.selectedIndex = newLevel;
-            lastFailedLevel = null;
-          }
-        });
-
-        // hls.js doesn't support enabling multiple renditions.
-        //
-        // 1. if all renditions are enabled it's auto selection.
-        // 2. if 1 of the renditions is disabled we assume a selection was made
-        //    and lock it to the first rendition that is enabled.
-        const switchRendition = (event) => {
-          const level = event.target.selectedIndex;
-          if (level != this.api.nextLevel) {
-            this.api.nextLevel = level;
-          }
-        };
-
-        this.videoRenditions?.addEventListener('change', switchRendition);
-
-        const removeAllMediaTracks = () => {
-          for (const videoTrack of this.videoTracks) {
-            this.removeVideoTrack(videoTrack);
-          }
-          for (const audioTrack of this.audioTracks) {
-            this.removeAudioTrack(audioTrack);
-          }
-        };
-
-        this.api.once(Hls.Events.DESTROYING, removeAllMediaTracks);
+        this.#initTracksListeners(levelIdMap);
 
         return;
       }
@@ -272,6 +214,88 @@ const HlsVideoMixin = (superclass) => {
       if (this.nativeEl.canPlayType('application/vnd.apple.mpegurl')) {
         this.nativeEl.src = this.src;
       }
+    }
+
+    #onAudioTrackChange = () => {
+      // Cast to number, hls.js uses numeric id's.
+      const audioTrackId = +[...this.audioTracks].find((t) => t.enabled)?.id;
+      const availableIds = this.api.audioTracks.map((t) => t.id);
+      if (audioTrackId != this.api.audioTrack && availableIds.includes(audioTrackId)) {
+        this.api.audioTrack = audioTrackId;
+      }
+    };
+
+    // hls.js doesn't support enabling multiple renditions.
+    //
+    // 1. if all renditions are enabled it's auto selection.
+    // 2. if 1 of the renditions is disabled we assume a selection was made
+    //    and lock it to the first rendition that is enabled.
+    #onSwitchRendition = (event) => {
+      const level = event.target.selectedIndex;
+      if (level != this.api.nextLevel) {
+        this.api.nextLevel = level;
+      }
+    };
+
+    #removeAllMediaTracks = () => {
+      for (const videoTrack of this.videoTracks) {
+        this.removeVideoTrack(videoTrack);
+      }
+      for (const audioTrack of this.audioTracks) {
+        this.removeAudioTrack(audioTrack);
+      }
+    };
+
+    #initTracksListeners(levelIdMap) {
+      if (this.#hasTracksInit) return;
+      this.#hasTracksInit = true;
+
+      this.audioTracks.addEventListener('change', this.#onAudioTrackChange);
+      this.videoRenditions?.addEventListener('change', this.#onSwitchRendition);
+
+      // Fired when a level is removed after calling `removeLevel()`
+      this.api.on(Hls.Events.LEVELS_UPDATED, (event, data) => {
+        const videoTrack = this.videoTracks[this.videoTracks.selectedIndex ?? 0];
+        if (!videoTrack) return;
+
+        const levelIds = data.levels.map((l) => levelIdMap.get(l));
+
+        for (const rendition of this.videoRenditions) {
+          if (rendition.id && !levelIds.includes(rendition.id)) {
+            videoTrack.removeRendition(rendition);
+          }
+        }
+      });
+
+      let lastFailedLevel = null;
+
+      this.api.on(Hls.Events.ERROR, (event, data) => {
+        if (data.type === Hls.ErrorTypes.NETWORK_ERROR && data.details === Hls.ErrorDetails.FRAG_LOAD_ERROR) {
+          lastFailedLevel = data.frag.level;
+        }
+      });
+
+      this.api.on(Hls.Events.LEVEL_SWITCHED, (event, data) => {
+        const newLevel = data.level;
+
+        if (lastFailedLevel !== null && newLevel < lastFailedLevel) {
+          console.warn(
+            `⚠️ hls.js downgraded quality from level ${lastFailedLevel} to ${newLevel} due to fragment load failure.`
+          );
+          this.videoRenditions.selectedIndex = newLevel;
+          lastFailedLevel = null;
+        }
+      });
+
+      this.api.once(Hls.Events.DESTROYING, this.#removeAllMediaTracks);
+    }
+
+    #removeTracksListeners() {
+      if (!this.#hasTracksInit) return;
+      this.#hasTracksInit = false;
+
+      this.audioTracks.removeEventListener('change', this.#onAudioTrackChange);
+      this.videoRenditions?.removeEventListener('change', this.#onSwitchRendition);
     }
 
     #toggleHlsLoad = () => {

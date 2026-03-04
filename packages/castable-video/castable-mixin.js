@@ -58,6 +58,11 @@ export const CastableMediaMixin = (superclass) =>
       return privateProps.get(this.remote)?.getCastPlayer?.();
     }
 
+    disconnectedCallback() {
+      this.#remote?.destroy();
+      super.disconnectedCallback?.();
+    }
+
     attributeChangedCallback(attrName, oldValue, newValue) {
       super.attributeChangedCallback(attrName, oldValue, newValue);
 
