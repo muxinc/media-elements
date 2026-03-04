@@ -1,6 +1,6 @@
 // https://docs.videojs.com/
 import { SuperVideoElement } from 'super-media-element';
-import { MediaTracksMixin, cleanupMediaTracks } from 'media-tracks';
+import { MediaTracksMixin } from 'media-tracks';
 
 const templateShadowDOM = globalThis.document?.createElement('template');
 if (templateShadowDOM) {
@@ -41,38 +41,6 @@ class VideojsVideoElement extends (MediaTracksMixin?.(SuperVideoElement ?? class
   }
 
   #apiInit;
-  #fontStyleEls = [];
-
-  #onAudioTrackChange = () => {
-    const audioTracks = this.api?.audioTracks();
-    if (!audioTracks) return;
-
-    for (let i = 0; i < audioTracks.length; i++) {
-      const audioTrack = audioTracks[i];
-      audioTrack.enabled = this.audioTracks.getTrackById(audioTrack.id)?.enabled;
-    }
-  };
-
-  #onSwitchRendition = ({ target: renditions }) => {
-    const qualityLevels = this.api?.qualityLevels();
-    if (!qualityLevels) return;
-
-    const isAuto = renditions.selectedIndex === -1;
-
-    for (let rendition of renditions) {
-      const qualityLevel = qualityLevels.getQualityLevelById(rendition.id);
-      if (qualityLevel) qualityLevel.enabled = isAuto || rendition.selected;
-    }
-  };
-
-  #removeAllMediaTracks = () => {
-    for (const videoTrack of this.videoTracks) {
-      this.removeVideoTrack(videoTrack);
-    }
-    for (const audioTrack of this.audioTracks) {
-      this.removeAudioTrack(audioTrack);
-    }
-  };
 
   get nativeEl() {
     return this.querySelector(':scope > [slot=video]') ?? this.shadowRoot.querySelector('video');
@@ -128,6 +96,15 @@ class VideojsVideoElement extends (MediaTracksMixin?.(SuperVideoElement ?? class
         if (audioTrack) this.removeAudioTrack(audioTrack);
       });
 
+      this.audioTracks.addEventListener('change', () => {
+        const audioTracks = this.api.audioTracks();
+
+        for (let i = 0; i < audioTracks.length; i++) {
+          const audioTrack = audioTracks[i];
+          audioTrack.enabled = this.audioTracks.getTrackById(audioTrack.id).enabled;
+        }
+      });
+
       const qualityLevels = this.api.qualityLevels();
 
       qualityLevels.on('addqualitylevel', (event) => {
@@ -149,10 +126,28 @@ class VideojsVideoElement extends (MediaTracksMixin?.(SuperVideoElement ?? class
         videoRendition.id = `${qualityLevel.id}`;
       });
 
-      this.#initTracksListeners();
+      const switchRendition = ({ target: renditions }) => {
+        const isAuto = renditions.selectedIndex === -1;
 
-      this.api.on('emptied', this.#removeAllMediaTracks);
-      this.api.on('loadstart', this.#removeAllMediaTracks);
+        for (let rendition of renditions) {
+          const qualityLevel = qualityLevels.getQualityLevelById(rendition.id);
+          qualityLevel.enabled = isAuto || rendition.selected;
+        }
+      };
+
+      this.videoRenditions.addEventListener('change', switchRendition);
+
+      const removeAllMediaTracks = () => {
+        for (const videoTrack of this.videoTracks) {
+          this.removeVideoTrack(videoTrack);
+        }
+        for (const audioTrack of this.audioTracks) {
+          this.removeAudioTrack(audioTrack);
+        }
+      };
+
+      this.api.on('emptied', removeAllMediaTracks);
+      this.api.on('loadstart', removeAllMediaTracks);
     } else {
       this.api.src(this.src);
     }
@@ -160,40 +155,6 @@ class VideojsVideoElement extends (MediaTracksMixin?.(SuperVideoElement ?? class
     this.api.ready(() => {
       this.loadComplete.resolve();
     });
-  }
-
-  #destroy() {
-    if (this.api) {
-      this.api.dispose();
-      this.api = null;
-    }
-    this.#apiInit = false;
-  }
-
-  #initTracksListeners() {
-    this.audioTracks.addEventListener('change', this.#onAudioTrackChange);
-    this.videoRenditions?.addEventListener('change', this.#onSwitchRendition);
-  }
-
-  #removeTracksListeners() {
-    this.audioTracks?.removeEventListener('change', this.#onAudioTrackChange);
-    this.videoRenditions?.removeEventListener('change', this.#onSwitchRendition);
-  }
-
-  #removeFontStyles() {
-    for (const el of this.#fontStyleEls) {
-      el.remove();
-    }
-    this.#fontStyleEls = [];
-  }
-
-  disconnectedCallback() {
-    this.#removeTracksListeners();
-    this.#removeAllMediaTracks();
-    this.#removeFontStyles();
-    this.#destroy();
-    super.disconnectedCallback();
-    cleanupMediaTracks(this);
   }
 
   connectedCallback() {
@@ -218,9 +179,7 @@ class VideojsVideoElement extends (MediaTracksMixin?.(SuperVideoElement ?? class
         [...this.shadowRoot.styleSheets[0].cssRules]
           .filter(({ cssText }) => cssText.startsWith('@font-face'))
           .forEach(({ cssText }) => {
-            const style = createElement('style', {}, cssText);
-            document.head.append(style);
-            this.#fontStyleEls.push(style);
+            document.head.append(createElement('style', {}, cssText));
           });
       };
     }

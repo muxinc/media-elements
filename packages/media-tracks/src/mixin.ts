@@ -123,7 +123,7 @@ export function MediaTracksMixin<T>(MediaElementClass: T): WithMediaTracks<T> {
     let renditions = getPrivate(media).videoRenditions;
     if (!renditions) {
       renditions = new VideoRenditionList();
-      getPrivate(renditions).media = new WeakRef(media);
+      getPrivate(renditions).media = media;
       getPrivate(media).videoRenditions = renditions;
     }
     return renditions;
@@ -141,18 +141,13 @@ export function MediaTracksMixin<T>(MediaElementClass: T): WithMediaTracks<T> {
     let renditions = getPrivate(media).audioRenditions;
     if (!renditions) {
       renditions = new AudioRenditionList();
-      getPrivate(renditions).media = new WeakRef(media);
+      getPrivate(renditions).media = media;
       getPrivate(media).audioRenditions = renditions;
     }
     return renditions;
   }
 
   return MediaElementClass as unknown as WithMediaTracks<T>;
-}
-
-export function cleanupMediaTracks(media: HTMLMediaElement): void {
-  getPrivate(media).nativeVideoTrackCleanup?.();
-  getPrivate(media).nativeAudioTrackCleanup?.();
 }
 
 function getBaseMediaTracksFn(MediaElementClass: any, type: string) {
@@ -176,11 +171,11 @@ function getVideoTracks(media: any) {
         addVideoTrack(media, nativeTrack);
       }
 
-      const onChange = () => {
+      nativeTracks.addEventListener('change', () => {
         tracks.dispatchEvent(new Event('change'));
-      };
+      });
 
-      const onAddTrack = (event: TrackEvent) => {
+      nativeTracks.addEventListener('addtrack', (event: TrackEvent) => {
         // Note: adding native track instances to the shim track list here.
         // This works because the API is identical and change event is forwarded.
         // If tracks were manually added prevent native tracks from being added...
@@ -194,21 +189,11 @@ function getVideoTracks(media: any) {
         }
 
         addVideoTrack(media, event.track as VideoTrack);
-      };
+      });
 
-      const onRemoveTrack = (event: TrackEvent) => {
-        removeVideoTrack(event.track as VideoTrack);
-      };
-
-      nativeTracks.addEventListener('change', onChange);
-      nativeTracks.addEventListener('addtrack', onAddTrack);
-      nativeTracks.addEventListener('removetrack', onRemoveTrack);
-
-      getPrivate(media).nativeVideoTrackCleanup = () => {
-        nativeTracks.removeEventListener('change', onChange);
-        nativeTracks.removeEventListener('addtrack', onAddTrack);
-        nativeTracks.removeEventListener('removetrack', onRemoveTrack);
-      };
+      nativeTracks.addEventListener('removetrack', (event: TrackEvent) => {
+        removeVideoTrack(event.track  as VideoTrack);
+      });
     }
   }
   return tracks;
@@ -229,11 +214,11 @@ function getAudioTracks(media: any) {
         addAudioTrack(media, nativeTrack);
       }
 
-      const onChange = () => {
+      nativeTracks.addEventListener('change', () => {
         tracks.dispatchEvent(new Event('change'));
-      };
+      });
 
-      const onAddTrack = (event: TrackEvent) => {
+      nativeTracks.addEventListener('addtrack', (event: TrackEvent) => {
         // Note: adding native track instances to the shim track list here.
         // This works because the API is identical and change event is forwarded.
         // If tracks were manually added prevent native tracks from being added...
@@ -247,21 +232,11 @@ function getAudioTracks(media: any) {
         }
 
         addAudioTrack(media, event.track as AudioTrack);
-      };
+      });
 
-      const onRemoveTrack = (event: TrackEvent) => {
+      nativeTracks.addEventListener('removetrack', (event: TrackEvent) => {
         removeAudioTrack(event.track as AudioTrack);
-      };
-
-      nativeTracks.addEventListener('change', onChange);
-      nativeTracks.addEventListener('addtrack', onAddTrack);
-      nativeTracks.addEventListener('removetrack', onRemoveTrack);
-
-      getPrivate(media).nativeAudioTrackCleanup = () => {
-        nativeTracks.removeEventListener('change', onChange);
-        nativeTracks.removeEventListener('addtrack', onAddTrack);
-        nativeTracks.removeEventListener('removetrack', onRemoveTrack);
-      };
+      });
     }
   }
   return tracks;

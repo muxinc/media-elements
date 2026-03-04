@@ -4,7 +4,7 @@ import { getPrivate } from './utils.js';
 
 export function addVideoTrack(media: HTMLMediaElement, track: VideoTrack) {
   const trackList = media.videoTracks;
-  getPrivate(track).media = new WeakRef(media);
+  getPrivate(track).media = media;
 
   if (!getPrivate(track).renditionSet) {
     getPrivate(track).renditionSet = new Set();
@@ -31,7 +31,7 @@ export function addVideoTrack(media: HTMLMediaElement, track: VideoTrack) {
 }
 
 export function removeVideoTrack(track: VideoTrack) {
-  const trackList: VideoTrackList = getPrivate(track).media?.deref()?.videoTracks;
+  const trackList: VideoTrackList = getPrivate(track).media?.videoTracks;
   if (!trackList) return;
 
   const trackSet: Set<VideoTrack> = getPrivate(trackList).trackSet;
@@ -43,7 +43,7 @@ export function removeVideoTrack(track: VideoTrack) {
 }
 
 export function selectedChanged(selected: VideoTrack) {
-  const trackList: VideoTrackList = getPrivate(selected).media?.deref()?.videoTracks ?? [];
+  const trackList: VideoTrackList = getPrivate(selected).media.videoTracks ?? [];
   // If other tracks are unselected, then a change event will be fired.
   let hasUnselected = false;
 

@@ -155,13 +155,6 @@ class YoutubeVideoElement extends MediaPlayedRangesMixin(globalThis.HTMLElement 
   #config = null;
   #textTracksVideo = null;
   #initialVolume = 1;
-  #seekInterval;
-  #progressInterval;
-
-  #onTextTrackChange = () => {
-    const active = Array.from(this.textTracks).find((t) => t.mode === 'showing');
-    this.api?.setOption('captions', 'track', active ? { languageCode: active.language } : {});
-  };
 
   constructor() {
     super();
@@ -210,7 +203,10 @@ class YoutubeVideoElement extends MediaPlayedRangesMixin(globalThis.HTMLElement 
     this.#textTracksVideo = document.createElement('video');
     this.textTracks = this.#textTracksVideo.textTracks;
 
-    this.textTracks.addEventListener('change', this.#onTextTrackChange);
+    this.textTracks.addEventListener('change', () => {
+      const active = Array.from(this.textTracks).find((t) => t.mode === 'showing');
+      this.api?.setOption('captions', 'track', active ? { languageCode: active.language } : {});
+    });
 
     this.dispatchEvent(new Event('loadstart'));
 
@@ -333,7 +329,7 @@ class YoutubeVideoElement extends MediaPlayedRangesMixin(globalThis.HTMLElement 
     await this.loadComplete;
 
     let lastCurrentTime = 0;
-    this.#seekInterval = setInterval(() => {
+    setInterval(() => {
       const diff = Math.abs(this.currentTime - lastCurrentTime);
       const bufferedEnd = this.buffered.end(this.buffered.length - 1);
       if (this.seeking && bufferedEnd > 0.1) {
@@ -348,10 +344,10 @@ class YoutubeVideoElement extends MediaPlayedRangesMixin(globalThis.HTMLElement 
     }, 50);
 
     let lastBufferedEnd;
-    this.#progressInterval = setInterval(() => {
+    const progressInterval = setInterval(() => {
       const bufferedEnd = this.buffered.end(this.buffered.length - 1);
       if (bufferedEnd >= this.duration) {
-        clearInterval(this.#progressInterval);
+        clearInterval(progressInterval);
         this.#readyState = 4; // HTMLMediaElement.HAVE_ENOUGH_DATA
       }
       if (lastBufferedEnd != bufferedEnd) {
@@ -374,16 +370,6 @@ class YoutubeVideoElement extends MediaPlayedRangesMixin(globalThis.HTMLElement 
         this.load();
       }
     }
-  }
-
-  disconnectedCallback() {
-    clearInterval(this.#seekInterval);
-    clearInterval(this.#progressInterval);
-    this.api?.destroy();
-    this.api = null;
-    this.#hasLoaded = false;
-    this.isLoaded = false;
-    if (super.disconnectedCallback) super.disconnectedCallback();
   }
 
   async play() {

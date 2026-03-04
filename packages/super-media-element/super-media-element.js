@@ -186,8 +186,6 @@ export const SuperMediaMixin = (superclass, { tag, is }) => {
     #isLoaded = false;
     #nativeEl;
     #standinEl;
-    #childMap = new Map();
-    #slotEl;
 
     constructor() {
       super();
@@ -269,41 +267,38 @@ export const SuperMediaMixin = (superclass, { tag, is }) => {
         this.#upgradeProperty(prop);
 
       // Keep some native child elements like track and source in sync.
+      const childMap = new Map();
       // An unnamed <slot> will be filled with all of the custom element's
       // top-level child nodes that do not have the slot attribute.
-      this.#slotEl = this.shadowRoot.querySelector('slot:not([name])');
-      this.#slotEl?.addEventListener('slotchange', this.#onSlotChange);
+      const slotEl = this.shadowRoot.querySelector('slot:not([name])');
+      slotEl?.addEventListener('slotchange', () => {
+        const removeNativeChildren = new Map(childMap);
+        slotEl
+          .assignedElements()
+          .filter((el) => ['track', 'source'].includes(el.localName))
+          .forEach(async (el) => {
+            // If the source or track is still in the assigned elements keep it.
+            removeNativeChildren.delete(el);
+            // Re-use clones if possible.
+            let clone = childMap.get(el);
+            if (!clone) {
+              clone = el.cloneNode();
+              childMap.set(el, clone);
+            }
+            if (this.loadComplete && !this.isLoaded) await this.loadComplete;
+            this.nativeEl.append?.(clone);
+          });
+        removeNativeChildren.forEach((el) => el.remove());
+      });
 
       // The video events are dispatched on the SuperMediaElement instance.
       // This makes it possible to add event listeners before the element is upgraded.
       for (let type of this.constructor.Events) {
-        this.shadowRoot.addEventListener?.(type, this, true);
+        this.shadowRoot.addEventListener?.(type, (evt) => {
+          if (evt.target !== this.nativeEl) return;
+          this.dispatchEvent(new CustomEvent(evt.type, { detail: evt.detail }));
+        }, true);
       }
-    }
-
-    #onSlotChange = () => {
-      const removeNativeChildren = new Map(this.#childMap);
-      this.#slotEl
-        .assignedElements()
-        .filter((el) => ['track', 'source'].includes(el.localName))
-        .forEach(async (el) => {
-          // If the source or track is still in the assigned elements keep it.
-          removeNativeChildren.delete(el);
-          // Re-use clones if possible.
-          let clone = this.#childMap.get(el);
-          if (!clone) {
-            clone = el.cloneNode();
-            this.#childMap.set(el, clone);
-          }
-          if (this.loadComplete && !this.isLoaded) await this.loadComplete;
-          this.nativeEl.append?.(clone);
-        });
-      removeNativeChildren.forEach((el) => el.remove());
-    };
-
-    handleEvent(evt) {
-      if (evt.target !== this.nativeEl) return;
-      this.dispatchEvent(new CustomEvent(evt.type, { detail: evt.detail }));
     }
 
     #upgradeProperty(prop) {
@@ -394,19 +389,6 @@ export const SuperMediaMixin = (superclass, { tag, is }) => {
       } else {
         this.nativeEl.setAttribute?.(attrName, newValue);
       }
-    }
-
-    disconnectedCallback() {
-      this.#slotEl?.removeEventListener('slotchange', this.#onSlotChange);
-
-      for (let type of this.constructor.Events) {
-        this.shadowRoot.removeEventListener?.(type, this, true);
-      }
-
-      this.#childMap.forEach((clone) => clone.remove());
-      this.#childMap.clear();
-
-      this.#isInit = false;
     }
 
     connectedCallback() {

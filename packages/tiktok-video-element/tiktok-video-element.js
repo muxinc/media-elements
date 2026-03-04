@@ -156,12 +156,6 @@ class TikTokVideoElement extends (globalThis.HTMLElement ?? class {}) {
   }
 
 
-  disconnectedCallback() {
-    globalThis.removeEventListener('message', this.#onMessage);
-    this.#iframe = null;
-    this.#hasLoaded = false;
-  }
-
   get config() {
     return this.#config;
   }

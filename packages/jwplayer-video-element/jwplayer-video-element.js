@@ -98,14 +98,6 @@ class JWPlayerVideoElement extends SuperVideoElement {
     super.attributeChangedCallback(attrName, oldValue, newValue);
   }
 
-  disconnectedCallback() {
-    this.api?.remove();
-    this.api = null;
-    this.querySelector('.jw-style')?.remove();
-    this.querySelector('.jwplayer')?.remove();
-    super.disconnectedCallback();
-  }
-
   get paused() {
     return this.nativeEl?.paused ?? true;
   }
