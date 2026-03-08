@@ -568,6 +568,7 @@ class PeerTubeVideoElement extends HTMLElement {
   }
 
   set muted(val) {
+    if (val == undefined) return; // skip invalid values
     if (this.muted === val) return;
     this.#muted = val;
     this.loadComplete.then(() => {
