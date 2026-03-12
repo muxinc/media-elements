@@ -4,7 +4,7 @@ import { RenditionEvent } from './rendition-event.js';
 import { getPrivate } from './utils.js';
 
 export function addRendition(track: AudioTrack, rendition: AudioRendition) {
-  const renditionList = getPrivate(track).media.audioRenditions;
+  const renditionList = getPrivate(track).media?.deref()?.audioRenditions;
 
   getPrivate(rendition).media = getPrivate(track).media;
   getPrivate(rendition).track = track;
@@ -27,7 +27,7 @@ export function addRendition(track: AudioTrack, rendition: AudioRendition) {
 }
 
 export function removeRendition(rendition: AudioRendition) {
-  const renditionList: AudioRenditionList = getPrivate(rendition).media.audioRenditions;
+  const renditionList: AudioRenditionList = getPrivate(rendition).media?.deref()?.audioRenditions;
   const track: AudioTrack = getPrivate(rendition).track;
   const renditionSet: Set<AudioRendition> = getPrivate(track).renditionSet;
   renditionSet.delete(rendition);
@@ -41,7 +41,7 @@ export function removeRendition(rendition: AudioRendition) {
 }
 
 export function selectedChanged(rendition: AudioRendition) {
-  const renditionList: AudioRenditionList = getPrivate(rendition).media.audioRenditions;
+  const renditionList: AudioRenditionList = getPrivate(rendition).media?.deref()?.audioRenditions;
 
   // Prevent firing a rendition list `change` event multiple times per tick.
   if (!renditionList || getPrivate(renditionList).changeRequested) return;
@@ -58,7 +58,8 @@ export function selectedChanged(rendition: AudioRendition) {
 }
 
 function getCurrentRenditions(renditionList: AudioRenditionList): AudioRendition[] {
-  const media: HTMLMediaElement = getPrivate(renditionList).media;
+  const media: HTMLMediaElement = getPrivate(renditionList).media?.deref();
+  if (!media) return [];
   return [...media.audioTracks]
     .filter((track: AudioTrack) => track.enabled)
     .flatMap((track: AudioTrack) => [...getPrivate(track).renditionSet]);
