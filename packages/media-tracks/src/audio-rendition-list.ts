@@ -20,7 +20,7 @@ export function addRendition(track: AudioTrack, rendition: AudioRendition) {
   }
 
   queueMicrotask(() => {
-    if (!track.enabled) return;
+    if (!renditionList || !track.enabled) return;
 
     renditionList.dispatchEvent(new RenditionEvent('addrendition', { rendition }));
   });
@@ -34,7 +34,7 @@ export function removeRendition(rendition: AudioRendition) {
 
   queueMicrotask(() => {
     const track: AudioTrack = getPrivate(rendition).track;
-    if (!track.enabled) return;
+    if (!renditionList || !track.enabled) return;
 
     renditionList.dispatchEvent(new RenditionEvent('removerendition', { rendition }));
   });
