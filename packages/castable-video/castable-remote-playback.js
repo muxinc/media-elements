@@ -86,6 +86,7 @@ export class RemotePlayback extends EventTarget {
     }
 
     if (this.#media) castElementRef.delete(this.#media);
+    this.#isInit = false;
   }
 
   get #castPlayer() {
