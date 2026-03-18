@@ -452,14 +452,13 @@ export function CustomMediaMixin<T extends Constructor<HTMLElement>>(superclass:
     }
 
     connectedCallback(): void {
-      if (this.#isInit) {
-        // Re-mount: re-setup listeners cleaned up in disconnectedCallback.
-        if (!this.#slotChangeHandler) {
-          this.#setupListeners();
-        }
-        return;
-      }
+      // this.#init will check this.#isInit
       this.#init();
+      // Re-mount: re-setup listeners cleaned up in disconnectedCallback.
+      // This is also done in this.init()
+      if (!this.#slotChangeHandler) {
+        this.#setupListeners();
+      }
     }
 
     disconnectedCallback(): void {
