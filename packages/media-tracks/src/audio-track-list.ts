@@ -4,7 +4,7 @@ import { getPrivate } from './utils.js';
 
 export function addAudioTrack(media: HTMLMediaElement, track: AudioTrack) {
   const trackList = media.audioTracks;
-  getPrivate(track).media = media;
+  getPrivate(track).media = new WeakRef(media);
 
   if (!getPrivate(track).renditionSet) {
     getPrivate(track).renditionSet = new Set();
@@ -31,7 +31,7 @@ export function addAudioTrack(media: HTMLMediaElement, track: AudioTrack) {
 }
 
 export function removeAudioTrack(track: AudioTrack) {
-  const trackList: AudioTrackList = getPrivate(track).media?.audioTracks;
+  const trackList: AudioTrackList = getPrivate(track).media?.deref()?.audioTracks;
   if (!trackList) return;
 
   const trackSet: Set<AudioTrack> = getPrivate(trackList).trackSet;
@@ -47,7 +47,7 @@ export function enabledChanged(track: AudioTrack) {
   // and whenever one that was enabled is disabled, the user agent must queue a
   // media element task given the media element to fire an event named `change`
   // at the AudioTrackList object.
-  const trackList: AudioTrackList = getPrivate(track).media.audioTracks;
+  const trackList: AudioTrackList = getPrivate(track).media?.deref()?.audioTracks;
 
   // Prevent firing a track list `change` event multiple times per tick.
   if (!trackList || getPrivate(trackList).changeRequested) return;

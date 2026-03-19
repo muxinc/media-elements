@@ -56,6 +56,7 @@ export class RemotePlayback extends EventTarget {
   #available = false;
   #callbacks = new Set();
   #callbackIds = new WeakMap();
+  #onTextTrackChange = () => this.#updateRemoteTextTrack();
 
   constructor(media) {
     super();
@@ -71,6 +72,21 @@ export class RemotePlayback extends EventTarget {
     });
 
     this.#init();
+  }
+
+  destroy() {
+    this.#media?.textTracks?.removeEventListener('change', this.#onTextTrackChange);
+
+    // Remove controller listeners if element is removed while casting
+    // (in that case #disconnect() won't be called).
+    if (this.#remoteListeners && this.#remotePlayer?.controller) {
+      Object.entries(this.#remoteListeners).forEach(([event, listener]) => {
+        this.#remotePlayer.controller.removeEventListener(event, listener);
+      });
+    }
+
+    if (this.#media) castElementRef.delete(this.#media);
+    this.#isInit = false;
   }
 
   get #castPlayer() {
@@ -248,7 +264,7 @@ export class RemotePlayback extends EventTarget {
      * loaded manually in the load() method. This will require a new load() call
      * for each added/removed track w/ src.
      */
-    this.#media.textTracks.addEventListener('change', () => this.#updateRemoteTextTrack());
+    this.#media.textTracks.addEventListener('change', this.#onTextTrackChange);
 
     this.#onCastStateChanged();
 
