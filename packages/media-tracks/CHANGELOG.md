@@ -5,6 +5,13 @@
 [1]: https://www.npmjs.com/package/media-tracks?activeTab=versions
 
 
+## [0.3.5](https://github.com/muxinc/media-elements/compare/media-tracks@0.3.4...media-tracks@0.3.5) (2026-03-19)
+
+
+### Bug Fixes
+
+* Patch Memory Leaks ([#218](https://github.com/muxinc/media-elements/issues/218)) ([4708538](https://github.com/muxinc/media-elements/commit/47085388536970d9a7f8e41132f6ea9fbf4e07b2))
+
 ## [0.3.4](https://github.com/muxinc/media-elements/compare/media-tracks@0.3.3...media-tracks@0.3.4) (2025-11-07)
 
 
