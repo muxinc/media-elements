@@ -1,5 +1,53 @@
 # Changelog
 
+## [2.0.0](https://github.com/muxinc/media-elements/compare/nextjs@1.2.0...nextjs@2.0.0) (2026-03-19)
+
+
+### ⚠ BREAKING CHANGES
+
+* remove attributes in favor of config property
+
+### Features
+
+* add event support to React wrappers ([8522e2a](https://github.com/muxinc/media-elements/commit/8522e2a7dde94639029b45f52c63ccce77c89ac1))
+* Add played ranges tracking to iframe based media elements ([#199](https://github.com/muxinc/media-elements/issues/199)) ([f15c263](https://github.com/muxinc/media-elements/commit/f15c2635cc75cd0df954b1037d13c32269a1243c))
+* add shaka-video ([#14](https://github.com/muxinc/media-elements/issues/14)) ([b56fe74](https://github.com/muxinc/media-elements/commit/b56fe743516663d35741b771a03ae12879f84296))
+* add twitch-video-element ([#137](https://github.com/muxinc/media-elements/issues/137)) ([3715889](https://github.com/muxinc/media-elements/commit/3715889f341695dc6882a5028198abfaf8425352))
+* Create TikTok Video Element ([#133](https://github.com/muxinc/media-elements/issues/133)) ([#145](https://github.com/muxinc/media-elements/issues/145)) ([89cf6d3](https://github.com/muxinc/media-elements/commit/89cf6d393710da96108a038530867130fe73d4d3))
+* **example:** add mux-video-react ([a656903](https://github.com/muxinc/media-elements/commit/a656903013f73012d879dc4b2e6e3236a00d363e))
+* use ce-la-react, fix React 19 issues ([#61](https://github.com/muxinc/media-elements/issues/61)) ([0a734e9](https://github.com/muxinc/media-elements/commit/0a734e94149172bfd3019cf03ac3a3e74f395ac1))
+* use config instead of attributes ([#139](https://github.com/muxinc/media-elements/issues/139)) ([f4c8610](https://github.com/muxinc/media-elements/commit/f4c86102e1e07f3eb2d63fa5370bfb1b9061dc5d))
+
+
+### Bug Fixes
+
+* add Airplay support to hls-video ([#40](https://github.com/muxinc/media-elements/issues/40)) ([e4ce158](https://github.com/muxinc/media-elements/commit/e4ce1584d16486fc5d445b130292e92a771fe0b6))
+* **build-react-wrapper:** fix suppressHydrationWarning ([586d221](https://github.com/muxinc/media-elements/commit/586d22106c3618769c753914f84b933b6b92c70f))
+* **custom-media-element:** fix track/source sync ([586d221](https://github.com/muxinc/media-elements/commit/586d22106c3618769c753914f84b933b6b92c70f))
+* **example:** update colors / favicon ([b9fce07](https://github.com/muxinc/media-elements/commit/b9fce077e6ebbfbb124c8c52f83375b3a843953d))
+* fix suppressHydrationWarning & track/source sync ([#19](https://github.com/muxinc/media-elements/issues/19)) ([586d221](https://github.com/muxinc/media-elements/commit/586d22106c3618769c753914f84b933b6b92c70f))
+* **hls-video-element:** serialize config for SSR ([#128](https://github.com/muxinc/media-elements/issues/128)) ([80fc30e](https://github.com/muxinc/media-elements/commit/80fc30e45c1b28ffeaf3f940de072cdf46249576))
+* lint issues ([d32a387](https://github.com/muxinc/media-elements/commit/d32a3874deb1e624f5c92d294aac776774d4da63))
+* muted prop for react wrappers ([#143](https://github.com/muxinc/media-elements/issues/143)) ([d312f39](https://github.com/muxinc/media-elements/commit/d312f392a40602312f197fb793a7a8d41b7afa61))
+* twitch video element version ([1b9b2be](https://github.com/muxinc/media-elements/commit/1b9b2beebb7601ed8a34ee87b7ea1349b08591a3))
+* updating nextjs and react ([#198](https://github.com/muxinc/media-elements/issues/198)) ([5c3117e](https://github.com/muxinc/media-elements/commit/5c3117e60579e9567a8a268428ee295c52c2a2f4))
+* updating nextjs and react ([#201](https://github.com/muxinc/media-elements/issues/201)) ([081a0c9](https://github.com/muxinc/media-elements/commit/081a0c9ee1df4562172162277855f04bf66542f6))
+* upgrade dependencies ([#130](https://github.com/muxinc/media-elements/issues/130)) ([afb6797](https://github.com/muxinc/media-elements/commit/afb6797342db3be3d173957d44df49fd26ffafc5))
+* upgrade dependencies ([#24](https://github.com/muxinc/media-elements/issues/24)) ([f5abdcf](https://github.com/muxinc/media-elements/commit/f5abdcff0637e7d1f6b82f4684d94fccaceb8484))
+* version mismatch ([302f0d4](https://github.com/muxinc/media-elements/commit/302f0d4714f36526eaf430991e1eabd2b8b8178c))
+* Vimeo config w/ React SSR + types ([#94](https://github.com/muxinc/media-elements/issues/94)) ([c8fed3e](https://github.com/muxinc/media-elements/commit/c8fed3e06282aa317d7acc67ce42f598a7fd1c4e))
+* YT config on React (SSR) + config types ([#92](https://github.com/muxinc/media-elements/issues/92)) ([0894345](https://github.com/muxinc/media-elements/commit/089434504e72c8b2ffcc7e63dae0e85888b7ed52))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * dash-video-element bumped from ^0.3.1 to ^0.3.2
+    * hls-video-element bumped from ^1.5.10 to ^1.5.11
+    * shaka-video-element bumped from ^0.7.0 to ^0.7.1
+    * videojs-video-element bumped from ^1.4.6 to ^1.4.7
+
 ## [1.2.0](https://github.com/muxinc/media-elements/compare/nextjs@1.1.11...nextjs@1.2.0) (2026-02-17)
 
 
