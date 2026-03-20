@@ -138,16 +138,15 @@ class VimeoVideoElement extends MediaPlayedRangesMixin(globalThis.HTMLElement ??
   }
 
   async load() {
-    if (this.#loadRequested) return;
-
     const isFirstLoad = !this.#hasLoaded;
-
-    if (this.#hasLoaded) this.loadComplete = new PublicPromise();
-    this.#hasLoaded = true;
+    if (this.#loadRequested) return;
 
     // Wait 1 tick to allow other attributes to be set.
     await (this.#loadRequested = Promise.resolve());
     this.#loadRequested = null;
+
+    if (this.#hasLoaded) this.loadComplete = new PublicPromise();
+    this.#hasLoaded = true; // TODO: Identify how hasLoaded differs from isInit
 
     this.#currentTime = 0;
     this.#duration = NaN;
