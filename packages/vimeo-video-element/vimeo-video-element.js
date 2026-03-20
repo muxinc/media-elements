@@ -214,6 +214,13 @@ class VimeoVideoElement extends MediaPlayedRangesMixin(globalThis.HTMLElement ??
     }
   }
 
+  disconnectedCallback() {
+    this.#loadRequested = null;
+    this.#hasLoaded = null;
+    this.#isInit = null;
+    super.disconnectedCallback?.()
+  }
+
   #onLoaded = async () => {
     this.#readyState = 1; // HTMLMediaElement.HAVE_METADATA
     this.dispatchEvent(new Event('loadedmetadata'));
