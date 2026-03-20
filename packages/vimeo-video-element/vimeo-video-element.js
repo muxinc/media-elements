@@ -185,50 +185,54 @@ class VimeoVideoElement extends MediaPlayedRangesMixin(globalThis.HTMLElement ??
       ...this.#config,
     };
 
-    const onLoaded = async () => {
-      this.#readyState = 1; // HTMLMediaElement.HAVE_METADATA
-      this.dispatchEvent(new Event('loadedmetadata'));
-
-      if (this.api) {
-        this.#muted = await this.api.getMuted();
-        this.#volume = await this.api.getVolume();
-        this.dispatchEvent(new Event('volumechange'));
-
-        this.#duration = await this.api.getDuration();
-        this.dispatchEvent(new Event('durationchange'));
-      }
-
-      this.dispatchEvent(new Event('loadcomplete'));
-      this.loadComplete.resolve();
-    };
-
     if (this.#isInit) {
       this.api = oldApi;
       await this.api.loadVideo({
         ...options,
         url: this.src,
       });
-      await onLoaded();
+      await this.#onLoaded();
       await this.loadComplete;
       return;
+    } else {
+      this.#isInit = true;
+
+      let iframe = this.shadowRoot?.querySelector('iframe');
+
+      if (isFirstLoad && iframe) {
+        this.#config = JSON.parse(iframe.getAttribute('data-config') || '{}');
+      }
+
+      if (!this.shadowRoot) {
+        this.attachShadow({ mode: 'open' });
+        this.shadowRoot.innerHTML = getTemplateHTML(namedNodeMapToObject(this.attributes), this);
+        iframe = this.shadowRoot.querySelector('iframe');
+      }
+
+      this.api = new VimeoPlayerAPI(iframe, options);
+      this.#setupApiListeners();
+      await this.loadComplete;
+    }
+  }
+
+  #onLoaded = async () => {
+    this.#readyState = 1; // HTMLMediaElement.HAVE_METADATA
+    this.dispatchEvent(new Event('loadedmetadata'));
+
+    if (this.api) {
+      this.#muted = await this.api.getMuted();
+      this.#volume = await this.api.getVolume();
+      this.dispatchEvent(new Event('volumechange'));
+
+      this.#duration = await this.api.getDuration();
+      this.dispatchEvent(new Event('durationchange'));
     }
 
-    this.#isInit = true;
+    this.dispatchEvent(new Event('loadcomplete'));
+    this.loadComplete.resolve();
+  };
 
-    let iframe = this.shadowRoot?.querySelector('iframe');
-
-    if (isFirstLoad && iframe) {
-      this.#config = JSON.parse(iframe.getAttribute('data-config') || '{}');
-    }
-
-    if (!this.shadowRoot) {
-      this.attachShadow({ mode: 'open' });
-      this.shadowRoot.innerHTML = getTemplateHTML(namedNodeMapToObject(this.attributes), this);
-      iframe = this.shadowRoot.querySelector('iframe');
-    }
-
-    this.api = new VimeoPlayerAPI(iframe);
-
+  #setupApiListeners() {
     const textTracksVideo = document.createElement('video');
     this.textTracks = textTracksVideo.textTracks;
     this.api.getTextTracks().then((vimeoTracks) => {
@@ -247,7 +251,7 @@ class VimeoVideoElement extends MediaPlayedRangesMixin(globalThis.HTMLElement ??
 
     const onceLoaded = () => {
       this.api.off('loaded', onceLoaded);
-      onLoaded();
+      this.#onLoaded();
     };
     this.api.on('loaded', onceLoaded);
 
@@ -331,8 +335,6 @@ class VimeoVideoElement extends MediaPlayedRangesMixin(globalThis.HTMLElement ??
       this.#videoHeight = videoHeight;
       this.dispatchEvent(new Event('resize'));
     });
-
-    await this.loadComplete;
   }
 
   async attributeChangedCallback(attrName, oldValue, newValue) {
