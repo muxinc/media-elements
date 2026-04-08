@@ -5,6 +5,13 @@
 [1]: https://www.npmjs.com/package/vimeo-video-element?activeTab=versions
 
 
+## [1.7.1](https://github.com/muxinc/media-elements/compare/vimeo-video-element@1.7.0...vimeo-video-element@1.7.1) (2026-04-03)
+
+
+### Bug Fixes
+
+* pass hash as URL param instead of query ([#221](https://github.com/muxinc/media-elements/issues/221)) ([c134df8](https://github.com/muxinc/media-elements/commit/c134df8e5d912961e5f81a07a34181dd85e29c34))
+
 ## [1.7.0](https://github.com/muxinc/media-elements/compare/vimeo-video-element@1.6.3...vimeo-video-element@1.7.0) (2026-02-17)
 
 
