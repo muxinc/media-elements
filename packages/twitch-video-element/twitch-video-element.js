@@ -72,7 +72,6 @@ function serializeIframeUrl(attrs, props) {
   const channelMatch = attrs.src.match(MATCH_CHANNEL);
 
   const params = {
-    parent: globalThis.location?.hostname,
     // ?controls=true is enabled by default in the iframe
     controls: attrs.controls === '' ? null : false,
     autoplay: attrs.autoplay === '' ? null : false,
@@ -81,14 +80,16 @@ function serializeIframeUrl(attrs, props) {
     ...props.config,
   };
 
+  const parent = [...new Set([].concat(props.parent ?? []).concat(globalThis.location?.hostname ?? []))].filter(Boolean);
+
   if (videoMatch) {
     // Handle Twitch VODs
     const videoId = videoMatch[1];
-    return `${EMBED_BASE}/?video=v${videoId}&${serialize(params)}`;
+    return `${EMBED_BASE}/?video=v${videoId}&${serialize(params, parent)}`;
   } else if (channelMatch) {
     // Handle Twitch channels/live streams
     const channel = channelMatch[1];
-    return `${EMBED_BASE}/?channel=${channel}&${serialize(params)}`;
+    return `${EMBED_BASE}/?channel=${channel}&${serialize(params, parent)}`;
   }
 
   return '';
@@ -111,10 +112,12 @@ class TwitchVideoElement extends (globalThis.HTMLElement ?? class {}) {
   #seeking = false;
   #readyState = 0;
   #config = null;
+  #parent = null;
 
   constructor() {
     super();
     this.#upgradeProperty('config');
+    this.#upgradeProperty('parent');
   }
 
   get config() {
@@ -123,6 +126,15 @@ class TwitchVideoElement extends (globalThis.HTMLElement ?? class {}) {
 
   set config(value) {
     this.#config = value;
+  }
+
+  get parent() {
+    return this.#parent ?? this.getAttribute('parent');
+  }
+
+  set parent(value) {
+    this.#parent = value;
+    this.load();
   }
 
   async load() {
@@ -420,8 +432,10 @@ function escapeHtml(str) {
     .replace(/`/g, '&#x60;');
 }
 
-function serialize(props) {
-  return String(new URLSearchParams(filterParams(props)));
+function serialize(props, parent) {
+  const params = new URLSearchParams(filterParams(props));
+  [].concat(parent).filter(Boolean).forEach(d => params.append('parent', d));
+  return String(params);
 }
 
 function filterParams(props) {
