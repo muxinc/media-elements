@@ -140,7 +140,11 @@ export const CastableMediaMixin = (superclass) =>
       mediaInfo.metadata.title = this.title;
       mediaInfo.metadata.images = [{ url: this.poster }];
 
-      if (isHls(this.castSrc)) {
+      const hlsDetected = await isHls(this.castSrc);
+      if (hlsDetected) {
+        if (!mediaInfo.contentType) {
+          mediaInfo.contentType = 'application/x-mpegURL';
+        }
         const segmentFormat = await getPlaylistSegmentFormat(this.castSrc);
         const isFragmentedMP4 = segmentFormat?.includes('m4s') || segmentFormat?.includes('mp4');
         if (isFragmentedMP4) {
@@ -211,10 +215,13 @@ export const CastableMediaMixin = (superclass) =>
     // Allow the cast source url to be different than <video src>, could be a blob.
     get castSrc() {
       // Try the first <source src> for usage with even more native markup.
+      const currentSrc = this.currentSrc;
+      const resolvedSrc = currentSrc?.startsWith('blob:') ? undefined : currentSrc;
       return (
         this.getAttribute('cast-src') ??
         this.querySelector('source')?.src ??
-        this.currentSrc
+        resolvedSrc ??
+        this.getAttribute('src') ?? undefined
       );
     }
 
