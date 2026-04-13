@@ -78,18 +78,17 @@ function serializeIframeUrl(attrs, props) {
     muted: attrs.muted,
     preload: attrs.preload,
     ...props.config,
+    parent: [...new Set([].concat(props.parent ?? []).concat(globalThis.location?.hostname ?? []))].filter(Boolean),
   };
-
-  const parent = [...new Set([].concat(props.parent ?? []).concat(globalThis.location?.hostname ?? []))].filter(Boolean);
 
   if (videoMatch) {
     // Handle Twitch VODs
     const videoId = videoMatch[1];
-    return `${EMBED_BASE}/?video=v${videoId}&${serialize(params, parent)}`;
+    return `${EMBED_BASE}/?video=v${videoId}&${serialize(params)}`;
   } else if (channelMatch) {
     // Handle Twitch channels/live streams
     const channel = channelMatch[1];
-    return `${EMBED_BASE}/?channel=${channel}&${serialize(params, parent)}`;
+    return `${EMBED_BASE}/?channel=${channel}&${serialize(params)}`;
   }
 
   return '';
@@ -133,6 +132,7 @@ class TwitchVideoElement extends (globalThis.HTMLElement ?? class {}) {
   }
 
   set parent(value) {
+    if (this.#parent === value) return;
     this.#parent = value;
     this.load();
   }
@@ -432,7 +432,7 @@ function escapeHtml(str) {
     .replace(/`/g, '&#x60;');
 }
 
-function serialize(props, parent) {
+function serialize({ parent, ...props }) {
   const params = new URLSearchParams(filterParams(props));
   [].concat(parent).filter(Boolean).forEach(d => params.append('parent', d));
   return String(params);
