@@ -11,4 +11,6 @@ export default class CustomVideoElement extends HTMLVideoElement {
     // Time in the video where playback starts. Specifies hours, minutes, and seconds. Default: 0h0m0s (the start of the video).
     time?: number;
   }
+  // Parent domain(s) where the embed is hosted. Required by Twitch when embedding on domains other than the one that instantiates the embed.
+  parent: string | string[] | null;
 }

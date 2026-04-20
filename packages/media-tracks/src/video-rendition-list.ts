@@ -4,7 +4,7 @@ import { RenditionEvent } from './rendition-event.js';
 import { getPrivate } from './utils.js';
 
 export function addRendition(track: VideoTrack, rendition: VideoRendition) {
-  const renditionList = getPrivate(track).media.videoRenditions;
+  const renditionList = getPrivate(track).media?.deref()?.videoRenditions;
 
   getPrivate(rendition).media = getPrivate(track).media;
   getPrivate(rendition).track = track;
@@ -20,28 +20,28 @@ export function addRendition(track: VideoTrack, rendition: VideoRendition) {
   }
 
   queueMicrotask(() => {
-    if (!track.selected) return;
+    if (!renditionList || !track.selected) return;
 
     renditionList.dispatchEvent(new RenditionEvent('addrendition', { rendition }));
   });
 }
 
 export function removeRendition(rendition: VideoRendition) {
-  const renditionList: VideoRenditionList = getPrivate(rendition).media.videoRenditions;
+  const renditionList: VideoRenditionList = getPrivate(rendition).media?.deref()?.videoRenditions;
   const track: VideoTrack = getPrivate(rendition).track;
   const renditionSet: Set<VideoRendition> = getPrivate(track).renditionSet;
   renditionSet.delete(rendition);
 
   queueMicrotask(() => {
     const track: VideoTrack = getPrivate(rendition).track;
-    if (!track.selected) return;
+    if (!renditionList || !track.selected) return;
 
     renditionList.dispatchEvent(new RenditionEvent('removerendition', { rendition }));
   });
 }
 
 export function selectedChanged(rendition: VideoRendition) {
-  const renditionList: VideoRenditionList = getPrivate(rendition).media.videoRenditions;
+  const renditionList: VideoRenditionList = getPrivate(rendition).media?.deref()?.videoRenditions;
 
   // Prevent firing a rendition list `change` event multiple times per tick.
   if (!renditionList || getPrivate(renditionList).changeRequested) return;
@@ -58,7 +58,8 @@ export function selectedChanged(rendition: VideoRendition) {
 }
 
 function getCurrentRenditions(renditionList: VideoRenditionList): VideoRendition[] {
-  const media: HTMLMediaElement = getPrivate(renditionList).media;
+  const media: HTMLMediaElement = getPrivate(renditionList).media?.deref();
+  if (!media) return [];
   return [...media.videoTracks]
     .filter((track: VideoTrack) => track.selected)
     .flatMap((track: VideoTrack) => [...getPrivate(track).renditionSet]);

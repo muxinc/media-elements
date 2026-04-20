@@ -5,6 +5,20 @@
 [1]: https://www.npmjs.com/package/castable-video?activeTab=versions
 
 
+## [1.1.12](https://github.com/muxinc/media-elements/compare/castable-video@1.1.11...castable-video@1.1.12) (2026-03-19)
+
+
+### Bug Fixes
+
+* Patch Memory Leaks ([#218](https://github.com/muxinc/media-elements/issues/218)) ([4708538](https://github.com/muxinc/media-elements/commit/47085388536970d9a7f8e41132f6ea9fbf4e07b2))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * custom-media-element bumped from ~1.4.5 to ~1.4.6
+
 ## [1.1.11](https://github.com/muxinc/media-elements/compare/castable-video@1.1.10...castable-video@1.1.11) (2025-09-24)
 
 

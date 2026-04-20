@@ -39,6 +39,11 @@ export const CastableMediaMixin = (superclass) =>
       if (this.#remote) return this.#remote;
 
       if (requiresCastFramework()) {
+        // Don't create a new RemotePlayback when the element is disconnected.
+        // super.disconnectedCallback() may trigger property access that reaches
+        // this getter, which would re-create a RemotePlayback after cleanup.
+        if (!this.isConnected) return undefined;
+
         // No need to load the Cast framework if it's disabled.
         if (!this.disableRemotePlayback) {
           loadCastFramework();
@@ -56,6 +61,13 @@ export const CastableMediaMixin = (superclass) =>
 
     get #castPlayer() {
       return privateProps.get(this.remote)?.getCastPlayer?.();
+    }
+
+    disconnectedCallback() {
+      this.#remote?.destroy();
+      this.#remote = null;
+      privateProps.delete(this);
+      super.disconnectedCallback?.();
     }
 
     attributeChangedCallback(attrName, oldValue, newValue) {

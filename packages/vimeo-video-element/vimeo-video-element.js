@@ -69,7 +69,9 @@ function serializeIframeUrl(attrs, props) {
 
   // Handle events
   if (urlType === 'event/') {
-    return `${EMBED_EVENT_BASE}/${srcId}/embed?${serialize(params)}`;
+    const hashPath = hParam ? `/${hParam}` : '';
+    delete params.h; // h goes in the path for events, not the query string
+    return `${EMBED_EVENT_BASE}/${srcId}/embed${hashPath}?${serialize(params)}`;
   }
 
   // Handle videos

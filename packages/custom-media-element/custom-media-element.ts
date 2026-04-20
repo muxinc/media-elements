@@ -267,6 +267,7 @@ export function CustomMediaMixin<T extends Constructor<HTMLElement>>(superclass:
     #nativeEl: HTMLVideoElement | HTMLAudioElement | null = null;
     #childMap = new Map<MediaChild, MediaChild>();
     #childObserver?: MutationObserver;
+    #slotChangeHandler?: () => void;
 
     get: ((prop: string) => any) | undefined;
     set: ((prop: string, val: any) => void) | undefined;
@@ -342,12 +343,17 @@ export function CustomMediaMixin<T extends Constructor<HTMLElement>>(superclass:
         this.#upgradeProperty(prop);
       }
 
+      this.#setupListeners();
+    }
+
+    #setupListeners(): void {
       this.#childObserver = new MutationObserver(this.#syncMediaChildAttribute.bind(this));
-      this.shadowRoot!.addEventListener('slotchange', () => this.#syncMediaChildren());
+      this.#slotChangeHandler = () => this.#syncMediaChildren();
+      this.shadowRoot?.addEventListener('slotchange', this.#slotChangeHandler);
       this.#syncMediaChildren();
 
       for (const type of (this.constructor as typeof CustomMedia).Events) {
-        this.shadowRoot!.addEventListener(type, this, true);
+        this.shadowRoot?.addEventListener(type, this, true);
       }
     }
 
@@ -446,7 +452,36 @@ export function CustomMediaMixin<T extends Constructor<HTMLElement>>(superclass:
     }
 
     connectedCallback(): void {
+      // this.#init will check this.#isInit
       this.#init();
+      // Re-mount: re-setup listeners cleaned up in disconnectedCallback.
+      // This is also done in this.init()
+      if (!this.#slotChangeHandler) {
+        this.#setupListeners();
+      }
+    }
+
+    disconnectedCallback(): void {
+      this.#childObserver?.disconnect();
+      this.#childObserver = undefined;
+
+      if (this.#slotChangeHandler) {
+        this.shadowRoot?.removeEventListener('slotchange', this.#slotChangeHandler);
+        this.#slotChangeHandler = undefined;
+      }
+
+      for (const type of (this.constructor as typeof CustomMedia).Events) {
+        this.shadowRoot?.removeEventListener(type, this, true);
+      }
+
+      this.#childMap.forEach((clone) => clone.remove());
+      this.#childMap.clear();
+
+      this.#nativeEl = null;
+      // Keep #isInit = true so that #init() is a no-op during the rest of
+      // the disconnect process. Other mixins in the chain may access properties
+      // (e.g. this.nativeEl, this.currentTime) which trigger #init() → init()
+      // and re-create the closures we just cleaned up.
     }
   };
 }
