@@ -146,6 +146,10 @@ function parseSegment(playlistContent){
 }
 
 export async function isHls(url) {
+  if (!url) return false;
+  if (/\.m3u8?(\?.*)?$/i.test(url)) return true;
+  if (url.startsWith('blob:')) return false;
+
   try {
     const response = await fetch(url, {method: 'HEAD'});
     const contentType = response.headers.get('Content-Type');
@@ -158,6 +162,7 @@ export async function isHls(url) {
 }
 
 export async function getPlaylistSegmentFormat(url) {
+  if (!url || url.startsWith('blob:')) return undefined;
   try {
     const mainManifestContent = await (await fetch(url)).text();
     let availableChunksContent = mainManifestContent;
