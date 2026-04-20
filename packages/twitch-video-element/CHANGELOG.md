@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://github.com/muxinc/media-elements/compare/twitch-video-element@0.1.6...twitch-video-element@0.2.0) (2026-04-20)
+
+
+### Features
+
+* Add configurable "parent" prop to twitch-video ([#226](https://github.com/muxinc/media-elements/issues/226)) ([106ec51](https://github.com/muxinc/media-elements/commit/106ec51a70c8a1956052258280a9e67859e34e8f))
+
 ## [0.1.6](https://github.com/muxinc/media-elements/compare/twitch-video-element@0.1.5...twitch-video-element@0.1.6) (2025-11-25)
 
 
