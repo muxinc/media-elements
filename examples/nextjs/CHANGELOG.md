@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.0.2](https://github.com/muxinc/media-elements/compare/nextjs@2.0.1...nextjs@2.0.2) (2026-04-20)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * twitch-video-element bumped from ^0.1.6 to ^0.2.0
+
 ## [2.0.1](https://github.com/muxinc/media-elements/compare/nextjs@2.0.0...nextjs@2.0.1) (2026-04-03)
 
 
