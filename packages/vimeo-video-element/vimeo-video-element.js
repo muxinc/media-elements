@@ -199,46 +199,39 @@ class VimeoVideoElement extends MediaPlayedRangesMixin(globalThis.HTMLElement ??
       await this.#onLoaded();
       await this.loadComplete;
       return;
-    } else {
-      this.#isInit = true;
-
-      if (!this.shadowRoot) {
-        this.attachShadow({ mode: 'open' });
-        this.shadowRoot.innerHTML = getTemplateHTML(namedNodeMapToObject(this.attributes), this);
-        if (!this.#config) {
-          // SSR: read config serialised into data-config before client-side hydration
-          const ssrIframe = this.shadowRoot.querySelector('iframe');
-          this.#config = JSON.parse(ssrIframe.getAttribute('data-config') || '{}');
-        } 
-      } else {
-        /*
-        * - On remount we must rebuild the template so the iframe URL 
-        *   reflects the current src and config, the Vimeo SDK wraps the
-        *   existing iframe as-is and won't update its URL. 
-        * - On SSR hydration the iframe URL is already correct, so 
-        *   rebuilding would destroy the in-flight request and
-        *   cause a visible stutter.
-        */
-        if (this.#wasDisconnected) {
-          // Remount after disconnect:
-          //   - rebuild so src and config are reflected in the new iframe.
-          this.shadowRoot.innerHTML = getTemplateHTML(namedNodeMapToObject(this.attributes), this);
-        } else {
-          // SSR declarative shadow DOM:
-          //   - preserve iframe to avoid a redundant reload. Read config if not yet set.
-          if (!this.#config) {
-            const ssrIframe = this.shadowRoot.querySelector('iframe');
-            this.#config = JSON.parse(ssrIframe.getAttribute('data-config') || '{}');
-          }
-        }
-      }
-      this.#wasDisconnected = false;
-
-      const iframe = this.shadowRoot.querySelector('iframe');
-      this.api = new VimeoPlayerAPI(iframe, options);
-      this.#setupApiListeners();
-      await this.loadComplete;
     }
+
+    this.#isInit = true;
+
+    /*
+     * Decide whether to build the iframe or adopt an existing one:
+     * - First client mount or remount after disconnect: build, so the iframe
+     *   URL reflects current src and config. The Vimeo SDK wraps an existing
+     *   iframe as-is and won't update its URL.
+     * - SSR declarative shadow DOM hydration: adopt the existing iframe. Its
+     *   URL is already correct, and rebuilding would destroy the in-flight
+     *   request and cause a visible stutter. Recover config from the
+     *   data-config attribute so element state matches the DOM.
+     */
+    if (!this.shadowRoot) this.attachShadow({ mode: 'open' });
+
+    const existingIframe = this.shadowRoot.querySelector('iframe');
+    const isSsrHydration = existingIframe && !this.#wasDisconnected;
+
+    if (isSsrHydration) {
+      if (!this.#config) {
+        this.#config = JSON.parse(existingIframe.getAttribute('data-config') || '{}');
+      }
+    } else {
+      this.shadowRoot.innerHTML = getTemplateHTML(namedNodeMapToObject(this.attributes), this);
+    }
+    this.#wasDisconnected = false;
+
+    oldApi?.destroy?.();
+    const iframe = this.shadowRoot.querySelector('iframe');
+    this.api = new VimeoPlayerAPI(iframe);
+    this.#setupApiListeners();
+    await this.loadComplete;
   }
 
   disconnectedCallback() {
@@ -247,7 +240,9 @@ class VimeoVideoElement extends MediaPlayedRangesMixin(globalThis.HTMLElement ??
     this.#hasLoaded = null;
     this.#isInit = null;
     this.loadComplete = new PublicPromise();
-    super.disconnectedCallback?.()
+    this.api?.destroy?.();
+    this.api = null;
+    super.disconnectedCallback?.();
   }
 
   #onLoaded = async () => {
