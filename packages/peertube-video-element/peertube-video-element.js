@@ -1,5 +1,8 @@
+import { MediaTracksMixin } from 'media-tracks';
+import { MediaPlayedRangesMixin } from 'media-played-ranges-mixin';
+
 const EMBED_BASE = "/videos/embed";
-const MATCH_SRC = /(https?):\/\/([^/]+)\/(?:videos\/watch|w)\/(.+)$/;
+const MATCH_SRC = /(https?):\/\/([^/]+)\/(?:videos\/(?:watch|embed)|w)\/(.+)$/;
 
 // SDK configuration
 const SDK_URL = "https://unpkg.com/@peertube/embed-api/build/player.min.js";
@@ -64,6 +67,7 @@ function serializeIframeUrl(attrs, config) {
     peertubeLink: 0,
     title: 0,
     warningTitle: 0,
+    ...(attrs.playbackrate ? { playbackRate: attrs.playbackrate } : {}),
     ...config,
   };
 
@@ -139,7 +143,7 @@ class PublicPromise extends Promise {
   }
 }
 
-class PeerTubeVideoElement extends HTMLElement {
+class PeerTubeVideoElement extends MediaPlayedRangesMixin(MediaTracksMixin(HTMLElement)) {
   static getTemplateHTML = getTemplateHTML;
   static shadowRootOptions = { mode: "open" };
   static observedAttributes = [
@@ -157,13 +161,13 @@ class PeerTubeVideoElement extends HTMLElement {
   loadComplete = new PublicPromise();
   #loadRequested = null;
   #hasLoaded = false;
-  #isInit = false;
   #currentTime = 0;
   #duration = NaN;
+  #ended = false;
   #muted = false;
   #paused = true;
+  #playRequested = false;
   #playbackRate = 1;
-  #progress = 0;
   #readyState = 0;
   #seeking = false;
   #volume = 1;
@@ -173,7 +177,11 @@ class PeerTubeVideoElement extends HTMLElement {
   #config = null;
 
   api = null;
-  textTracks = null;
+  #error = null;
+  #switchRendition = null;
+  #onTextTracksChange = null;
+  #textTracksEl = typeof document !== 'undefined' ? document.createElement('video') : null;
+  textTracks = this.#textTracksEl?.textTracks ?? null;
 
   constructor() {
     super();
@@ -198,6 +206,11 @@ class PeerTubeVideoElement extends HTMLElement {
     if (this.src && !this.#hasLoaded) {
       this.load();
     }
+  }
+
+  disconnectedCallback() {
+    try { this.api?.destroy(); } catch (_) { void 0; }
+    this.api = null;
   }
 
   requestFullscreen() {
@@ -231,13 +244,17 @@ class PeerTubeVideoElement extends HTMLElement {
 
     this.#currentTime = 0;
     this.#duration = NaN;
+    this.#ended = false;
+    this.#error = null;
     this.#muted = this.defaultMuted;
+
     this.#paused = !this.autoplay;
+    this.#playRequested = false;
     this.#playbackRate = 1;
-    this.#progress = 0;
     this.#readyState = 0;
     this.#seeking = false;
     this.#volume = 1;
+    this.#volumeBeforeMute = 1;
     this.#videoWidth = NaN;
     this.#videoHeight = NaN;
     this.dispatchEvent(new Event("emptied"));
@@ -270,19 +287,9 @@ class PeerTubeVideoElement extends HTMLElement {
       this.loadComplete.resolve();
     };
 
-    // If already initialized, we need to reload the iframe
-    if (this.#isInit && oldApi) {
-      // Destroy old player and reinitialize
-      try {
-        oldApi.destroy();
-      } catch (_) {
-        // Ignore destroy errors - player may already be destroyed
-        void 0;
-      }
-      this.#isInit = false;
+    if (oldApi) {
+      try { oldApi.destroy(); } catch (_) { void 0; }
     }
-
-    this.#isInit = true;
 
     let iframe = this.shadowRoot?.querySelector("iframe");
 
@@ -336,41 +343,155 @@ class PeerTubeVideoElement extends HTMLElement {
           this.dispatchEvent(new Event("durationchange"));
         }
 
-        if (prevTime !== this.#currentTime) {
-          this.dispatchEvent(new Event("timeupdate"));
+        // Sync volume from the update payload as a fallback for instances
+        // that don't reliably fire the volumeChange event.
+        if (data.volume != null && data.volume !== this.#volume) {
+          this.#volume = data.volume;
+          this.#muted = data.volume === 0;
+          this.dispatchEvent(new Event("volumechange"));
         }
 
-        // Update progress (buffered)
-        this.#progress = data.position;
-        this.dispatchEvent(new Event("progress"));
-      });
+        const positionAdvanced = this.#currentTime !== prevTime;
 
-      this.api.addEventListener("playbackStatusChange", (status) => {
-        if (status === "playing") {
+        // Commit to "playing" only once the position is actually moving —
+        // PeerTube fires "playing" while still buffering, so we gate here
+        // to prevent Media Chrome from wall-clock estimating time during load.
+        if (this.#playRequested && positionAdvanced) {
+          this.#playRequested = false;
           if (this.#paused) {
             this.#paused = false;
             this.dispatchEvent(new Event("play"));
           }
-          this.#readyState = 3; // HTMLMediaElement.HAVE_FUTURE_DATA
+          if (this.#readyState < 3) {
+            this.#readyState = 3;
+          }
           this.dispatchEvent(new Event("playing"));
-        } else if (status === "paused") {
-          this.#paused = true;
-          this.dispatchEvent(new Event("pause"));
-        } else if (status === "ended") {
-          this.#paused = true;
-          this.dispatchEvent(new Event("ended"));
+        }
+
+        if (positionAdvanced) {
+          this.dispatchEvent(new Event("timeupdate"));
         }
       });
 
-      // Handle resolution change for video dimensions
-      this.api.addEventListener("resolutionChange", (data) => {
-        if (data.width) this.#videoWidth = data.width;
-        if (data.height) this.#videoHeight = data.height;
-        this.dispatchEvent(new Event("resize"));
+      this.api.addEventListener("playbackStatusChange", (status) => {
+        if (status === "playing") {
+          this.#ended = false;
+          this.#playRequested = true;
+        } else if (status === "paused") {
+          this.#playRequested = false;
+          this.#paused = true;
+          this.dispatchEvent(new Event("pause"));
+        } else if (status === "ended") {
+          this.#playRequested = false;
+          this.#paused = true;
+          this.#ended = true;
+          this.dispatchEvent(new Event("ended"));
+        } else if (status === "unstarted") {
+          this.#playRequested = false;
+          this.#paused = true;
+          this.#readyState = 0;
+        }
       });
+
+      // Renditions may not be available immediately after api.ready (the stream
+      // hasn't buffered yet). Populate on first resolutionUpdate; after that only
+      // update dimensions so we don't reset the user's selection.
+      let renditionsPopulated = false;
+      const onResolutionUpdate = async (data) => {
+        if (data?.width) this.#videoWidth = data.width;
+        if (data?.height) this.#videoHeight = data.height;
+        if (data) this.dispatchEvent(new Event("resize"));
+
+        if (renditionsPopulated) return;
+
+        let resolutions;
+        try {
+          resolutions = await this.api.getResolutions();
+        } catch (_) {
+          return;
+        }
+        if (!resolutions?.length) return;
+        renditionsPopulated = true;
+
+        let videoTrack = this.videoTracks.getTrackById('main');
+        if (!videoTrack) {
+          videoTrack = this.addVideoTrack('main');
+          videoTrack.id = 'main';
+          videoTrack.selected = true;
+        }
+        for (const res of resolutions) {
+          // Skip id:-1 (PeerTube's own auto entry) — Media Chrome adds its own Auto option.
+          if (res.id === -1) continue;
+          // height/width from PeerTube are strings ("720"), parseInt converts them.
+          const height = parseInt(res.height) || parseInt(res.label) || undefined;
+          const width = parseInt(res.width) || undefined;
+          const rendition = videoTrack.addRendition(
+            undefined, width, height, undefined, undefined,
+          );
+          rendition.id = `${res.id}`;
+          rendition.label = res.label;
+        }
+      };
+
+      // Try immediately in case resolutions are already available, then keep
+      // listening for the first resolutionUpdate that carries real data.
+      await onResolutionUpdate(null);
+      this.api.addEventListener("resolutionUpdate", onResolutionUpdate);
+
+      // Forward videoRenditions selection to PeerTube SDK.
+      // setResolution(-1) = auto/ABR, only works in p2p-media-loader mode.
+      // In web-video mode PeerTube throws — fall back to the first (highest) rendition.
+      this.videoRenditions.removeEventListener('change', this.#switchRendition);
+      this.#switchRendition = async () => {
+        if (!this.#canUseApi()) return;
+        const selected = [...this.videoRenditions].find((r) => r.selected);
+        const resolutionId = selected ? Number(selected.id) : -1;
+        try {
+          await this.api.setResolution(resolutionId);
+        } catch (_) {
+          if (resolutionId === -1 && this.videoRenditions.length > 0) {
+            // web-video mode: auto not supported, lock to the first (highest) rendition
+            await this.api.setResolution(Number(this.videoRenditions[0].id)).catch(() => void 0);
+          }
+        }
+      };
+      this.videoRenditions.addEventListener('change', this.#switchRendition);
+
+      // Sync volume/muted when user adjusts volume inside the PeerTube player UI
+      this.api.addEventListener("volumeChange", (data) => {
+        this.#volume = data.volume;
+        this.#muted = data.volume === 0;
+        this.dispatchEvent(new Event("volumechange"));
+      });
+
+      // Populate captions into the stable TextTrackList via <track> elements so
+      // tracks can be fully removed on reload (addTextTrack() tracks are permanent).
+      if (this.#textTracksEl) {
+        this.#textTracksEl.innerHTML = '';
+        try {
+          const captions = await this.api.getCaptions();
+          for (const caption of captions) {
+            const trackEl = document.createElement('track');
+            trackEl.kind = 'subtitles';
+            trackEl.label = caption.label;
+            trackEl.srclang = caption.id; // used in change handler to call setCaption(id)
+            this.#textTracksEl.appendChild(trackEl);
+          }
+        } catch (_) {
+          // getCaptions() throws when there are no captions — that's fine
+        }
+        this.textTracks.removeEventListener('change', this.#onTextTracksChange);
+        this.#onTextTracksChange = () => {
+          if (!this.#canUseApi()) return;
+          const active = Array.from(this.textTracks).find((t) => t.mode === 'showing');
+          this.api.setCaption(active?.language ?? null).catch(() => void 0);
+        };
+        this.textTracks.addEventListener('change', this.#onTextTracksChange);
+      }
 
       await onLoaded();
     } catch (error) {
+      this.#error = error;
       this.loadComplete.reject(error);
       this.dispatchEvent(new ErrorEvent("error", { error }));
     }
@@ -385,6 +506,7 @@ class PeerTubeVideoElement extends HTMLElement {
     switch (attrName) {
       case "autoplay":
       case "controls":
+      case "loop":
       case "src": {
         this.load();
         return;
@@ -394,33 +516,29 @@ class PeerTubeVideoElement extends HTMLElement {
     await this.loadComplete;
 
     switch (attrName) {
-      case "loop": {
-        // PeerTube doesn't have a setLoop method, handled via embed params
-        break;
-      }
       case "muted": {
-        if (!this.#canUseApi()) break;
-        try {
-          if (this.defaultMuted) {
-            this.#volumeBeforeMute = this.#volume || 1;
-            this.api.setVolume(0).catch(() => void 0);
-          } else {
-            this.api.setVolume(this.#volumeBeforeMute).catch(() => void 0);
+        const muted = this.defaultMuted;
+        this.#muted = muted;
+        if (this.#canUseApi()) {
+          try {
+            if (muted) {
+              this.#volumeBeforeMute = this.#volume || 1;
+              this.api.setVolume(0).catch(() => void 0);
+            } else {
+              this.api.setVolume(this.#volumeBeforeMute).catch(() => void 0);
+            }
+          } catch {
+            // PeerTube SDK can throw before iframe ready
           }
-        } catch {
-          // PeerTube SDK can throw before iframe ready
         }
+        this.dispatchEvent(new Event("volumechange"));
         break;
       }
     }
   }
 
   async play() {
-    this.#paused = false;
-    this.dispatchEvent(new Event("play"));
-
     await this.loadComplete;
-
     if (!this.#canUseApi()) return;
     try {
       await this.api.play();
@@ -441,8 +559,12 @@ class PeerTubeVideoElement extends HTMLElement {
     }
   }
 
+  get error() {
+    return this.#error;
+  }
+
   get ended() {
-    return this.#currentTime >= this.#duration;
+    return this.#ended;
   }
 
   get seeking() {
@@ -499,9 +621,6 @@ class PeerTubeVideoElement extends HTMLElement {
   }
 
   get buffered() {
-    if (this.#progress > 0) {
-      return createTimeRanges(0, this.#progress);
-    }
     return createTimeRanges();
   }
 
@@ -715,8 +834,8 @@ function namedNodeMapToObject(namedNodeMap) {
  * Creates a fake `TimeRanges` object.
  */
 function createTimeRanges(start, end) {
-  if (start == null || end == null || (start === 0 && end === 0)) {
-    return createTimeRangesObj([[0, 0]]);
+  if (start == null || end == null) {
+    return createTimeRangesObj([]);
   }
   return createTimeRangesObj([[start, end]]);
 }

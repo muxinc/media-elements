@@ -55,7 +55,8 @@
     "build": "run-s build:*"
   },
   "dependencies": {
-    "media-played-ranges-mixin": "^0.1.0"
+    "media-played-ranges-mixin": "^0.1.0",
+    "media-tracks": "^0.3.0"
   },
   "devDependencies": {
     "build-react-wrapper": "^0.2.4",
