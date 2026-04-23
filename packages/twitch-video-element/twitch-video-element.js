@@ -72,13 +72,13 @@ function serializeIframeUrl(attrs, props) {
   const channelMatch = attrs.src.match(MATCH_CHANNEL);
 
   const params = {
-    parent: globalThis.location?.hostname,
     // ?controls=true is enabled by default in the iframe
     controls: attrs.controls === '' ? null : false,
     autoplay: attrs.autoplay === '' ? null : false,
     muted: attrs.muted,
     preload: attrs.preload,
     ...props.config,
+    parent: [...new Set([].concat(props.parent ?? []).concat(globalThis.location?.hostname ?? []))].filter(Boolean),
   };
 
   if (videoMatch) {
@@ -111,10 +111,12 @@ class TwitchVideoElement extends (globalThis.HTMLElement ?? class {}) {
   #seeking = false;
   #readyState = 0;
   #config = null;
+  #parent = null;
 
   constructor() {
     super();
     this.#upgradeProperty('config');
+    this.#upgradeProperty('parent');
   }
 
   get config() {
@@ -123,6 +125,16 @@ class TwitchVideoElement extends (globalThis.HTMLElement ?? class {}) {
 
   set config(value) {
     this.#config = value;
+  }
+
+  get parent() {
+    return this.#parent ?? this.getAttribute('parent');
+  }
+
+  set parent(value) {
+    if (this.#parent === value) return;
+    this.#parent = value;
+    this.load();
   }
 
   async load() {
@@ -426,8 +438,10 @@ function escapeHtml(str) {
     .replace(/`/g, '&#x60;');
 }
 
-function serialize(props) {
-  return String(new URLSearchParams(filterParams(props)));
+function serialize({ parent, ...props }) {
+  const params = new URLSearchParams(filterParams(props));
+  [].concat(parent).filter(Boolean).forEach(d => params.append('parent', d));
+  return String(params);
 }
 
 function filterParams(props) {

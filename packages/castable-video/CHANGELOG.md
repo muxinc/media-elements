@@ -5,6 +5,13 @@
 [1]: https://www.npmjs.com/package/castable-video?activeTab=versions
 
 
+## [1.1.13](https://github.com/muxinc/media-elements/compare/castable-video@1.1.12...castable-video@1.1.13) (2026-04-20)
+
+
+### Bug Fixes
+
+* chromecast for HLS streams with separate audio renditions ([#227](https://github.com/muxinc/media-elements/issues/227)) ([db67528](https://github.com/muxinc/media-elements/commit/db675287b58e2ceb95ac600d4eaa1f4a018f5cee))
+
 ## [1.1.12](https://github.com/muxinc/media-elements/compare/castable-video@1.1.11...castable-video@1.1.12) (2026-03-19)
 
 
