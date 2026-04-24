@@ -8,16 +8,14 @@ export const metadata: Metadata = {
 
 export default function Page() {
   return (
-    <>
-      <section>
-        <Player
-          as={WistiaVideo}
-          src="https://wesleyluyten.wistia.com/medias/oifkgmxnkb"
-          config={{
-            playerColor: '#f5f6f7',
-          }}
-        />
-      </section>
-    </>
+    <section>
+      <Player
+        as={WistiaVideo}
+        src="https://wesleyluyten.wistia.com/medias/oifkgmxnkb"
+        config={{
+          playerColor: 'AFE5A4',
+        }}
+      />
+    </section>
   );
 }
