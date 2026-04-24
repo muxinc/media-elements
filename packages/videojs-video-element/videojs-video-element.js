@@ -232,16 +232,18 @@ class VideojsVideoElement extends (MediaTracksMixin?.(SuperVideoElement ?? class
 
   #rewindAndPlay() {
     return new Promise((resolve, reject) => {
-      const timeout = setTimeout(() => {
-        reject(new DOMException('Seek timed out', 'AbortError'));
-      }, 3000);
-
-      this.api.one('seeked', () => {
+      const onSeeked = () => {
         clearTimeout(timeout);
         const result = this.api.play();
         if (result?.then) result.then(resolve, reject);
         else resolve(result);
-      });
+      };
+      const timeout = setTimeout(() => {
+        this.api.off('seeked', onSeeked);
+        reject(new DOMException('Seek timed out', 'AbortError'));
+      }, 3000);
+
+      this.api.one('seeked', onSeeked);
       this.api.currentTime(0);
     });
   }
