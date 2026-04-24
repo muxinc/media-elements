@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
   <head>
-    <title>&lt;twitch-video&gt;</title>
+    <title>&lt;peertube-video&gt;</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css" />
     <style>
@@ -9,18 +9,27 @@
         text-align: center;
       }
       media-controller,
-      twitch-video {
+      peertube-video {
         display: block;
         width: 100%;
         aspect-ratio: 16 / 9;
         background: #000;
       }
     </style>
+    <script type="importmap">
+      {
+        "imports": {
+          "media-tracks": "https://cdn.jsdelivr.net/npm/media-tracks@0.3/+esm",
+          "media-played-ranges-mixin": "https://cdn.jsdelivr.net/npm/media-played-ranges-mixin@0.1.0/+esm"
+        }
+      }
+    </script>
     <script type="module" src="./peertube-video-element.js"></script>
     <script type="module" src="https://cdn.jsdelivr.net/npm/media-chrome/+esm"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/media-chrome/menu/+esm"></script>
   </head>
   <body>
-    <h1>&lt;twitch-video&gt;</h1>
+    <h1>&lt;peertube-video&gt;</h1>
     <br />
 
     <peertube-video id="t1" muted controls src="https://video.mshparisnord.fr/w/7r2FxoQdYjun6tYWJfHUCa"></peertube-video>
@@ -32,7 +41,11 @@
     <h2>With <a href="https://github.com/muxinc/media-chrome" target="_blank">Media Chrome</a></h2>
 
     <media-controller>
-      <peertube-video id="t2" src="https://video.mshparisnord.fr/w/7r2FxoQdYjun6tYWJfHUCa" slot="media"></peertube-video>
+      <peertube-video id="t2" src="https://tv.dilstories.com/videos/embed/oDbRb2hnUsoioPSsxXULWA" slot="media"></peertube-video>
+      <media-captions-menu hidden anchor="auto"></media-captions-menu>
+      <media-rendition-menu anchor="auto" hidden>
+        <div slot="header">Quality</div>
+      </media-rendition-menu>
       <media-control-bar>
         <media-play-button></media-play-button>
         <media-seek-backward-button seek-offset="15"></media-seek-backward-button>
@@ -41,6 +54,9 @@
         <media-volume-range></media-volume-range>
         <media-time-range></media-time-range>
         <media-time-display show-duration remaining></media-time-display>
+        <media-captions-menu-button></media-captions-menu-button>
+        <media-rendition-menu-button></media-rendition-menu-button>
+        <media-playback-rate-button></media-playback-rate-button>
         <media-fullscreen-button></media-fullscreen-button>
       </media-control-bar>
     </media-controller>
