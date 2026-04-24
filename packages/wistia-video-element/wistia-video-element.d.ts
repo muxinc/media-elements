@@ -2,6 +2,7 @@ export type WistiaPluginConfig = Record<string, unknown>;
 
 export type WistiaEmbedOptions = {
   autoPlay?: boolean;
+  chromeless?: boolean;
   controlsVisibleOnLoad?: boolean;
   copyLinkAndThumbnailEnabled?: boolean;
   doNotTrack?: boolean;
@@ -11,6 +12,7 @@ export type WistiaEmbedOptions = {
   fitStrategy?: 'contain' | 'cover' | 'fill' | 'none';
   fullscreenButton?: boolean;
   muted?: boolean;
+  keyMoments?: boolean;
   playbackRateControl?: boolean;
   playbar?: boolean;
   playButton?: boolean;
