@@ -232,7 +232,12 @@ class VideojsVideoElement extends (MediaTracksMixin?.(SuperVideoElement ?? class
 
   #rewindAndPlay() {
     return new Promise((resolve, reject) => {
+      const timeout = setTimeout(() => {
+        reject(new DOMException('Seek timed out', 'AbortError'));
+      }, 3000);
+
       this.api.one('seeked', () => {
+        clearTimeout(timeout);
         const result = this.api.play();
         if (result?.then) result.then(resolve, reject);
         else resolve(result);
@@ -240,7 +245,6 @@ class VideojsVideoElement extends (MediaTracksMixin?.(SuperVideoElement ?? class
       this.api.currentTime(0);
     });
   }
-
   get(prop) {
     // Some props are acting weird in videojs, get it straight from the video.
     return this.nativeEl?.[prop];
