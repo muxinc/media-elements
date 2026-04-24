@@ -80,9 +80,10 @@ class WistiaVideoElement extends SuperVideoElement {
 
     const options = {
       autoPlay: this.autoplay,
+      silentAutoPlay: this.autoplay ? 'allow' : undefined,
       preload: this.preload ?? 'metadata',
       playsinline: this.playsInline,
-      endVideoBehavior: this.loop && 'loop',
+      endVideoBehavior: this.loop ? 'loop' : undefined,
       chromeless: !this.controls,
       playButton: this.controls,
       muted: this.defaultMuted,
