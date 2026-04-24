@@ -222,9 +222,31 @@ class VideojsVideoElement extends (MediaTracksMixin?.(SuperVideoElement ?? class
   // Override all methods for video.js so it calls its API directly.
 
   call(name, ...args) {
+    // Calling play() while ended races with video.js's internal reset and
+    // rejects the play promise with AbortError.
+    if (name === 'play' && this.api?.ended?.()) {
+      return this.#rewindAndPlay();
+    }
     return this.api?.[name]?.(...args);
   }
 
+  #rewindAndPlay() {
+    return new Promise((resolve, reject) => {
+      const onSeeked = () => {
+        clearTimeout(timeout);
+        const result = this.api.play();
+        if (result?.then) result.then(resolve, reject);
+        else resolve(result);
+      };
+      const timeout = setTimeout(() => {
+        this.api.off('seeked', onSeeked);
+        reject(new DOMException('Seek timed out', 'AbortError'));
+      }, 3000);
+
+      this.api.one('seeked', onSeeked);
+      this.api.currentTime(0);
+    });
+  }
   get(prop) {
     // Some props are acting weird in videojs, get it straight from the video.
     return this.nativeEl?.[prop];
