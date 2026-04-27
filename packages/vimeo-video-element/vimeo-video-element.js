@@ -140,16 +140,13 @@ class VimeoVideoElement extends MediaPlayedRangesMixin(globalThis.HTMLElement ??
   }
 
   set config(value) {
+    if (JSON.stringify(this.#config) === JSON.stringify(value)) return;
     this.#config = value;
     this.load();
   }
 
   async load() {
     if (this.#loadRequested) return;
-
-    if (this.#hasLoaded) this.loadComplete = new PublicPromise();
-    this.#hasLoaded = true;
-
     // Wait 1 tick to allow other attributes to be set.
     await (this.#loadRequested = Promise.resolve());
     this.#loadRequested = null;
@@ -172,8 +169,14 @@ class VimeoVideoElement extends MediaPlayedRangesMixin(globalThis.HTMLElement ??
     this.api = null;
 
     if (!this.src) {
+      // Nothing to load. Leave loadComplete and #hasLoaded untouched so
+      // callers awaiting the existing loadComplete aren't orphaned if a
+      // later load() (e.g. triggered by a subsequent src) replaces it.
       return;
     }
+
+    if (this.#hasLoaded) this.loadComplete = new PublicPromise();
+    this.#hasLoaded = true;
 
     this.dispatchEvent(new Event('loadstart'));
 
