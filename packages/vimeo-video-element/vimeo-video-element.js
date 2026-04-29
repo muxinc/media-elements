@@ -109,6 +109,10 @@ class VimeoVideoElement extends MediaPlayedRangesMixin(globalThis.HTMLElement ??
   #videoWidth = NaN;
   #videoHeight = NaN;
   #config = null;
+  /**  Distinguishes a remount from SSR hydration.
+   * See load()
+   */
+  #wasDisconnected = false;
 
   constructor() {
     super();
@@ -136,17 +140,13 @@ class VimeoVideoElement extends MediaPlayedRangesMixin(globalThis.HTMLElement ??
   }
 
   set config(value) {
+    if (JSON.stringify(this.#config) === JSON.stringify(value)) return;
     this.#config = value;
+    this.load();
   }
 
   async load() {
     if (this.#loadRequested) return;
-
-    const isFirstLoad = !this.#hasLoaded;
-
-    if (this.#hasLoaded) this.loadComplete = new PublicPromise();
-    this.#hasLoaded = true;
-
     // Wait 1 tick to allow other attributes to be set.
     await (this.#loadRequested = Promise.resolve());
     this.#loadRequested = null;
@@ -169,8 +169,14 @@ class VimeoVideoElement extends MediaPlayedRangesMixin(globalThis.HTMLElement ??
     this.api = null;
 
     if (!this.src) {
+      // Nothing to load. Leave loadComplete and #hasLoaded untouched so
+      // callers awaiting the existing loadComplete aren't orphaned if a
+      // later load() (e.g. triggered by a subsequent src) replaces it.
       return;
     }
+
+    if (this.#hasLoaded) this.loadComplete = new PublicPromise();
+    this.#hasLoaded = true;
 
     this.dispatchEvent(new Event('loadstart'));
 
@@ -187,50 +193,86 @@ class VimeoVideoElement extends MediaPlayedRangesMixin(globalThis.HTMLElement ??
       ...this.#config,
     };
 
-    const onLoaded = async () => {
-      this.#readyState = 1; // HTMLMediaElement.HAVE_METADATA
-      this.dispatchEvent(new Event('loadedmetadata'));
-
-      if (this.api) {
-        this.#muted = await this.api.getMuted();
-        this.#volume = await this.api.getVolume();
-        this.dispatchEvent(new Event('volumechange'));
-
-        this.#duration = await this.api.getDuration();
-        this.dispatchEvent(new Event('durationchange'));
-      }
-
-      this.dispatchEvent(new Event('loadcomplete'));
-      this.loadComplete.resolve();
-    };
-
     if (this.#isInit) {
       this.api = oldApi;
       await this.api.loadVideo({
         ...options,
         url: this.src,
       });
-      await onLoaded();
+      await this.#onLoaded();
       await this.loadComplete;
       return;
     }
 
     this.#isInit = true;
 
-    let iframe = this.shadowRoot?.querySelector('iframe');
+    /*
+     * Decide whether to build the iframe or adopt an existing one:
+     * - First client mount or remount after disconnect: build, so the iframe
+     *   URL reflects current src and config. The Vimeo SDK wraps an existing
+     *   iframe as-is and won't update its URL.
+     * - SSR declarative shadow DOM hydration: adopt the existing iframe. Its
+     *   URL is already correct, and rebuilding would destroy the in-flight
+     *   request and cause a visible stutter. Recover config from the
+     *   data-config attribute so element state matches the DOM.
+     */
+    if (!this.shadowRoot) this.attachShadow({ mode: 'open' });
 
-    if (isFirstLoad && iframe) {
-      this.#config = JSON.parse(iframe.getAttribute('data-config') || '{}');
-    }
+    const existingIframe = this.shadowRoot.querySelector('iframe');
+    const isSsrHydration = existingIframe && !this.#wasDisconnected;
 
-    if (!this.shadowRoot) {
-      this.attachShadow({ mode: 'open' });
+    if (isSsrHydration) {
+      if (!this.#config) {
+        this.#config = JSON.parse(existingIframe.getAttribute('data-config') || '{}');
+      }
+    } else {
       this.shadowRoot.innerHTML = getTemplateHTML(namedNodeMapToObject(this.attributes), this);
-      iframe = this.shadowRoot.querySelector('iframe');
+    }
+    this.#wasDisconnected = false;
+
+    oldApi?.destroy?.();
+    const iframe = this.shadowRoot.querySelector('iframe');
+    this.api = new VimeoPlayerAPI(iframe);
+    this.#setupApiListeners();
+    await this.loadComplete;
+  }
+
+  connectedCallback() {
+    if (this.#wasDisconnected) {
+      this.load();
+    }
+    super.connectedCallback?.();
+  }
+
+  disconnectedCallback() {
+    this.#wasDisconnected = true;
+    this.#loadRequested = null;
+    this.#hasLoaded = null;
+    this.#isInit = null;
+    this.loadComplete = new PublicPromise();
+    this.api?.destroy?.();
+    this.api = null;
+    super.disconnectedCallback?.();
+  }
+
+  #onLoaded = async () => {
+    this.#readyState = 1; // HTMLMediaElement.HAVE_METADATA
+    this.dispatchEvent(new Event('loadedmetadata'));
+
+    if (this.api) {
+      this.#muted = await this.api.getMuted();
+      this.#volume = await this.api.getVolume();
+      this.dispatchEvent(new Event('volumechange'));
+
+      this.#duration = await this.api.getDuration();
+      this.dispatchEvent(new Event('durationchange'));
     }
 
-    this.api = new VimeoPlayerAPI(iframe);
+    this.dispatchEvent(new Event('loadcomplete'));
+    this.loadComplete.resolve();
+  };
 
+  #setupApiListeners() {
     const textTracksVideo = document.createElement('video');
     this.textTracks = textTracksVideo.textTracks;
     this.api.getTextTracks().then((vimeoTracks) => {
@@ -249,7 +291,7 @@ class VimeoVideoElement extends MediaPlayedRangesMixin(globalThis.HTMLElement ??
 
     const onceLoaded = () => {
       this.api.off('loaded', onceLoaded);
-      onLoaded();
+      this.#onLoaded();
     };
     this.api.on('loaded', onceLoaded);
 
@@ -333,8 +375,6 @@ class VimeoVideoElement extends MediaPlayedRangesMixin(globalThis.HTMLElement ??
       this.#videoHeight = videoHeight;
       this.dispatchEvent(new Event('resize'));
     });
-
-    await this.loadComplete;
   }
 
   async attributeChangedCallback(attrName, oldValue, newValue) {
