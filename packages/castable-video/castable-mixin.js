@@ -157,14 +157,18 @@ export const CastableMediaMixin = (superclass) =>
         if (!mediaInfo.contentType) {
           mediaInfo.contentType = 'application/x-mpegURL';
         }
-        const segmentFormat = await getPlaylistSegmentFormat(this.castSrc);
-        const isFragmentedMP4 = segmentFormat?.includes('m4s') || segmentFormat?.includes('mp4');
-        if (isFragmentedMP4) {
+        const { videoFormat, audioFormat } = await getPlaylistSegmentFormat(this.castSrc);
+
+        const isVideoFMP4 = videoFormat?.includes('m4s') || videoFormat?.includes('mp4') || videoFormat?.includes('m4a');
+        if (isVideoFMP4) {
           mediaInfo.hlsSegmentFormat = chrome.cast.media.HlsSegmentFormat.FMP4;
           mediaInfo.hlsVideoSegmentFormat = chrome.cast.media.HlsVideoSegmentFormat.FMP4;
-        } else if (segmentFormat?.includes('ts')) {
+        } else if (audioFormat?.includes('aac')) {
+          mediaInfo.hlsSegmentFormat = chrome.cast.media.HlsSegmentFormat.AAC;
+          mediaInfo.hlsVideoSegmentFormat = chrome.cast.media.HlsVideoSegmentFormat.MPEG2_TS;
+        } else if (videoFormat?.includes('ts') || audioFormat?.includes('ts')) {
           mediaInfo.hlsSegmentFormat = chrome.cast.media.HlsSegmentFormat.TS;
-          mediaInfo.hlsVideoSegmentFormat = chrome.cast.media.HlsVideoSegmentFormat.TS;
+          mediaInfo.hlsVideoSegmentFormat = chrome.cast.media.HlsVideoSegmentFormat.MPEG2_TS;
         }
       }
 
