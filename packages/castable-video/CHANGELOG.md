@@ -5,6 +5,13 @@
 [1]: https://www.npmjs.com/package/castable-video?activeTab=versions
 
 
+## [1.1.14](https://github.com/muxinc/media-elements/compare/castable-video@1.1.13...castable-video@1.1.14) (2026-04-29)
+
+
+### Bug Fixes
+
+* correct hlsSegmentFormat for HLS streams with AAC audio in castable-video ([#234](https://github.com/muxinc/media-elements/issues/234)) ([a547dc2](https://github.com/muxinc/media-elements/commit/a547dc2741fee2b69378b4254ffbd07a36288d1c))
+
 ## [1.1.13](https://github.com/muxinc/media-elements/compare/castable-video@1.1.12...castable-video@1.1.13) (2026-04-20)
 
 

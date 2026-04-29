@@ -5,6 +5,13 @@
 [1]: https://www.npmjs.com/package/wistia-video-element?activeTab=versions
 
 
+## [1.4.0](https://github.com/muxinc/media-elements/compare/wistia-video-element@1.3.6...wistia-video-element@1.4.0) (2026-04-29)
+
+
+### Features
+
+* add config support to wistia-video-element  ([9944647](https://github.com/muxinc/media-elements/commit/99446476df650212b6cfa1ace5994f4af7c07e1f))
+
 ## [1.3.6](https://github.com/muxinc/media-elements/compare/wistia-video-element@1.3.5...wistia-video-element@1.3.6) (2025-11-25)
 
 

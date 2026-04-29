@@ -5,6 +5,13 @@
 [1]: https://www.npmjs.com/package/videojs-video-element?activeTab=versions
 
 
+## [1.4.8](https://github.com/muxinc/media-elements/compare/videojs-video-element@1.4.7...videojs-video-element@1.4.8) (2026-04-29)
+
+
+### Bug Fixes
+
+* avoid AbortError when play() is called after ended in videojs-video-element ([#230](https://github.com/muxinc/media-elements/issues/230)) ([29419ba](https://github.com/muxinc/media-elements/commit/29419ba139a82241189174d4351cf17421d37331))
+
 ## [1.4.7](https://github.com/muxinc/media-elements/compare/videojs-video-element@1.4.6...videojs-video-element@1.4.7) (2026-03-19)
 
 
