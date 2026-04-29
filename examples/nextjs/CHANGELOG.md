@@ -1,5 +1,21 @@
 # Changelog
 
+## [2.1.0](https://github.com/muxinc/media-elements/compare/nextjs@2.0.2...nextjs@2.1.0) (2026-04-29)
+
+
+### Features
+
+* add config support to wistia-video-element  ([9944647](https://github.com/muxinc/media-elements/commit/99446476df650212b6cfa1ace5994f4af7c07e1f))
+* add PeerTube Video Element  ([79fefe9](https://github.com/muxinc/media-elements/commit/79fefe9fbe0729e8dbd880cec378c182a282e142))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * videojs-video-element bumped from ^1.4.7 to ^1.4.8
+    * wistia-video-element bumped from ^1.3.6 to ^1.4.0
+
 ## [2.0.2](https://github.com/muxinc/media-elements/compare/nextjs@2.0.1...nextjs@2.0.2) (2026-04-20)
 
 
