@@ -118,6 +118,17 @@ function getFormat(segment) {
   return match ? match[1] : null;
 }
 
+function parseAudioRenditionUrl(playlistContent) {
+  for (const line of playlistContent.split('\n')) {
+    const trimmed = line.trim();
+    if (trimmed.startsWith('#EXT-X-MEDIA') && /TYPE=AUDIO/i.test(trimmed)) {
+      const match = trimmed.match(/URI="([^"]+)"/i);
+      if (match) return match[1];
+    }
+  }
+  return undefined;
+}
+
 function parsePlaylistUrls(playlistContent) {
   const lines = playlistContent.split('\n');
   const urls = [];
@@ -142,7 +153,7 @@ function parseSegment(playlistContent){
 
   const url = lines.find(line => !line.trim().startsWith('#') && line.trim() !== '');
 
-  return url;
+  return url?.trim();
 }
 
 export async function isHls(url) {
@@ -162,22 +173,36 @@ export async function isHls(url) {
 }
 
 export async function getPlaylistSegmentFormat(url) {
-  if (!url || url.startsWith('blob:')) return undefined;
+  if (!url || url.startsWith('blob:')) return { videoFormat: undefined, audioFormat: undefined };
   try {
     const mainManifestContent = await (await fetch(url)).text();
-    let availableChunksContent = mainManifestContent;
+    let videoChunksContent = mainManifestContent;
 
     const playlists = parsePlaylistUrls(mainManifestContent);
-    if (playlists.length > 0) {    
+    if (playlists.length > 0) {
       const chosenPlaylistUrl = new URL(playlists[0], url).toString();
-      availableChunksContent = await (await fetch(chosenPlaylistUrl)).text();
+      videoChunksContent = await (await fetch(chosenPlaylistUrl)).text();
     }
 
-    const segment = parseSegment(availableChunksContent);
-    const format = getFormat(segment);
-    return format
+    const videoSegment = parseSegment(videoChunksContent);
+    const videoFormat = getFormat(videoSegment);
+
+    const audioRenditionPath = parseAudioRenditionUrl(mainManifestContent);
+    let audioFormat = videoFormat;
+    if (audioRenditionPath) {
+      try {
+        const audioPlaylistUrl = new URL(audioRenditionPath, url).toString();
+        const audioChunksContent = await (await fetch(audioPlaylistUrl)).text();
+        const audioSegment = parseSegment(audioChunksContent);
+        audioFormat = getFormat(audioSegment) ?? videoFormat;
+      } catch (err) {
+        console.error('Error while trying to parse the audio rendition playlist', err);
+      }
+    }
+
+    return { videoFormat, audioFormat };
   } catch (err) {
     console.error('Error while trying to parse the manifest playlist', err);
-    return undefined;
+    return { videoFormat: undefined, audioFormat: undefined };
   }
 }
