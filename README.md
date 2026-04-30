@@ -22,3 +22,11 @@ A collection of HTMLMediaElement compatible elements and add-ons.
 | [`<twitch-video>`](packages/twitch-video-element)                                    | A custom video element for Twitch player.                                      |
 | [`<cloudflare-video>`](packages/cloudflare-video-element)                            | A custom video element for Cloudflare Stream.                                  |
 | [`<peertube-video>`](packages/peertube-video-element)                                | A custom video element for PeerTube player.                                    |
+
+## Browser support
+
+The packages in this repo are distributed as **ESNext** — including modern JavaScript features like [private class fields](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_properties). This is intentional: these packages are designed to be imported and processed by your own bundler or build tool, which is responsible for transpiling to your target browsers.
+
+If you need to support browsers that don't have these features natively (e.g. Safari < 14.1), configure your bundler to include these packages in its transpilation step and set your desired target (e.g. `es2019`).
+
+> **Note:** Unlike [`media-chrome`](https://github.com/muxinc/media-chrome), which ships pre-transpiled to `es2019`, the packages in this repository are distributed as ESNext. You are responsible for configuring your build pipeline to handle any necessary transpilation for your target environments.
