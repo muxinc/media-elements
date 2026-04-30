@@ -143,7 +143,7 @@ class PublicPromise extends Promise {
   }
 }
 
-class PeerTubeVideoElement extends MediaPlayedRangesMixin(MediaTracksMixin(HTMLElement)) {
+class PeerTubeVideoElement extends MediaPlayedRangesMixin(MediaTracksMixin(globalThis.HTMLElement ?? class {})) {
   static getTemplateHTML = getTemplateHTML;
   static shadowRootOptions = { mode: "open" };
   static observedAttributes = [
