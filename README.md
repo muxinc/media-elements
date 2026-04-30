@@ -29,4 +29,4 @@ The packages in this repo are distributed as **ESNext** — including modern Jav
 
 If you need to support browsers that don't have these features natively (e.g. Safari < 14.1), configure your bundler to include these packages in its transpilation step and set your desired target (e.g. `es2019`).
 
-> **Note:** [`media-chrome`](https://github.com/muxinc/media-chrome) ships pre-transpiled to `es2019`. The packages here intentionally do not — expect to handle transpilation yourself.
+> **Note:** Unlike [`media-chrome`](https://github.com/muxinc/media-chrome), which ships pre-transpiled to `es2019`, the packages in this repository are distributed as ESNext. You are responsible for configuring your build pipeline to handle any necessary transpilation for your target environments.
