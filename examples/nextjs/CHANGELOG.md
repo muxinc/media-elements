@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.1.1](https://github.com/muxinc/media-elements/compare/nextjs@2.1.0...nextjs@2.1.1) (2026-05-04)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * peertube-video-element bumped from ^1.0.0 to ^1.1.0
+
 ## [2.1.0](https://github.com/muxinc/media-elements/compare/nextjs@2.0.2...nextjs@2.1.0) (2026-04-29)
 
 
