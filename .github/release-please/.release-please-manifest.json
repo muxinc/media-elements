@@ -12,6 +12,7 @@
   "packages/spotify-audio-element": "1.0.4",
   "packages/super-media-element": "1.4.2",
   "packages/tiktok-video-element": "0.1.2",
+  "packages/peertube-video-element": "0.1.0",
   "packages/twitch-video-element": "0.2.0",
   "packages/videojs-video-element": "1.4.8",
   "packages/vimeo-video-element": "1.7.1",
