@@ -297,7 +297,7 @@ export const CastableMediaMixin = (superclass) =>
     }
 
     get muted() {
-      if (this.#castPlayer) return this.#castPlayer?.isMuted;
+      if (this.#castPlayer) return this.#castPlayer.isMuted;
       return super.muted;
     }
 
@@ -315,7 +315,7 @@ export const CastableMediaMixin = (superclass) =>
     }
 
     get volume() {
-      if (this.#castPlayer) return this.#castPlayer?.volumeLevel ?? 1;
+      if (this.#castPlayer) return this.#castPlayer.volumeLevel ?? 1;
       return super.volume;
     }
 
@@ -330,15 +330,15 @@ export const CastableMediaMixin = (superclass) =>
 
     get duration() {
       // castPlayer duration returns `0` when no media is loaded.
-      if (this.#castPlayer && this.#castPlayer?.isMediaLoaded) {
-        return this.#castPlayer?.duration ?? NaN;
+      if (this.#castPlayer && this.#castPlayer.isMediaLoaded) {
+        return this.#castPlayer.duration ?? NaN;
       }
       return super.duration;
     }
 
     get currentTime() {
-      if (this.#castPlayer && this.#castPlayer?.isMediaLoaded) {
-        return this.#castPlayer?.currentTime ?? 0;
+      if (this.#castPlayer && this.#castPlayer.isMediaLoaded) {
+        return this.#castPlayer.currentTime ?? 0;
       }
       return super.currentTime;
     }
