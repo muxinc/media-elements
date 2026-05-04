@@ -5,6 +5,13 @@
 [1]: https://www.npmjs.com/package/castable-video?activeTab=versions
 
 
+## [1.1.15](https://github.com/muxinc/media-elements/compare/castable-video@1.1.14...castable-video@1.1.15) (2026-05-04)
+
+
+### Bug Fixes
+
+* format castable mixin ([7271ee3](https://github.com/muxinc/media-elements/commit/7271ee349933c91fbe1d5e634978d677579bd3dd))
+
 ## [1.1.14](https://github.com/muxinc/media-elements/compare/castable-video@1.1.13...castable-video@1.1.14) (2026-04-29)
 
 
