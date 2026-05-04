@@ -1,6 +1,6 @@
 {
   "name": "nextjs",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -20,7 +20,7 @@
     "react-dom": "^19.2.4",
     "shaka-video-element": "^0.7.1",
     "spotify-audio-element": "^1.0.4",
-    "peertube-video-element": "^1.0.0",
+    "peertube-video-element": "^1.1.0",
     "tiktok-video-element": "^0.1.2",
     "twitch-video-element": "^0.2.0",
     "videojs-video-element": "^1.4.8",
