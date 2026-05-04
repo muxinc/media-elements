@@ -7,7 +7,7 @@ import {
   currentSession,
   getDefaultCastOptions,
   isHls,
-  getPlaylistSegmentFormat
+  getPlaylistSegmentFormat,
 } from './castable-utils.js';
 
 /**
@@ -21,7 +21,6 @@ import {
  */
 export const CastableMediaMixin = (superclass) =>
   class CastableMedia extends superclass {
-
     static observedAttributes = [
       ...(superclass.observedAttributes ?? []),
       'cast-src',
@@ -50,7 +49,7 @@ export const CastableMediaMixin = (superclass) =>
         }
 
         privateProps.set(this, {
-          loadOnPrompt: () => this.#loadOnPrompt()
+          loadOnPrompt: () => this.#loadOnPrompt(),
         });
 
         return (this.#remote = new RemotePlayback(this));
@@ -126,10 +125,7 @@ export const CastableMediaMixin = (superclass) =>
             activeTrackIds.push(trackId);
           }
 
-          const track = new chrome.cast.media.Track(
-            trackId,
-            chrome.cast.media.TrackType.TEXT
-          );
+          const track = new chrome.cast.media.Track(trackId, chrome.cast.media.TrackType.TEXT);
           track.trackContentId = trackEl.src;
           track.trackContentType = 'text/vtt';
           track.subtype =
@@ -159,7 +155,8 @@ export const CastableMediaMixin = (superclass) =>
         }
         const { videoFormat, audioFormat } = await getPlaylistSegmentFormat(this.castSrc);
 
-        const isVideoFMP4 = videoFormat?.includes('m4s') || videoFormat?.includes('mp4') || videoFormat?.includes('m4a');
+        const isVideoFMP4 =
+          videoFormat?.includes('m4s') || videoFormat?.includes('mp4') || videoFormat?.includes('m4a');
         if (isVideoFMP4) {
           mediaInfo.hlsSegmentFormat = chrome.cast.media.HlsSegmentFormat.FMP4;
           mediaInfo.hlsVideoSegmentFormat = chrome.cast.media.HlsVideoSegmentFormat.FMP4;
@@ -237,7 +234,8 @@ export const CastableMediaMixin = (superclass) =>
         this.getAttribute('cast-src') ??
         this.querySelector('source')?.src ??
         resolvedSrc ??
-        this.getAttribute('src') ?? undefined
+        this.getAttribute('src') ??
+        undefined
       );
     }
 
@@ -303,10 +301,7 @@ export const CastableMediaMixin = (superclass) =>
 
     set muted(val) {
       if (this.#castPlayer) {
-        if (
-          (val && !this.#castPlayer.isMuted) ||
-          (!val && this.#castPlayer.isMuted)
-        ) {
+        if ((val && !this.#castPlayer.isMuted) || (!val && this.#castPlayer.isMuted)) {
           this.#castPlayer.controller?.muteOrUnmute();
         }
         return;
