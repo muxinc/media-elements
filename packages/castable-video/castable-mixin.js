@@ -59,7 +59,7 @@ export const CastableMediaMixin = (superclass) =>
     }
 
     get #castPlayer() {
-      return privateProps.get(this.remote)?.getCastPlayer?.();
+      return privateProps.get(this.#remote)?.getCastPlayer?.();
     }
 
     disconnectedCallback() {
