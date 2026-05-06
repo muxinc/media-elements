@@ -5,6 +5,13 @@
 [1]: https://www.npmjs.com/package/castable-video?activeTab=versions
 
 
+## [1.1.16](https://github.com/muxinc/media-elements/compare/castable-video@1.1.15...castable-video@1.1.16) (2026-05-06)
+
+
+### Bug Fixes
+
+* use private field in #castPlayer getter to avoid side effects ([#244](https://github.com/muxinc/media-elements/issues/244)) ([d27f204](https://github.com/muxinc/media-elements/commit/d27f20462cae66a350279c4e96b67d6912b07f9c))
+
 ## [1.1.15](https://github.com/muxinc/media-elements/compare/castable-video@1.1.14...castable-video@1.1.15) (2026-05-04)
 
 
