@@ -1,6 +1,6 @@
 {
   "name": "nextjs",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -24,7 +24,7 @@
     "tiktok-video-element": "^0.1.2",
     "twitch-video-element": "^0.2.0",
     "videojs-video-element": "^1.4.8",
-    "vimeo-video-element": "^1.7.1",
+    "vimeo-video-element": "^1.7.2",
     "wistia-video-element": "^1.4.0",
     "youtube-video-element": "^1.9.0"
   },

@@ -5,6 +5,13 @@
 [1]: https://www.npmjs.com/package/vimeo-video-element?activeTab=versions
 
 
+## [1.7.2](https://github.com/muxinc/media-elements/compare/vimeo-video-element@1.7.1...vimeo-video-element@1.7.2) (2026-05-08)
+
+
+### Bug Fixes
+
+* `&lt;vimeo-video&gt;` element race condition ([#220](https://github.com/muxinc/media-elements/issues/220)) ([6265f6c](https://github.com/muxinc/media-elements/commit/6265f6c12ff5cb2fd458f39a6464d729d56ec6d9))
+
 ## [1.7.1](https://github.com/muxinc/media-elements/compare/vimeo-video-element@1.7.0...vimeo-video-element@1.7.1) (2026-04-03)
 
 
