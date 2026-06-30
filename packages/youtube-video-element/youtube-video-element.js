@@ -51,7 +51,7 @@ function getTemplateHTML(attrs, props = {}) {
     frameborder: 0,
     width: '100%',
     height: '100%',
-    allow: 'accelerometer; fullscreen; autoplay; encrypted-media; gyroscope; picture-in-picture',
+    allow: 'accelerometer; fullscreen; autoplay; encrypted-media; gyroscope; picture-in-picture; clipboard-write; web-share',
   };
 
   if (props.config?.referrerpolicy) {
