@@ -5,6 +5,21 @@
 [1]: https://www.npmjs.com/package/dash-video-element?activeTab=versions
 
 
+## [0.3.3](https://github.com/muxinc/media-elements/compare/dash-video-element@0.3.2...dash-video-element@0.3.3) (2026-07-27)
+
+
+### Bug Fixes
+
+* pin zora to 6.0.0 in test importmaps ([#252](https://github.com/muxinc/media-elements/issues/252)) ([89acaf4](https://github.com/muxinc/media-elements/commit/89acaf4a5f85a20655be25f4293aee415f42a722))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * custom-media-element bumped from ^1.4.6 to ^1.4.7
+    * media-tracks bumped from ^0.3.5 to ^0.3.6
+
 ## [0.3.2](https://github.com/muxinc/media-elements/compare/dash-video-element@0.3.1...dash-video-element@0.3.2) (2026-03-19)
 
 

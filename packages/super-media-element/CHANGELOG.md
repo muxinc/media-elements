@@ -5,6 +5,13 @@
 [1]: https://www.npmjs.com/package/super-media-element?activeTab=versions
 
 
+## [1.4.3](https://github.com/muxinc/media-elements/compare/super-media-element@1.4.2...super-media-element@1.4.3) (2026-07-27)
+
+
+### Bug Fixes
+
+* pin zora to 6.0.0 in test importmaps ([#252](https://github.com/muxinc/media-elements/issues/252)) ([89acaf4](https://github.com/muxinc/media-elements/commit/89acaf4a5f85a20655be25f4293aee415f42a722))
+
 ## [1.4.2](https://github.com/muxinc/media-elements/compare/super-media-element@1.4.1...super-media-element@1.4.2) (2024-06-07)
 
 

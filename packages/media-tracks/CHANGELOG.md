@@ -5,6 +5,13 @@
 [1]: https://www.npmjs.com/package/media-tracks?activeTab=versions
 
 
+## [0.3.6](https://github.com/muxinc/media-elements/compare/media-tracks@0.3.5...media-tracks@0.3.6) (2026-07-27)
+
+
+### Bug Fixes
+
+* pin zora to 6.0.0 in test importmaps ([#252](https://github.com/muxinc/media-elements/issues/252)) ([89acaf4](https://github.com/muxinc/media-elements/commit/89acaf4a5f85a20655be25f4293aee415f42a722))
+
 ## [0.3.5](https://github.com/muxinc/media-elements/compare/media-tracks@0.3.4...media-tracks@0.3.5) (2026-03-19)
 
 

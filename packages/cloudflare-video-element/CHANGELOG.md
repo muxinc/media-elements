@@ -4,6 +4,13 @@
 
 [1]: https://www.npmjs.com/package/cloudflare-video-element?activeTab=versions
 
+## [1.3.6](https://github.com/muxinc/media-elements/compare/cloudflare-video-element@1.3.5...cloudflare-video-element@1.3.6) (2026-07-27)
+
+
+### Bug Fixes
+
+* pin zora to 6.0.0 in test importmaps ([#252](https://github.com/muxinc/media-elements/issues/252)) ([89acaf4](https://github.com/muxinc/media-elements/commit/89acaf4a5f85a20655be25f4293aee415f42a722))
+
 ## [1.3.5](https://github.com/muxinc/media-elements/compare/cloudflare-video-element@1.3.4...cloudflare-video-element@1.3.5) (2025-11-25)
 
 

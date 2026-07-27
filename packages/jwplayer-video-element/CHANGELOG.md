@@ -6,6 +6,20 @@
 
 
 
+## [1.3.6](https://github.com/muxinc/media-elements/compare/jwplayer-video-element@1.3.5...jwplayer-video-element@1.3.6) (2026-07-27)
+
+
+### Bug Fixes
+
+* pin zora to 6.0.0 in test importmaps ([#252](https://github.com/muxinc/media-elements/issues/252)) ([89acaf4](https://github.com/muxinc/media-elements/commit/89acaf4a5f85a20655be25f4293aee415f42a722))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * super-media-element bumped from ~1.4.2 to ~1.4.3
+
 ## [1.3.5](https://github.com/muxinc/media-elements/compare/jwplayer-video-element@1.3.4...jwplayer-video-element@1.3.5) (2025-11-25)
 
 

@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.1.1](https://github.com/muxinc/media-elements/compare/peertube-video-element@1.1.0...peertube-video-element@1.1.1) (2026-07-27)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * media-tracks bumped from ^0.3.0 to ^0.3.6
+
 ## [1.1.0](https://github.com/muxinc/media-elements/compare/peertube-video-element-v1.0.0...peertube-video-element@1.1.0) (2026-05-04)
 
 

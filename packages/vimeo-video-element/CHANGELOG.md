@@ -5,6 +5,14 @@
 [1]: https://www.npmjs.com/package/vimeo-video-element?activeTab=versions
 
 
+## [1.7.3](https://github.com/muxinc/media-elements/compare/vimeo-video-element@1.7.2...vimeo-video-element@1.7.3) (2026-07-27)
+
+
+### Bug Fixes
+
+* normalize undefined Vimeo config to null to prevent unnecessary reload ([#251](https://github.com/muxinc/media-elements/issues/251)) ([68b5b45](https://github.com/muxinc/media-elements/commit/68b5b45d491e980044d7aaaf69328b24cb3c2681))
+* pin zora to 6.0.0 in test importmaps ([#252](https://github.com/muxinc/media-elements/issues/252)) ([89acaf4](https://github.com/muxinc/media-elements/commit/89acaf4a5f85a20655be25f4293aee415f42a722))
+
 ## [1.7.2](https://github.com/muxinc/media-elements/compare/vimeo-video-element@1.7.1...vimeo-video-element@1.7.2) (2026-05-08)
 
 

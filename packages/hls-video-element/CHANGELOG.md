@@ -6,6 +6,21 @@
 
 
 
+## [1.5.12](https://github.com/muxinc/media-elements/compare/hls-video-element@1.5.11...hls-video-element@1.5.12) (2026-07-27)
+
+
+### Bug Fixes
+
+* pin zora to 6.0.0 in test importmaps ([#252](https://github.com/muxinc/media-elements/issues/252)) ([89acaf4](https://github.com/muxinc/media-elements/commit/89acaf4a5f85a20655be25f4293aee415f42a722))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * custom-media-element bumped from ^1.4.6 to ^1.4.7
+    * media-tracks bumped from ^0.3.5 to ^0.3.6
+
 ## [1.5.11](https://github.com/muxinc/media-elements/compare/hls-video-element@1.5.10...hls-video-element@1.5.11) (2026-03-19)
 
 

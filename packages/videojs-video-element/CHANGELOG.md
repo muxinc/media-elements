@@ -5,6 +5,21 @@
 [1]: https://www.npmjs.com/package/videojs-video-element?activeTab=versions
 
 
+## [1.4.9](https://github.com/muxinc/media-elements/compare/videojs-video-element@1.4.8...videojs-video-element@1.4.9) (2026-07-27)
+
+
+### Bug Fixes
+
+* pin zora to 6.0.0 in test importmaps ([#252](https://github.com/muxinc/media-elements/issues/252)) ([89acaf4](https://github.com/muxinc/media-elements/commit/89acaf4a5f85a20655be25f4293aee415f42a722))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * media-tracks bumped from ^0.3.5 to ^0.3.6
+    * super-media-element bumped from ~1.4.2 to ~1.4.3
+
 ## [1.4.8](https://github.com/muxinc/media-elements/compare/videojs-video-element@1.4.7...videojs-video-element@1.4.8) (2026-04-29)
 
 

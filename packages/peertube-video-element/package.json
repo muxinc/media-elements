@@ -1,6 +1,6 @@
 {
   "name": "peertube-video-element",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A custom element for the PeerTube player with an API that matches the `<video>` API",
   "author": "@muxinc",
   "publishConfig": {
@@ -56,7 +56,7 @@
   },
   "dependencies": {
     "media-played-ranges-mixin": "^0.1.0",
-    "media-tracks": "^0.3.0"
+    "media-tracks": "^0.3.6"
   },
   "devDependencies": {
     "build-react-wrapper": "^0.2.4",

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.3](https://github.com/muxinc/media-elements/compare/tiktok-video-element@0.1.2...tiktok-video-element@0.1.3) (2026-07-27)
+
+
+### Bug Fixes
+
+* pin zora to 6.0.0 in test importmaps ([#252](https://github.com/muxinc/media-elements/issues/252)) ([89acaf4](https://github.com/muxinc/media-elements/commit/89acaf4a5f85a20655be25f4293aee415f42a722))
+
 ## [0.1.2](https://github.com/muxinc/media-elements/compare/tiktok-video-element@0.1.1...tiktok-video-element@0.1.2) (2025-11-25)
 
 

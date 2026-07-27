@@ -5,6 +5,13 @@
 [1]: https://www.npmjs.com/package/youtube-video-element?activeTab=versions
 
 
+## [1.9.1](https://github.com/muxinc/media-elements/compare/youtube-video-element@1.9.0...youtube-video-element@1.9.1) (2026-07-27)
+
+
+### Bug Fixes
+
+* pin zora to 6.0.0 in test importmaps ([#252](https://github.com/muxinc/media-elements/issues/252)) ([89acaf4](https://github.com/muxinc/media-elements/commit/89acaf4a5f85a20655be25f4293aee415f42a722))
+
 ## [1.9.0](https://github.com/muxinc/media-elements/compare/youtube-video-element@1.8.1...youtube-video-element@1.9.0) (2026-02-17)
 
 
