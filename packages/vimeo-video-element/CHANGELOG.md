@@ -5,6 +5,13 @@
 [1]: https://www.npmjs.com/package/vimeo-video-element?activeTab=versions
 
 
+## [1.7.3](https://github.com/muxinc/media-elements/compare/vimeo-video-element@1.7.2...vimeo-video-element@1.7.3) (2026-08-07)
+
+
+### Bug Fixes
+
+* normalize undefined Vimeo config to null to prevent unnecessary reload ([#251](https://github.com/muxinc/media-elements/issues/251)) ([68b5b45](https://github.com/muxinc/media-elements/commit/68b5b45d491e980044d7aaaf69328b24cb3c2681))
+
 ## [1.7.2](https://github.com/muxinc/media-elements/compare/vimeo-video-element@1.7.1...vimeo-video-element@1.7.2) (2026-05-08)
 
 
