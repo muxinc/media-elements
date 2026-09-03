@@ -250,6 +250,48 @@ test('t parameter - case insensitive', async function (t) {
   t.equal(startParam, '171', 'start parameter is set from uppercase T parameter');
 });
 
+test('destroys the player when disconnected', async function (t) {
+  const video = await createVideoElement();
+  await video.loadComplete;
+
+  t.ok(video.api, 'has a player once loaded');
+  t.ok(video.shadowRoot.querySelector('iframe'), 'has an iframe once loaded');
+
+  video.remove();
+
+  t.equal(video.api, null, 'the player reference is released on disconnect');
+  t.equal(video.isLoaded, false, 'the element is no longer marked loaded');
+  t.equal(
+    video.shadowRoot.querySelector('iframe'),
+    null,
+    'destroy() removed the iframe from the shadow root'
+  );
+});
+
+test('creates a new player when reconnected', async function (t) {
+  const video = await createVideoElement();
+  await video.loadComplete;
+
+  const firstApi = video.api;
+  video.remove();
+  document.body.append(video);
+
+  await video.loadComplete;
+
+  t.ok(video.api, 'has a player again after reconnecting');
+  t.ok(video.api !== firstApi, 'a new player was created, not the destroyed one');
+  t.ok(video.shadowRoot.querySelector('iframe'), 'the iframe was rebuilt');
+});
+
+test('disconnecting before the player is ready does not throw', async function (t) {
+  const video = await createVideoElement();
+  // Do not await loadComplete: the API may still be loading.
+  video.remove();
+
+  t.equal(video.api, null, 'no player is left behind');
+  t.ok(true, 'disconnecting mid-load did not throw');
+});
+
 function delay(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
