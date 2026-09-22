@@ -340,7 +340,9 @@ class YoutubeVideoElement extends MediaPlayedRangesMixin(globalThis.HTMLElement 
       this.dispatchEvent(new Event('timeupdate'));
     });
 
-    await this.loadComplete;
+    // Rejected if the element disconnects before onReady; the #loadId check
+    // below then bails.
+    await this.loadComplete.catch(noop);
 
     // Superseded while awaiting loadComplete; don't start pollers for a player
     // that is already gone.
@@ -401,6 +403,17 @@ class YoutubeVideoElement extends MediaPlayedRangesMixin(globalThis.HTMLElement 
     this.#loadRequested = null;
     this.#hasLoaded = null;
     this.isLoaded = false;
+    // Settle anything still awaiting this load (play(), pause(), queued
+    // setters, user code) rather than leaving it pending forever. AbortError
+    // is what HTMLMediaElement.play() rejects with when interrupted. A no-op
+    // if the load already completed. The catch only marks the promise as
+    // handled so a disconnect with nothing awaiting doesn't surface as an
+    // unhandled rejection; actual awaiters still receive it.
+    const pending = this.loadComplete;
+    pending.catch(noop);
+    pending.reject(
+      new DOMException('Disconnected before load completed', 'AbortError')
+    );
     this.loadComplete = new PublicPromise();
     // The YouTube iframe API holds a reference to every player it creates, so
     // dropping the element is not enough to release the <iframe>: it stays
@@ -521,7 +534,7 @@ class YoutubeVideoElement extends MediaPlayedRangesMixin(globalThis.HTMLElement 
           this.api?.pauseVideo();
         });
       }
-    });
+    }, noop);
   }
 
   set defaultMuted(val) {
@@ -546,7 +559,7 @@ class YoutubeVideoElement extends MediaPlayedRangesMixin(globalThis.HTMLElement 
     if (this.muted == val) return;
     this.loadComplete.then(() => {
       val ? this.api?.mute() : this.api?.unMute();
-    });
+    }, noop);
   }
 
   get muted() {
@@ -562,7 +575,7 @@ class YoutubeVideoElement extends MediaPlayedRangesMixin(globalThis.HTMLElement 
     if (this.playbackRate == val) return;
     this.loadComplete.then(() => {
       this.api?.setPlaybackRate(val);
-    });
+    }, noop);
   }
 
   get playsInline() {
@@ -588,7 +601,7 @@ class YoutubeVideoElement extends MediaPlayedRangesMixin(globalThis.HTMLElement 
     this.#initialVolume = val;
     this.loadComplete.then(() => {
       this.api?.setVolume(val * 100);
-    });
+    }, noop);
   }
 
   get volume() {
@@ -674,6 +687,8 @@ async function loadScript(src, globalName, readyFnName) {
 }
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const noop = () => {};
 
 function promisify(fn) {
   return (...args) =>

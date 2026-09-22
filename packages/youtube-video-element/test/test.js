@@ -283,13 +283,32 @@ test('creates a new player when reconnected', async function (t) {
   t.ok(video.shadowRoot.querySelector('iframe'), 'the iframe was rebuilt');
 });
 
-test('disconnecting before the player is ready does not throw', async function (t) {
+test('disconnecting mid-load does not build a player afterwards', async function (t) {
   const video = await createVideoElement();
-  // Do not await loadComplete: the API may still be loading.
+  // Disconnect while load() is still awaiting the API script.
   video.remove();
 
-  t.equal(video.api, null, 'no player is left behind');
-  t.ok(true, 'disconnecting mid-load did not throw');
+  // Let that in-flight continuation actually resume before asserting;
+  // immediately after remove() api === null is true by construction.
+  for (let i = 0; i < 500 && !globalThis.YT?.Player; i++) await delay(10);
+  await delay(100);
+
+  t.equal(video.api, null, 'the superseded load did not construct a player');
+});
+
+test('disconnecting before ready settles the pending loadComplete', async function (t) {
+  const video = await createVideoElement();
+  const pending = video.loadComplete;
+
+  // Disconnect after the player is constructed but before onReady fires.
+  for (let i = 0; i < 500 && !video.api; i++) await delay(10);
+  video.remove();
+
+  const outcome = await Promise.race([
+    pending.then(() => 'resolved', (err) => err.name),
+    delay(3000).then(() => 'pending'),
+  ]);
+  t.ok(outcome !== 'pending', `loadComplete settles after disconnect (${outcome})`);
 });
 
 function delay(ms) {
