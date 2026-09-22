@@ -5,6 +5,13 @@
 [1]: https://www.npmjs.com/package/youtube-video-element?activeTab=versions
 
 
+## [1.9.1](https://github.com/muxinc/media-elements/compare/youtube-video-element@1.9.0...youtube-video-element@1.9.1) (2026-09-22)
+
+
+### Bug Fixes
+
+* **youtube-video-element:** clipboard-write & web-share added ([#248](https://github.com/muxinc/media-elements/issues/248)) ([559753b](https://github.com/muxinc/media-elements/commit/559753b5fbefd2faa58c6ddb250f319b07c7dcc7)), closes [#247](https://github.com/muxinc/media-elements/issues/247)
+
 ## [1.9.0](https://github.com/muxinc/media-elements/compare/youtube-video-element@1.8.1...youtube-video-element@1.9.0) (2026-02-17)
 
 
