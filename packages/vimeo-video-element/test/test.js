@@ -97,6 +97,7 @@ test('dispatches an error event when the video does not exist', async function (
   t.ok(event instanceof ErrorEvent, 'is an ErrorEvent');
   t.equal(event.error?.name, 'NotFoundError', 'carries the Vimeo error');
   t.ok(event.message, 'has an error message');
+  t.equal(video.error, event.error, 'exposes the error via video.error');
 });
 
 function delay(ms) {

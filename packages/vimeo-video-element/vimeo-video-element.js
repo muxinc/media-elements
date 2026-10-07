@@ -109,6 +109,7 @@ class VimeoVideoElement extends MediaPlayedRangesMixin(globalThis.HTMLElement ??
   #videoWidth = NaN;
   #videoHeight = NaN;
   #config = null;
+  #error = null;
   /**  Distinguishes a remount from SSR hydration.
    * See load()
    */
@@ -167,6 +168,7 @@ class VimeoVideoElement extends MediaPlayedRangesMixin(globalThis.HTMLElement ??
     this.#readyState = 0;
     this.#videoWidth = NaN;
     this.#videoHeight = NaN;
+    this.#error = null;
     this.dispatchEvent(new Event('emptied'));
 
     let oldApi = this.api;
@@ -280,13 +282,16 @@ class VimeoVideoElement extends MediaPlayedRangesMixin(globalThis.HTMLElement ??
     const textTracksVideo = document.createElement('video');
     this.textTracks = textTracksVideo.textTracks;
     this.api.ready().catch((error) => {
+      this.#error = error;
       this.dispatchEvent(new ErrorEvent('error', { error, message: error?.message }));
     });
     this.api.getTextTracks().then((vimeoTracks) => {
       vimeoTracks.forEach((t) => {
         textTracksVideo.addTextTrack(t.kind, t.label, t.language);
       });
-    }).catch(() => {});
+    }).catch(() => {
+      // getTextTracks() waits on ready(), so its rejection is already surfaced above.
+    });
     this.textTracks.addEventListener('change', () => {
       const active = Array.from(this.textTracks).find((t) => t.mode === 'showing');
       if (active) {
@@ -425,6 +430,10 @@ class VimeoVideoElement extends MediaPlayedRangesMixin(globalThis.HTMLElement ??
   async pause() {
     await this.loadComplete;
     return this.api?.pause();
+  }
+
+  get error() {
+    return this.#error;
   }
 
   get ended() {
