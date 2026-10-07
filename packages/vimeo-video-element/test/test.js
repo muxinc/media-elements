@@ -86,6 +86,19 @@ test('play promise', async function (t) {
   t.ok(!video.paused, 'is playing after video.play()');
 });
 
+test('dispatches an error event when the video does not exist', async function (t) {
+  const video = await fixture(`<vimeo-video
+    src="https://vimeo.com/585758234/1ef30fd6da"
+    muted
+  ></vimeo-video>`);
+
+  const event = await new Promise((resolve) => video.addEventListener('error', resolve, { once: true }));
+
+  t.ok(event instanceof ErrorEvent, 'is an ErrorEvent');
+  t.equal(event.error?.name, 'NotFoundError', 'carries the Vimeo error');
+  t.ok(event.message, 'has an error message');
+});
+
 function delay(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }

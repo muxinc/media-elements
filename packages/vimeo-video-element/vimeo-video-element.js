@@ -279,11 +279,14 @@ class VimeoVideoElement extends MediaPlayedRangesMixin(globalThis.HTMLElement ??
   #setupApiListeners() {
     const textTracksVideo = document.createElement('video');
     this.textTracks = textTracksVideo.textTracks;
+    this.api.ready().catch((error) => {
+      this.dispatchEvent(new ErrorEvent('error', { error, message: error?.message }));
+    });
     this.api.getTextTracks().then((vimeoTracks) => {
       vimeoTracks.forEach((t) => {
         textTracksVideo.addTextTrack(t.kind, t.label, t.language);
       });
-    });
+    }).catch(() => {});
     this.textTracks.addEventListener('change', () => {
       const active = Array.from(this.textTracks).find((t) => t.mode === 'showing');
       if (active) {
