@@ -5,6 +5,13 @@
 [1]: https://www.npmjs.com/package/vimeo-video-element?activeTab=versions
 
 
+## [1.7.4](https://github.com/muxinc/media-elements/compare/vimeo-video-element@1.7.3...vimeo-video-element@1.7.4) (2026-10-07)
+
+
+### Bug Fixes
+
+* **vimeo-video-element:** dispatch error event when the video fails to load ([#264](https://github.com/muxinc/media-elements/issues/264)) ([fa4736d](https://github.com/muxinc/media-elements/commit/fa4736d7c1d7a824a06b802c2047f21cbfa2fc26))
+
 ## [1.7.3](https://github.com/muxinc/media-elements/compare/vimeo-video-element@1.7.2...vimeo-video-element@1.7.3) (2026-08-07)
 
 
