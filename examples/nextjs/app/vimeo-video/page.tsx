@@ -12,7 +12,7 @@ export default function Page() {
       <section>
         <Player
           as={VimeoVideo}
-          src="https://vimeo.com/648359100"
+          src="https://vimeo.com/76979871"
           poster="https://i.vimeocdn.com/video/1539127996-82b8c8aeb7a7b2c51709cbef3bd0a5a3e0a96b191b3f1c9246c9b357c2ac7996-d_1280"
           config={{
             color: 'ffadef',
