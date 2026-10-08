@@ -1,5 +1,20 @@
 # Changelog
 
+## [2.1.4](https://github.com/muxinc/media-elements/compare/nextjs@2.1.3...nextjs@2.1.4) (2026-10-07)
+
+
+### Bug Fixes
+
+* **vimeo-video-element:** dispatch error event when the video fails to load ([#264](https://github.com/muxinc/media-elements/issues/264)) ([fa4736d](https://github.com/muxinc/media-elements/commit/fa4736d7c1d7a824a06b802c2047f21cbfa2fc26))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * vimeo-video-element bumped from ^1.7.3 to ^1.7.4
+    * youtube-video-element bumped from ^1.9.0 to ^1.9.1
+
 ## [2.1.3](https://github.com/muxinc/media-elements/compare/nextjs@2.1.2...nextjs@2.1.3) (2026-08-07)
 
 
