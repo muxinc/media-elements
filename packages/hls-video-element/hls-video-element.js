@@ -20,6 +20,7 @@ const HlsVideoMixin = (superclass) => {
 
     #airplaySourceEl = null;
     #config = null;
+    #loadId = 0;
 
     constructor() {
       super();
@@ -60,6 +61,8 @@ const HlsVideoMixin = (superclass) => {
     }
 
     async load() {
+      // Each call supersedes any earlier call that is still waiting on a tick.
+      const loadId = ++this.#loadId;
       const isFirstLoad = !this.api;
 
       this.#destroy();
@@ -76,6 +79,7 @@ const HlsVideoMixin = (superclass) => {
       if (Hls.isSupported()) {
         // Wait 1 tick to allow other attributes to be set.
         await Promise.resolve();
+        if (loadId !== this.#loadId) return;
 
         this.api = new Hls({
           // Mimic the media element with an Infinity duration for live streams.
@@ -267,6 +271,7 @@ const HlsVideoMixin = (superclass) => {
 
       // Wait 1 tick so this.nativeEl is sure to be defined.
       await Promise.resolve();
+      if (loadId !== this.#loadId) return;
 
       // Use native HLS. e.g. iOS Safari.
       if (this.nativeEl.canPlayType('application/vnd.apple.mpegurl')) {

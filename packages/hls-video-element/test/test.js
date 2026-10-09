@@ -1,4 +1,5 @@
 import { test } from 'zora';
+import { Hls } from '../hls-video-element.js';
 
 function createVideoElement() {
   return fixture(`<hls-video
@@ -66,6 +67,32 @@ test('play promise', async function (t) {
     console.warn(error);
   }
   t.ok(!video.paused, 'is playing after video.play()');
+});
+
+test('changing src twice in the same tick creates a single hls.js instance', async function (t) {
+  const video = document.createElement('hls-video');
+  video.setAttribute('muted', '');
+  document.body.append(video);
+
+  const originalAttachMedia = Hls.prototype.attachMedia;
+  const instances = new Set();
+  Hls.prototype.attachMedia = function (media) {
+    if (media === video.nativeEl) instances.add(this);
+    return originalAttachMedia.call(this, media);
+  };
+
+  try {
+    video.src = 'https://stream.mux.com/r4rOE02cc95tbe3I00302nlrHfT023Q3IedFJW029w018KxZA.m3u8';
+    video.src = 'https://stream.mux.com/1EFcsL5JET00t00mBv01t00xt00T4QeNQtsXx2cKY6DLd7RM.m3u8';
+    await delay(200);
+
+    t.equal(instances.size, 1, 'creates one hls.js instance');
+    t.equal(video.api?.url, video.src, 'loads the latest src');
+    t.equal(video.nativeEl.querySelectorAll('source').length, 1, 'adds one source element');
+  } finally {
+    Hls.prototype.attachMedia = originalAttachMedia;
+    video.remove();
+  }
 });
 
 function delay(ms) {
