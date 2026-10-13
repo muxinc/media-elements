@@ -68,6 +68,26 @@ test('play promise', async function (t) {
   t.ok(!video.paused, 'is playing after video.play()');
 });
 
+test('getTemplateHTML keeps the config inside the config script', async function (t) {
+  const config = {
+    xhrSetup: undefined,
+    licenseUrl: '</script><img src="x"><script>',
+    comment: '<!--<script>',
+  };
+
+  const template = document.createElement('template');
+  template.innerHTML = globalThis.customElements.get('hls-video').getTemplateHTML({}, { config });
+  const { content } = template;
+
+  t.equal(content.querySelectorAll('img').length, 0, 'no element is created from config values');
+  t.equal(content.querySelectorAll('script').length, 1, 'has one config script');
+  t.deepEqual(
+    JSON.parse(content.getElementById('config').textContent),
+    JSON.parse(JSON.stringify(config)),
+    'config script has the same config'
+  );
+});
+
 function delay(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
