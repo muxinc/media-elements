@@ -76,6 +76,74 @@ test('has default video reflecting props', async function (t) {
   t.ok(customVideo.nativeEl.hasAttribute('controls'), 'nativeEl has controls attribute');
 });
 
+test('does not parse attribute values as markup in the shadow DOM', async function (t) {
+  if (document.readyState === 'loading') {
+    await new Promise((resolve) => addEventListener('DOMContentLoaded', resolve));
+  }
+
+  const customVideo = globalThis.escapedAttrsVideo;
+  const { shadowRoot, nativeEl } = customVideo;
+
+  await Promise.all(
+    [...shadowRoot.querySelectorAll('img')]
+      .filter((img) => !img.complete)
+      .map((img) => new Promise((resolve) => img.addEventListener('error', resolve)))
+  );
+
+  t.equal(shadowRoot.querySelectorAll('img').length, 0, 'no element is created from attribute values');
+  t.equal(globalThis.injectedHandlerRan, undefined, 'no event handler from attribute values runs');
+  t.equal(nativeEl.getAttribute('poster'), customVideo.getAttribute('poster'), 'nativeEl has the same poster');
+  t.equal(
+    nativeEl.getAttribute('crossorigin'),
+    customVideo.getAttribute('crossorigin'),
+    'nativeEl has the same crossorigin'
+  );
+});
+
+test('passes attribute values to the native element unchanged', async function (t) {
+  const attrs = {
+    poster: `https://image.mux.com/a/thumbnail.webp?time=1&width=640&label="it's <b>"`,
+    src: 'https://stream.mux.com/a/low.mp4?token=a.b.c&expires=1&amp=1',
+    crossorigin: 'anonymous',
+    preload: 'none',
+  };
+  const escapeAttr = (value) => value.replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+  const serialized = Object.entries(attrs)
+    .map(([name, value]) => `${name}="${escapeAttr(value)}"`)
+    .join(' ');
+
+  const customVideo = await fixture(`<custom-video ${serialized} controls playsinline></custom-video>`);
+
+  for (const [name, value] of Object.entries(attrs)) {
+    t.equal(customVideo.nativeEl.getAttribute(name), value, `nativeEl has the same ${name}`);
+  }
+  t.equal(customVideo.nativeEl.getAttribute('controls'), '', 'nativeEl has the controls attribute');
+  t.equal(customVideo.nativeEl.getAttribute('playsinline'), '', 'nativeEl has the playsinline attribute');
+
+  customVideo.remove();
+});
+
+test('getTemplateHTML returns markup that keeps attribute values', async function (t) {
+  const attrs = {
+    poster: `x"><img src="x" onerror="globalThis.injectedHandlerRan = true">`,
+    src: `https://stream.mux.com/a/low.mp4?a=1&b='2'&c=<3>`,
+    crossorigin: `'"></video><img src="x">`,
+    controls: '',
+  };
+
+  const template = document.createElement('template');
+  template.innerHTML = globalThis.customElements.get('custom-video').getTemplateHTML(attrs);
+  const { content } = template;
+
+  t.equal(content.querySelectorAll('img').length, 0, 'no element is created from attribute values');
+  t.equal(content.querySelectorAll('video').length, 1, 'has one video element');
+
+  const video = content.querySelector('video');
+  for (const [name, value] of Object.entries(attrs)) {
+    t.equal(video.getAttribute(name), value, `video has the same ${name}`);
+  }
+});
+
 test(`muted prop is set and doesn't reflect to muted attribute`, async function (t) {
   const customVideo = await fixture(
     `<custom-video></custom-video>`

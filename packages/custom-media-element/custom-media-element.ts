@@ -513,9 +513,19 @@ function serializeAttributes(attrs: Record<string, string>): string {
 
     const value = attrs[key];
     if (value === '') html += ` ${key}`;
-    else html += ` ${key}="${value}"`;
+    else html += ` ${key}="${escapeHtml(`${value}`)}"`;
   }
   return html;
+}
+
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;')
+    .replace(/`/g, '&#x60;');
 }
 
 /**
