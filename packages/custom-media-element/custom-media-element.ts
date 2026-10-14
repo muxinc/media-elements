@@ -512,8 +512,8 @@ function serializeAttributes(attrs: Record<string, string>): string {
     if (!Attributes.includes(key as typeof Attributes[number])) continue;
 
     const value = attrs[key];
-    if (value === '') html += ` ${key}`;
-    else html += ` ${key}="${escapeHtml(`${value}`)}"`;
+    if (value === '') html += ` ${escapeHtml(key)}`;
+    else html += ` ${escapeHtml(key)}="${escapeHtml(`${value}`)}"`;
   }
   return html;
 }
