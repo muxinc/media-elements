@@ -512,10 +512,20 @@ function serializeAttributes(attrs: Record<string, string>): string {
     if (!Attributes.includes(key as typeof Attributes[number])) continue;
 
     const value = attrs[key];
-    if (value === '') html += ` ${key}`;
-    else html += ` ${key}="${value}"`;
+    if (value === '') html += ` ${escapeHtml(key)}`;
+    else html += ` ${escapeHtml(key)}="${escapeHtml(`${value}`)}"`;
   }
   return html;
+}
+
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;')
+    .replace(/`/g, '&#x60;');
 }
 
 /**
