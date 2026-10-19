@@ -12,7 +12,7 @@ const HlsVideoMixin = (superclass) => {
       // Required for React SSR because the custom element is initialized long before React client render.
       return `
         <script type="application/json" id="config">
-          ${JSON.stringify(props.config || {})}
+          ${JSON.stringify(props.config || {}).replace(/</g, '\\u003c')}
         </script>
         ${superclass.getTemplateHTML(rest)}
       `;

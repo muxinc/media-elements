@@ -335,10 +335,20 @@ function serializeAttributes(attrs) {
   let html = '';
   for (const key in attrs) {
     const value = attrs[key];
-    if (value === '') html += ` ${key}`;
-    else html += ` ${key}="${value}"`;
+    if (value === '') html += ` ${escapeHtml(key)}`;
+    else html += ` ${escapeHtml(key)}="${escapeHtml(`${value}`)}"`;
   }
   return html;
+}
+
+function escapeHtml(str) {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;')
+    .replace(/`/g, '&#x60;');
 }
 
 function serialize(props) {
