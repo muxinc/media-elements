@@ -5,6 +5,13 @@
 [1]: https://www.npmjs.com/package/custom-media-element?activeTab=versions
 
 
+## [1.4.7](https://github.com/muxinc/media-elements/compare/custom-media-element@1.4.6...custom-media-element@1.4.7) (2026-10-19)
+
+
+### Bug Fixes
+
+* escape attribute values in template HTML ([#265](https://github.com/muxinc/media-elements/issues/265)) ([5421514](https://github.com/muxinc/media-elements/commit/54215145b1a3e69bc3581e746287911490b8035d))
+
 ## [1.4.6](https://github.com/muxinc/media-elements/compare/custom-media-element@1.4.5...custom-media-element@1.4.6) (2026-03-19)
 
 

@@ -5,6 +5,13 @@
 [1]: https://www.npmjs.com/package/spotify-audio-element?activeTab=versions
 
 
+## [1.0.5](https://github.com/muxinc/media-elements/compare/spotify-audio-element@1.0.4...spotify-audio-element@1.0.5) (2026-10-19)
+
+
+### Bug Fixes
+
+* escape attribute values in template HTML ([#265](https://github.com/muxinc/media-elements/issues/265)) ([5421514](https://github.com/muxinc/media-elements/commit/54215145b1a3e69bc3581e746287911490b8035d))
+
 ## [1.0.4](https://github.com/muxinc/media-elements/compare/spotify-audio-element@1.0.3...spotify-audio-element@1.0.4) (2025-11-25)
 
 
