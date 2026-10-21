@@ -88,9 +88,11 @@ test('play promise', async function (t) {
 });
 
 test('pause() before load completes keeps paused in sync', async function (t) {
-  const video = await createVideoElement();
+  const video = await createVideoElement('https://vimeo.com/22439234');
 
+  let playEvents = 0;
   let pauseEvents = 0;
+  video.addEventListener('play', () => playEvents++);
   video.addEventListener('pause', () => pauseEvents++);
 
   video.play().catch(() => {});
@@ -100,10 +102,11 @@ test('pause() before load completes keeps paused in sync', async function (t) {
   t.equal(pauseEvents, 1, 'dispatches a pause event');
 
   await video.loadComplete;
-  await delay(1000);
+  await delay(3000);
 
   t.equal(video.paused, true, 'is still paused after load');
   t.equal(await video.api.getPaused(), true, 'matches the Vimeo player state');
+  t.equal(playEvents, 1, 'does not dispatch another play event after load');
   t.equal(pauseEvents, 1, 'does not dispatch a duplicate pause event');
 });
 
