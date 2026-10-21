@@ -387,6 +387,9 @@ class VimeoVideoElement extends MediaPlayedRangesMixin(globalThis.HTMLElement ??
 
     await this.loadComplete;
 
+    // pause() was called while waiting for load, don't start playback.
+    if (this.#paused) return;
+
     try {
       await this.api?.play();
     } catch (error) {
