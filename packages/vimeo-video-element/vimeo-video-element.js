@@ -261,23 +261,6 @@ class VimeoVideoElement extends MediaPlayedRangesMixin(globalThis.HTMLElement ??
     super.disconnectedCallback?.();
   }
 
-  #onLoaded = async () => {
-    this.#readyState = 1; // HTMLMediaElement.HAVE_METADATA
-    this.dispatchEvent(new Event('loadedmetadata'));
-
-    if (this.api) {
-      this.#muted = await this.api.getMuted();
-      this.#volume = await this.api.getVolume();
-      this.dispatchEvent(new Event('volumechange'));
-
-      this.#duration = await this.api.getDuration();
-      this.dispatchEvent(new Event('durationchange'));
-    }
-
-    this.dispatchEvent(new Event('loadcomplete'));
-    this.loadComplete.resolve();
-  };
-
   #setupApiListeners() {
     const textTracksVideo = document.createElement('video');
     this.textTracks = textTracksVideo.textTracks;
@@ -310,24 +293,13 @@ class VimeoVideoElement extends MediaPlayedRangesMixin(globalThis.HTMLElement ??
     // Make sure a `play` event is fired before the bufferstart event.
     // For example Vimeo's `play` event is delayed decreasing video startup time.
     this.api.on('bufferstart', () => {
-      if (this.#paused) {
-        this.#paused = false;
-        this.dispatchEvent(new Event('play'));
-      }
+      this.#onPlay();
       this.dispatchEvent(new Event('waiting'));
     });
 
-    this.api.on('play', () => {
-      if (!this.#paused) return;
-      this.#paused = false;
-      this.dispatchEvent(new Event('play'));
-    });
+    this.api.on('play', () => this.#onPlay());
 
-    this.api.on('playing', () => {
-      this.#readyState = 3; // HTMLMediaElement.HAVE_FUTURE_DATA
-      this.#paused = false;
-      this.dispatchEvent(new Event('playing'));
-    });
+    this.api.on('playing', () => this.#onPlaying());
 
     this.api.on('seeking', () => {
       this.#seeking = true;
@@ -341,15 +313,9 @@ class VimeoVideoElement extends MediaPlayedRangesMixin(globalThis.HTMLElement ??
       this.dispatchEvent(new Event('seeked'));
     });
 
-    this.api.on('pause', () => {
-      this.#paused = true;
-      this.dispatchEvent(new Event('pause'));
-    });
+    this.api.on('pause', () => this.#onPaused());
 
-    this.api.on('ended', () => {
-      this.#paused = true;
-      this.dispatchEvent(new Event('ended'));
-    });
+    this.api.on('ended', () => this.#onEnded());
 
     this.api.on('ratechange', ({ playbackRate }) => {
       this.#playbackRate = playbackRate;
@@ -412,22 +378,27 @@ class VimeoVideoElement extends MediaPlayedRangesMixin(globalThis.HTMLElement ??
     }
   }
 
+  /* 
+   * Update state synchronously. If this is called before
+   * load completes, Vimeo never starts playback and won't emit the respective event.
+   */
   async play() {
-    this.#paused = false;
-    this.dispatchEvent(new Event('play'));
+    this.#onPlay();
 
     await this.loadComplete;
 
     try {
       await this.api?.play();
     } catch (error) {
-      this.#paused = true;
-      this.dispatchEvent(new Event('pause'));
+      this.#onPaused();
       throw error;
     }
   }
 
   async pause() {
+    // Update state synchronously. See play().
+    this.#onPaused();
+
     await this.loadComplete;
     return this.api?.pause();
   }
@@ -580,6 +551,46 @@ class VimeoVideoElement extends MediaPlayedRangesMixin(globalThis.HTMLElement ??
     this.loadComplete.then(() => {
       this.api?.setVolume(val).catch(() => {});
     });
+  }
+
+  #onLoaded = async () => {
+    this.#readyState = 1; // HTMLMediaElement.HAVE_METADATA
+    this.dispatchEvent(new Event('loadedmetadata'));
+
+    if (this.api) {
+      this.#muted = await this.api.getMuted();
+      this.#volume = await this.api.getVolume();
+      this.dispatchEvent(new Event('volumechange'));
+
+      this.#duration = await this.api.getDuration();
+      this.dispatchEvent(new Event('durationchange'));
+    }
+
+    this.dispatchEvent(new Event('loadcomplete'));
+    this.loadComplete.resolve();
+  };
+
+  #onPlay() {
+    if (!this.#paused) return;
+    this.#paused = false;
+    this.dispatchEvent(new Event('play'));
+  }
+
+  #onPlaying() {
+    this.#readyState = 3; // HTMLMediaElement.HAVE_FUTURE_DATA
+    this.#paused = false;
+    this.dispatchEvent(new Event('playing'));
+  }
+
+  #onPaused() {
+    if (this.#paused) return;
+    this.#paused = true;
+    this.dispatchEvent(new Event('pause'));
+  }
+
+  #onEnded() {
+    this.#paused = true;
+    this.dispatchEvent(new Event('ended'));
   }
 
   // This is a pattern to update property values that are set before
