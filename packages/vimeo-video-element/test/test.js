@@ -110,6 +110,21 @@ test('pause() before load completes keeps paused in sync', async function (t) {
   t.equal(pauseEvents, 1, 'does not dispatch a duplicate pause event');
 });
 
+test('play() right after setting src starts playback', async function (t) {
+  const video = document.createElement('vimeo-video');
+  video.setAttribute('muted', '');
+  video.src = 'https://vimeo.com/22439234';
+  document.body.append(video);
+
+  video.play().catch(() => {});
+
+  await video.loadComplete;
+  await delay(3000);
+
+  t.equal(await video.api.getPaused(), false, 'the Vimeo player is playing');
+  t.equal(video.paused, false, 'is not paused');
+});
+
 test('dispatches an error event when the video does not exist', async function (t) {
   const video = await fixture(`<vimeo-video
     src="https://vimeo.com/585758234/1ef30fd6da"
