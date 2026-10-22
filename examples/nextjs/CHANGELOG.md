@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.1.5](https://github.com/muxinc/media-elements/compare/nextjs@2.1.4...nextjs@2.1.5) (2026-10-19)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * cloudflare-video-element bumped from ^1.3.5 to ^1.3.6
+    * dash-video-element bumped from ^0.3.2 to ^0.3.3
+    * hls-video-element bumped from ^1.5.11 to ^1.5.12
+    * shaka-video-element bumped from ^0.7.1 to ^0.7.2
+    * spotify-audio-element bumped from ^1.0.4 to ^1.0.5
+
 ## [2.1.4](https://github.com/muxinc/media-elements/compare/nextjs@2.1.3...nextjs@2.1.4) (2026-10-07)
 
 

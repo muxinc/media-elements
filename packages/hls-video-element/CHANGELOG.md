@@ -6,6 +6,20 @@
 
 
 
+## [1.5.12](https://github.com/muxinc/media-elements/compare/hls-video-element@1.5.11...hls-video-element@1.5.12) (2026-10-19)
+
+
+### Bug Fixes
+
+* escape attribute values in template HTML ([#265](https://github.com/muxinc/media-elements/issues/265)) ([5421514](https://github.com/muxinc/media-elements/commit/54215145b1a3e69bc3581e746287911490b8035d))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * custom-media-element bumped from ^1.4.6 to ^1.4.7
+
 ## [1.5.11](https://github.com/muxinc/media-elements/compare/hls-video-element@1.5.10...hls-video-element@1.5.11) (2026-03-19)
 
 

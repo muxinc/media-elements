@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.7.2](https://github.com/muxinc/media-elements/compare/shaka-video-element@0.7.1...shaka-video-element@0.7.2) (2026-10-19)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * custom-media-element bumped from ^1.4.6 to ^1.4.7
+
 ## [0.7.1](https://github.com/muxinc/media-elements/compare/shaka-video-element@0.7.0...shaka-video-element@0.7.1) (2026-03-19)
 
 

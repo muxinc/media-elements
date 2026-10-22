@@ -4,6 +4,13 @@
 
 [1]: https://www.npmjs.com/package/cloudflare-video-element?activeTab=versions
 
+## [1.3.6](https://github.com/muxinc/media-elements/compare/cloudflare-video-element@1.3.5...cloudflare-video-element@1.3.6) (2026-10-19)
+
+
+### Bug Fixes
+
+* escape attribute values in template HTML ([#265](https://github.com/muxinc/media-elements/issues/265)) ([5421514](https://github.com/muxinc/media-elements/commit/54215145b1a3e69bc3581e746287911490b8035d))
+
 ## [1.3.5](https://github.com/muxinc/media-elements/compare/cloudflare-video-element@1.3.4...cloudflare-video-element@1.3.5) (2025-11-25)
 
 
