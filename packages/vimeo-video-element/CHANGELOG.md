@@ -5,6 +5,13 @@
 [1]: https://www.npmjs.com/package/vimeo-video-element?activeTab=versions
 
 
+## [1.7.5](https://github.com/muxinc/media-elements/compare/vimeo-video-element@1.7.4...vimeo-video-element@1.7.5) (2026-11-09)
+
+
+### Bug Fixes
+
+* **vimeo-video-element:** keep paused in sync when pause() is called before load ([#268](https://github.com/muxinc/media-elements/issues/268)) ([72a3a62](https://github.com/muxinc/media-elements/commit/72a3a62e904af9f7adb7b96ab1770890bb6a194c))
+
 ## [1.7.4](https://github.com/muxinc/media-elements/compare/vimeo-video-element@1.7.3...vimeo-video-element@1.7.4) (2026-10-07)
 
 
