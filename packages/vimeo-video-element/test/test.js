@@ -1,8 +1,8 @@
 import { test } from 'zora';
 
-function createVideoElement() {
+function createVideoElement(src = 'https://vimeo.com/76979871') {
   return fixture(`<vimeo-video
-    src="https://vimeo.com/648359100"
+    src="${src}"
     muted
   ></vimeo-video>`);
 }
@@ -48,7 +48,7 @@ test('duration', async function (t) {
     await promisify(video.addEventListener.bind(video))('durationchange');
   }
 
-  t.equal(Math.round(video.duration), 115, `is 115s long`);
+  t.equal(Math.round(video.duration), 62, `is 62s long`);
 });
 
 test('load promise', async function (t) {
@@ -57,7 +57,7 @@ test('load promise', async function (t) {
 
   const loadComplete = video.loadComplete;
 
-  video.src = 'https://vimeo.com/638371504';
+  video.src = 'https://vimeo.com/22439234';
   await video.loadComplete;
 
   t.ok(
@@ -69,11 +69,12 @@ test('load promise', async function (t) {
     await promisify(video.addEventListener.bind(video))('durationchange');
   }
 
-  t.equal(Math.round(video.duration), 90, `is 90s long`);
+  t.equal(Math.round(video.duration), 185, `is 185s long`);
 });
 
 test('play promise', async function (t) {
-  const video = await createVideoElement();
+  // 76979871 fails to play with a Vimeo PlaybackError, so use a playable video.
+  const video = await createVideoElement('https://vimeo.com/22439234');
   await video.loadComplete;
 
   video.muted = true;
@@ -84,6 +85,44 @@ test('play promise', async function (t) {
     console.warn(error);
   }
   t.ok(!video.paused, 'is playing after video.play()');
+});
+
+test('pause() before load completes keeps paused in sync', async function (t) {
+  const video = await createVideoElement('https://vimeo.com/22439234');
+
+  let playEvents = 0;
+  let pauseEvents = 0;
+  video.addEventListener('play', () => playEvents++);
+  video.addEventListener('pause', () => pauseEvents++);
+
+  video.play().catch(() => {});
+  video.pause();
+
+  t.equal(video.paused, true, 'is paused synchronously after pause()');
+  t.equal(pauseEvents, 1, 'dispatches a pause event');
+
+  await video.loadComplete;
+  await delay(3000);
+
+  t.equal(video.paused, true, 'is still paused after load');
+  t.equal(await video.api.getPaused(), true, 'matches the Vimeo player state');
+  t.equal(playEvents, 1, 'does not dispatch another play event after load');
+  t.equal(pauseEvents, 1, 'does not dispatch a duplicate pause event');
+});
+
+test('play() right after setting src starts playback', async function (t) {
+  const video = document.createElement('vimeo-video');
+  video.setAttribute('muted', '');
+  video.src = 'https://vimeo.com/22439234';
+  document.body.append(video);
+
+  video.play().catch(() => {});
+
+  await video.loadComplete;
+  await delay(3000);
+
+  t.equal(await video.api.getPaused(), false, 'the Vimeo player is playing');
+  t.equal(video.paused, false, 'is not paused');
 });
 
 test('dispatches an error event when the video does not exist', async function (t) {
