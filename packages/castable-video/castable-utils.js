@@ -6,7 +6,7 @@ export class InvalidStateError extends Error {}
 export class NotSupportedError extends Error {}
 export class NotFoundError extends Error {}
 
-const HLS_RESPONSE_HEADERS = ['application/x-mpegURL','application/vnd.apple.mpegurl','audio/mpegurl']
+const HLS_CONTENT_TYPES = ['application/x-mpegURL','application/vnd.apple.mpegurl','audio/mpegurl']
 
 // Fallback to a plain Set if WeakRef is not available.
 export const IterableWeakSet = globalThis.WeakRef ?
@@ -165,11 +165,15 @@ export async function isHls(url) {
     const response = await fetch(url, {method: 'HEAD'});
     const contentType = response.headers.get('Content-Type');
 
-    return HLS_RESPONSE_HEADERS.some((header) => contentType === header);
+    return isHlsContentType(contentType);
   } catch (err) {
     console.error('Error while trying to get the Content-Type of the manifest', err);
     return false;
   }
+}
+
+export function isHlsContentType(contentType) {
+  return HLS_CONTENT_TYPES.some((hlsType) => contentType === hlsType);
 }
 
 export async function getPlaylistSegmentFormat(url) {
