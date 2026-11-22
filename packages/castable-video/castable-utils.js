@@ -173,7 +173,9 @@ export async function isHls(url) {
 }
 
 export function isHlsContentType(contentType) {
-  return HLS_CONTENT_TYPES.some((hlsType) => contentType === hlsType);
+  if (!contentType) return false;
+  const type = contentType.split(';', 1)[0].trim().toLowerCase();
+  return HLS_CONTENT_TYPES.some((hlsType) => type === hlsType.toLowerCase());
 }
 
 export async function getPlaylistSegmentFormat(url) {
