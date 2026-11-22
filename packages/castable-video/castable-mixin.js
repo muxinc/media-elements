@@ -7,6 +7,7 @@ import {
   currentSession,
   getDefaultCastOptions,
   isHls,
+  isHlsContentType,
   getPlaylistSegmentFormat,
 } from './castable-utils.js';
 
@@ -148,7 +149,7 @@ export const CastableMediaMixin = (superclass) =>
       mediaInfo.metadata.title = this.title;
       mediaInfo.metadata.images = [{ url: this.poster }];
 
-      const hlsDetected = await isHls(this.castSrc);
+      const hlsDetected = this.castContentType ? isHlsContentType(this.castContentType) : await isHls(this.castSrc);
       if (hlsDetected) {
         if (!mediaInfo.contentType) {
           mediaInfo.contentType = 'application/x-mpegURL';
