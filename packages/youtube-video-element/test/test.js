@@ -250,6 +250,67 @@ test('t parameter - case insensitive', async function (t) {
   t.equal(startParam, '171', 'start parameter is set from uppercase T parameter');
 });
 
+test('destroys the player when disconnected', async function (t) {
+  const video = await createVideoElement();
+  await video.loadComplete;
+
+  t.ok(video.api, 'has a player once loaded');
+  t.ok(video.shadowRoot.querySelector('iframe'), 'has an iframe once loaded');
+
+  video.remove();
+
+  t.equal(video.api, null, 'the player reference is released on disconnect');
+  t.equal(video.isLoaded, false, 'the element is no longer marked loaded');
+  t.equal(
+    video.shadowRoot.querySelector('iframe'),
+    null,
+    'destroy() removed the iframe from the shadow root'
+  );
+});
+
+test('creates a new player when reconnected', async function (t) {
+  const video = await createVideoElement();
+  await video.loadComplete;
+
+  const firstApi = video.api;
+  video.remove();
+  document.body.append(video);
+
+  await video.loadComplete;
+
+  t.ok(video.api, 'has a player again after reconnecting');
+  t.ok(video.api !== firstApi, 'a new player was created, not the destroyed one');
+  t.ok(video.shadowRoot.querySelector('iframe'), 'the iframe was rebuilt');
+});
+
+test('disconnecting mid-load does not build a player afterwards', async function (t) {
+  const video = await createVideoElement();
+  // Disconnect while load() is still awaiting the API script.
+  video.remove();
+
+  // Let that in-flight continuation actually resume before asserting;
+  // immediately after remove() api === null is true by construction.
+  for (let i = 0; i < 500 && !globalThis.YT?.Player; i++) await delay(10);
+  await delay(100);
+
+  t.equal(video.api, null, 'the superseded load did not construct a player');
+});
+
+test('disconnecting before ready settles the pending loadComplete', async function (t) {
+  const video = await createVideoElement();
+  const pending = video.loadComplete;
+
+  // Disconnect after the player is constructed but before onReady fires.
+  for (let i = 0; i < 500 && !video.api; i++) await delay(10);
+  video.remove();
+
+  const outcome = await Promise.race([
+    pending.then(() => 'resolved', (err) => err.name),
+    delay(3000).then(() => 'pending'),
+  ]);
+  t.ok(outcome !== 'pending', `loadComplete settles after disconnect (${outcome})`);
+});
+
 function delay(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
